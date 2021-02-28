@@ -1,0 +1,181 @@
+|Tarea8
+CLOCK_50 => Reloj:reloj1.CLOCK_50
+SW[0] => cnt[0].OUTPUTSELECT
+SW[0] => cnt[1].OUTPUTSELECT
+SW[0] => cnt[2].OUTPUTSELECT
+SW[0] => cnt[0].OUTPUTSELECT
+SW[0] => cnt[1].OUTPUTSELECT
+SW[0] => cnt[2].OUTPUTSELECT
+HEX0[0] <= driver7Segmentos:Visor0.bitsCaracter[0]
+HEX0[1] <= driver7Segmentos:Visor0.bitsCaracter[1]
+HEX0[2] <= driver7Segmentos:Visor0.bitsCaracter[2]
+HEX0[3] <= driver7Segmentos:Visor0.bitsCaracter[3]
+HEX0[4] <= driver7Segmentos:Visor0.bitsCaracter[4]
+HEX0[5] <= driver7Segmentos:Visor0.bitsCaracter[5]
+HEX0[6] <= driver7Segmentos:Visor0.bitsCaracter[6]
+HEX1[0] <= driver7Segmentos:Visor1.bitsCaracter[0]
+HEX1[1] <= driver7Segmentos:Visor1.bitsCaracter[1]
+HEX1[2] <= driver7Segmentos:Visor1.bitsCaracter[2]
+HEX1[3] <= driver7Segmentos:Visor1.bitsCaracter[3]
+HEX1[4] <= driver7Segmentos:Visor1.bitsCaracter[4]
+HEX1[5] <= driver7Segmentos:Visor1.bitsCaracter[5]
+HEX1[6] <= driver7Segmentos:Visor1.bitsCaracter[6]
+HEX2[0] <= driver7Segmentos:Visor2.bitsCaracter[0]
+HEX2[1] <= driver7Segmentos:Visor2.bitsCaracter[1]
+HEX2[2] <= driver7Segmentos:Visor2.bitsCaracter[2]
+HEX2[3] <= driver7Segmentos:Visor2.bitsCaracter[3]
+HEX2[4] <= driver7Segmentos:Visor2.bitsCaracter[4]
+HEX2[5] <= driver7Segmentos:Visor2.bitsCaracter[5]
+HEX2[6] <= driver7Segmentos:Visor2.bitsCaracter[6]
+HEX3[0] <= driver7Segmentos:Visor3.bitsCaracter[0]
+HEX3[1] <= driver7Segmentos:Visor3.bitsCaracter[1]
+HEX3[2] <= driver7Segmentos:Visor3.bitsCaracter[2]
+HEX3[3] <= driver7Segmentos:Visor3.bitsCaracter[3]
+HEX3[4] <= driver7Segmentos:Visor3.bitsCaracter[4]
+HEX3[5] <= driver7Segmentos:Visor3.bitsCaracter[5]
+HEX3[6] <= driver7Segmentos:Visor3.bitsCaracter[6]
+LEDR[0] <= cnt[0].DB_MAX_OUTPUT_PORT_TYPE
+LEDR[1] <= cnt[1].DB_MAX_OUTPUT_PORT_TYPE
+LEDR[2] <= cnt[2].DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Tarea8|Reloj:reloj1
+CLOCK_50 => cnt[0].CLK
+CLOCK_50 => cnt[1].CLK
+CLOCK_50 => cnt[2].CLK
+CLOCK_50 => cnt[3].CLK
+CLOCK_50 => cnt[4].CLK
+CLOCK_50 => cnt[5].CLK
+CLOCK_50 => cnt[6].CLK
+CLOCK_50 => cnt[7].CLK
+CLOCK_50 => cnt[8].CLK
+CLOCK_50 => cnt[9].CLK
+CLOCK_50 => cnt[10].CLK
+CLOCK_50 => cnt[11].CLK
+CLOCK_50 => cnt[12].CLK
+CLOCK_50 => cnt[13].CLK
+CLOCK_50 => cnt[14].CLK
+CLOCK_50 => cnt[15].CLK
+CLOCK_50 => cnt[16].CLK
+CLOCK_50 => cnt[17].CLK
+CLOCK_50 => cnt[18].CLK
+CLOCK_50 => cnt[19].CLK
+CLOCK_50 => cnt[20].CLK
+CLOCK_50 => cnt[21].CLK
+CLOCK_50 => cnt[22].CLK
+CLOCK_50 => cnt[23].CLK
+CLOCK_50 => cnt[24].CLK
+CLOCK_50 => cnt[25].CLK
+CLOCK_50 => cnt[26].CLK
+CLOCK_50 => cnt[27].CLK
+CLOCK_50 => cnt[28].CLK
+CLOCK_50 => cnt[29].CLK
+CLOCK_50 => cnt[30].CLK
+CLOCK_50 => cnt[31].CLK
+reloj <= Equal0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Tarea8|driver7Segmentos:Visor0
+codigoCaracter[0] => Mux0.IN10
+codigoCaracter[0] => Mux1.IN10
+codigoCaracter[0] => Mux2.IN10
+codigoCaracter[0] => Mux3.IN10
+codigoCaracter[0] => Mux4.IN5
+codigoCaracter[1] => Mux0.IN9
+codigoCaracter[1] => Mux1.IN9
+codigoCaracter[1] => Mux2.IN9
+codigoCaracter[1] => Mux3.IN9
+codigoCaracter[2] => Mux0.IN8
+codigoCaracter[2] => Mux1.IN8
+codigoCaracter[2] => Mux2.IN8
+codigoCaracter[2] => Mux3.IN8
+codigoCaracter[2] => Mux4.IN4
+codigoCaracter[2] => bitsCaracter[5].DATAIN
+codigoCaracter[2] => bitsCaracter[4].DATAIN
+bitsCaracter[0] <= Mux4.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[1] <= Mux3.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[2] <= Mux2.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[3] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[4] <= codigoCaracter[2].DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[5] <= codigoCaracter[2].DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[6] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Tarea8|driver7Segmentos:Visor1
+codigoCaracter[0] => Mux0.IN10
+codigoCaracter[0] => Mux1.IN10
+codigoCaracter[0] => Mux2.IN10
+codigoCaracter[0] => Mux3.IN10
+codigoCaracter[0] => Mux4.IN5
+codigoCaracter[1] => Mux0.IN9
+codigoCaracter[1] => Mux1.IN9
+codigoCaracter[1] => Mux2.IN9
+codigoCaracter[1] => Mux3.IN9
+codigoCaracter[2] => Mux0.IN8
+codigoCaracter[2] => Mux1.IN8
+codigoCaracter[2] => Mux2.IN8
+codigoCaracter[2] => Mux3.IN8
+codigoCaracter[2] => Mux4.IN4
+codigoCaracter[2] => bitsCaracter[5].DATAIN
+codigoCaracter[2] => bitsCaracter[4].DATAIN
+bitsCaracter[0] <= Mux4.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[1] <= Mux3.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[2] <= Mux2.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[3] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[4] <= codigoCaracter[2].DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[5] <= codigoCaracter[2].DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[6] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Tarea8|driver7Segmentos:Visor2
+codigoCaracter[0] => Mux0.IN10
+codigoCaracter[0] => Mux1.IN10
+codigoCaracter[0] => Mux2.IN10
+codigoCaracter[0] => Mux3.IN10
+codigoCaracter[0] => Mux4.IN5
+codigoCaracter[1] => Mux0.IN9
+codigoCaracter[1] => Mux1.IN9
+codigoCaracter[1] => Mux2.IN9
+codigoCaracter[1] => Mux3.IN9
+codigoCaracter[2] => Mux0.IN8
+codigoCaracter[2] => Mux1.IN8
+codigoCaracter[2] => Mux2.IN8
+codigoCaracter[2] => Mux3.IN8
+codigoCaracter[2] => Mux4.IN4
+codigoCaracter[2] => bitsCaracter[5].DATAIN
+codigoCaracter[2] => bitsCaracter[4].DATAIN
+bitsCaracter[0] <= Mux4.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[1] <= Mux3.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[2] <= Mux2.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[3] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[4] <= codigoCaracter[2].DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[5] <= codigoCaracter[2].DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[6] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Tarea8|driver7Segmentos:Visor3
+codigoCaracter[0] => Mux0.IN10
+codigoCaracter[0] => Mux1.IN10
+codigoCaracter[0] => Mux2.IN10
+codigoCaracter[0] => Mux3.IN10
+codigoCaracter[0] => Mux4.IN5
+codigoCaracter[1] => Mux0.IN9
+codigoCaracter[1] => Mux1.IN9
+codigoCaracter[1] => Mux2.IN9
+codigoCaracter[1] => Mux3.IN9
+codigoCaracter[2] => Mux0.IN8
+codigoCaracter[2] => Mux1.IN8
+codigoCaracter[2] => Mux2.IN8
+codigoCaracter[2] => Mux3.IN8
+codigoCaracter[2] => Mux4.IN4
+codigoCaracter[2] => bitsCaracter[5].DATAIN
+codigoCaracter[2] => bitsCaracter[4].DATAIN
+bitsCaracter[0] <= Mux4.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[1] <= Mux3.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[2] <= Mux2.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[3] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[4] <= codigoCaracter[2].DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[5] <= codigoCaracter[2].DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[6] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
+
+

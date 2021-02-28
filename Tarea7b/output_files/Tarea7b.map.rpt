@@ -1,5 +1,5 @@
 Analysis & Synthesis report for Tarea7b
-Fri Feb 26 23:49:41 2021
+Sat Feb 27 13:40:38 2021
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
 
 
@@ -13,8 +13,10 @@ Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edit
   5. Analysis & Synthesis Resource Usage Summary
   6. Analysis & Synthesis Resource Utilization by Entity
   7. General Register Statistics
-  8. Elapsed Time Per Partition
-  9. Analysis & Synthesis Messages
+  8. Inverted Register Statistics
+  9. Parameter Settings for User Entity Instance: Reloj:rlj
+ 10. Elapsed Time Per Partition
+ 11. Analysis & Synthesis Messages
 
 
 
@@ -40,15 +42,15 @@ applicable agreement for further details.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Fri Feb 26 23:49:41 2021           ;
+; Analysis & Synthesis Status        ; Successful - Sat Feb 27 13:40:38 2021           ;
 ; Quartus II 64-Bit Version          ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
 ; Revision Name                      ; Tarea7b                                         ;
 ; Top-level Entity Name              ; Tarea7b                                         ;
 ; Family                             ; Cyclone II                                      ;
-; Total logic elements               ; 0                                               ;
-;     Total combinational functions  ; 0                                               ;
-;     Dedicated logic registers      ; 0                                               ;
-; Total registers                    ; 0                                               ;
+; Total logic elements               ; 88                                              ;
+;     Total combinational functions  ; 88                                              ;
+;     Dedicated logic registers      ; 48                                              ;
+; Total registers                    ; 48                                              ;
 ; Total pins                         ; 29                                              ;
 ; Total virtual pins                 ; 0                                               ;
 ; Total memory bits                  ; 0                                               ;
@@ -142,47 +144,56 @@ applicable agreement for further details.
 +----------------------------------------------------------------------------+--------------------+--------------------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                            ;
-+----------------------------------+-----------------+-----------------+--------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type       ; File Name with Absolute Path                     ; Library ;
-+----------------------------------+-----------------+-----------------+--------------------------------------------------+---------+
-; Tarea7b.vhd                      ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea7b/Tarea7b.vhd ;         ;
-+----------------------------------+-----------------+-----------------+--------------------------------------------------+---------+
++-------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                              ;
++----------------------------------+-----------------+-----------------+----------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type       ; File Name with Absolute Path                       ; Library ;
++----------------------------------+-----------------+-----------------+----------------------------------------------------+---------+
+; Tarea7b.vhd                      ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea7b/Tarea7b.vhd   ;         ;
+; Reloj.vhd                        ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea7b/Reloj.vhd     ;         ;
+; driverHex.vhd                    ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea7b/driverHex.vhd ;         ;
++----------------------------------+-----------------+-----------------+----------------------------------------------------+---------+
 
 
-+-----------------------------------------------------+
-; Analysis & Synthesis Resource Usage Summary         ;
-+---------------------------------------------+-------+
-; Resource                                    ; Usage ;
-+---------------------------------------------+-------+
-;                                             ;       ;
-; Total combinational functions               ; 0     ;
-; Logic element usage by number of LUT inputs ;       ;
-;     -- 4 input functions                    ; 0     ;
-;     -- 3 input functions                    ; 0     ;
-;     -- <=2 input functions                  ; 0     ;
-;                                             ;       ;
-; Logic elements by mode                      ;       ;
-;     -- normal mode                          ; 0     ;
-;     -- arithmetic mode                      ; 0     ;
-;                                             ;       ;
-; Total registers                             ; 0     ;
-;     -- Dedicated logic registers            ; 0     ;
-;     -- I/O registers                        ; 0     ;
-;                                             ;       ;
-; I/O pins                                    ; 29    ;
-; Embedded Multiplier 9-bit elements          ; 0     ;
-+---------------------------------------------+-------+
++----------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                    ;
++---------------------------------------------+------------------+
+; Resource                                    ; Usage            ;
++---------------------------------------------+------------------+
+; Estimated Total logic elements              ; 88               ;
+;                                             ;                  ;
+; Total combinational functions               ; 88               ;
+; Logic element usage by number of LUT inputs ;                  ;
+;     -- 4 input functions                    ; 38               ;
+;     -- 3 input functions                    ; 1                ;
+;     -- <=2 input functions                  ; 49               ;
+;                                             ;                  ;
+; Logic elements by mode                      ;                  ;
+;     -- normal mode                          ; 43               ;
+;     -- arithmetic mode                      ; 45               ;
+;                                             ;                  ;
+; Total registers                             ; 48               ;
+;     -- Dedicated logic registers            ; 48               ;
+;     -- I/O registers                        ; 0                ;
+;                                             ;                  ;
+; I/O pins                                    ; 29               ;
+; Embedded Multiplier 9-bit elements          ; 0                ;
+; Maximum fan-out node                        ; Reloj:rlj|Equal0 ;
+; Maximum fan-out                             ; 48               ;
+; Total fan-out                               ; 405              ;
+; Average fan-out                             ; 2.45             ;
++---------------------------------------------+------------------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                         ;
-+----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+---------------------+--------------+
-; Compilation Hierarchy Node ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name ; Library Name ;
-+----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+---------------------+--------------+
-; |Tarea7b                   ; 0 (0)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 29   ; 0            ; |Tarea7b            ; work         ;
-+----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+---------------------+--------------+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                               ;
++----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+---------------------------+--------------+
+; Compilation Hierarchy Node ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name       ; Library Name ;
++----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+---------------------------+--------------+
+; |Tarea7b                   ; 88 (16)           ; 48 (16)      ; 0           ; 0            ; 0       ; 0         ; 29   ; 0            ; |Tarea7b                  ; work         ;
+;    |Reloj:rlj|             ; 44 (44)           ; 32 (32)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea7b|Reloj:rlj        ; work         ;
+;    |driverHex:driver|      ; 28 (28)           ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea7b|driverHex:driver ; work         ;
++----------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+---------------------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
@@ -191,14 +202,45 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 0     ;
+; Total registers                              ; 48    ;
 ; Number of registers using Synchronous Clear  ; 0     ;
 ; Number of registers using Synchronous Load   ; 0     ;
-; Number of registers using Asynchronous Clear ; 0     ;
+; Number of registers using Asynchronous Clear ; 32    ;
 ; Number of registers using Asynchronous Load  ; 0     ;
 ; Number of registers using Clock Enable       ; 0     ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
+
+
++---------------------------------------------------+
+; Inverted Register Statistics                      ;
++-----------------------------------------+---------+
+; Inverted Register                       ; Fan out ;
++-----------------------------------------+---------+
+; Reloj:rlj|cnt[8]                        ; 2       ;
+; Reloj:rlj|cnt[13]                       ; 2       ;
+; Reloj:rlj|cnt[14]                       ; 2       ;
+; Reloj:rlj|cnt[15]                       ; 2       ;
+; Reloj:rlj|cnt[16]                       ; 2       ;
+; Reloj:rlj|cnt[18]                       ; 2       ;
+; Reloj:rlj|cnt[20]                       ; 2       ;
+; Reloj:rlj|cnt[21]                       ; 2       ;
+; Reloj:rlj|cnt[22]                       ; 2       ;
+; Reloj:rlj|cnt[23]                       ; 2       ;
+; Reloj:rlj|cnt[24]                       ; 2       ;
+; Reloj:rlj|cnt[26]                       ; 2       ;
+; Total number of inverted registers = 12 ;         ;
++-----------------------------------------+---------+
+
+
++--------------------------------------------------------+
+; Parameter Settings for User Entity Instance: Reloj:rlj ;
++----------------+---------+-----------------------------+
+; Parameter Name ; Value   ; Type                        ;
++----------------+---------+-----------------------------+
+; micros         ; 2000000 ; Signed Integer              ;
++----------------+---------+-----------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
 +-------------------------------+
@@ -216,56 +258,30 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Analysis & Synthesis
     Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
-    Info: Processing started: Fri Feb 26 23:49:37 2021
+    Info: Processing started: Sat Feb 27 13:40:34 2021
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off Tarea7b -c Tarea7b
 Warning (20028): Parallel compilation is not licensed and has been disabled
 Info (12021): Found 2 design units, including 1 entities, in source file tarea7b.vhd
     Info (12022): Found design unit 1: Tarea7b-Structure
     Info (12023): Found entity 1: Tarea7b
+Info (12021): Found 2 design units, including 1 entities, in source file reloj.vhd
+    Info (12022): Found design unit 1: Reloj-Structure
+    Info (12023): Found entity 1: Reloj
+Info (12021): Found 2 design units, including 1 entities, in source file driverhex.vhd
+    Info (12022): Found design unit 1: driverHex-Structure
+    Info (12023): Found entity 1: driverHex
 Info (12127): Elaborating entity "Tarea7b" for the top level hierarchy
-Warning (10541): VHDL Signal Declaration warning at Tarea7b.vhd(8): used implicit default value for signal "HEX0" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
-Warning (10541): VHDL Signal Declaration warning at Tarea7b.vhd(9): used implicit default value for signal "HEX1" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
-Warning (10541): VHDL Signal Declaration warning at Tarea7b.vhd(10): used implicit default value for signal "HEX2" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
-Warning (10541): VHDL Signal Declaration warning at Tarea7b.vhd(11): used implicit default value for signal "HEX3" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
-Warning (13024): Output pins are stuck at VCC or GND
-    Warning (13410): Pin "HEX0[0]" is stuck at GND
-    Warning (13410): Pin "HEX0[1]" is stuck at GND
-    Warning (13410): Pin "HEX0[2]" is stuck at GND
-    Warning (13410): Pin "HEX0[3]" is stuck at GND
-    Warning (13410): Pin "HEX0[4]" is stuck at GND
-    Warning (13410): Pin "HEX0[5]" is stuck at GND
-    Warning (13410): Pin "HEX0[6]" is stuck at GND
-    Warning (13410): Pin "HEX1[0]" is stuck at GND
-    Warning (13410): Pin "HEX1[1]" is stuck at GND
-    Warning (13410): Pin "HEX1[2]" is stuck at GND
-    Warning (13410): Pin "HEX1[3]" is stuck at GND
-    Warning (13410): Pin "HEX1[4]" is stuck at GND
-    Warning (13410): Pin "HEX1[5]" is stuck at GND
-    Warning (13410): Pin "HEX1[6]" is stuck at GND
-    Warning (13410): Pin "HEX2[0]" is stuck at GND
-    Warning (13410): Pin "HEX2[1]" is stuck at GND
-    Warning (13410): Pin "HEX2[2]" is stuck at GND
-    Warning (13410): Pin "HEX2[3]" is stuck at GND
-    Warning (13410): Pin "HEX2[4]" is stuck at GND
-    Warning (13410): Pin "HEX2[5]" is stuck at GND
-    Warning (13410): Pin "HEX2[6]" is stuck at GND
-    Warning (13410): Pin "HEX3[0]" is stuck at GND
-    Warning (13410): Pin "HEX3[1]" is stuck at GND
-    Warning (13410): Pin "HEX3[2]" is stuck at GND
-    Warning (13410): Pin "HEX3[3]" is stuck at GND
-    Warning (13410): Pin "HEX3[4]" is stuck at GND
-    Warning (13410): Pin "HEX3[5]" is stuck at GND
-    Warning (13410): Pin "HEX3[6]" is stuck at GND
+Info (12128): Elaborating entity "Reloj" for hierarchy "Reloj:rlj"
+Info (12128): Elaborating entity "driverHex" for hierarchy "driverHex:driver"
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Warning (21074): Design contains 1 input pin(s) that do not drive logic
-    Warning (15610): No output dependent on input pin "CLOCK_50"
-Info (21057): Implemented 29 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 117 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 1 input pins
     Info (21059): Implemented 28 output pins
-Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 36 warnings
-    Info: Peak virtual memory: 4627 megabytes
-    Info: Processing ended: Fri Feb 26 23:49:41 2021
+    Info (21061): Implemented 88 logic cells
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 1 warning
+    Info: Peak virtual memory: 4637 megabytes
+    Info: Processing ended: Sat Feb 27 13:40:38 2021
     Info: Elapsed time: 00:00:04
     Info: Total CPU time (on all processors): 00:00:02
 

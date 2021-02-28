@@ -1,0 +1,69 @@
+------------------------------------------------------------
+TimeQuest Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow Model Setup 'CLOCK_50'
+Slack : -3.512
+TNS   : -64.182
+
+Type  : Slow Model Setup 'Reloj:rlj|cnt[0]'
+Slack : -2.049
+TNS   : -21.326
+
+Type  : Slow Model Hold 'CLOCK_50'
+Slack : -3.056
+TNS   : -22.151
+
+Type  : Slow Model Hold 'Reloj:rlj|cnt[0]'
+Slack : 0.445
+TNS   : 0.000
+
+Type  : Slow Model Recovery 'CLOCK_50'
+Slack : -5.530
+TNS   : -172.273
+
+Type  : Slow Model Removal 'CLOCK_50'
+Slack : 1.693
+TNS   : 0.000
+
+Type  : Slow Model Minimum Pulse Width 'CLOCK_50'
+Slack : -1.631
+TNS   : -40.735
+
+Type  : Slow Model Minimum Pulse Width 'Reloj:rlj|cnt[0]'
+Slack : -0.611
+TNS   : -19.552
+
+Type  : Fast Model Setup 'CLOCK_50'
+Slack : -0.913
+TNS   : -10.588
+
+Type  : Fast Model Setup 'Reloj:rlj|cnt[0]'
+Slack : -0.221
+TNS   : -0.812
+
+Type  : Fast Model Hold 'CLOCK_50'
+Slack : -1.475
+TNS   : -15.540
+
+Type  : Fast Model Hold 'Reloj:rlj|cnt[0]'
+Slack : 0.215
+TNS   : 0.000
+
+Type  : Fast Model Recovery 'CLOCK_50'
+Slack : -2.175
+TNS   : -67.618
+
+Type  : Fast Model Removal 'CLOCK_50'
+Slack : 0.944
+TNS   : 0.000
+
+Type  : Fast Model Minimum Pulse Width 'CLOCK_50'
+Slack : -1.380
+TNS   : -33.380
+
+Type  : Fast Model Minimum Pulse Width 'Reloj:rlj|cnt[0]'
+Slack : -0.500
+TNS   : -16.000
+
+------------------------------------------------------------
