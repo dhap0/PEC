@@ -29,6 +29,19 @@ COMPONENT ControladorEstats IS
 		rep : OUT std_logic
 	);
 END COMPONENT;
+COMPONENT Actuador IS
+	PORT (
+		rel 		: IN std_logic;
+		ini 		: IN std_logic;
+		REP 		: IN std_logic;
+		SW 		: IN std_logic_vector(2 DOWNTO 0);
+		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
+		LEDR : OUT std_logic_vector(0 DOWNTO 0);
+		LEDG : OUT std_logic_vector(0 DOWNTO 0);
+		fin  : OUT std_logic
+		
+	);
+END COMPONENT;
 signal rellotge: std_logic := '0';
 signal final, inici, repos : std_logic := '0';
 BEGIN
@@ -38,5 +51,8 @@ rel : Reloj
                reloj => rellotge);
 ce : ControladorEstats
 	PORT MAP(rellotge => rellotge, KEY => KEY, fin => final, ini => inici, rep => repos);
+	
+act : Actuador
+	PORT MAP(rel => rellotge, ini => inici, REP => repos, SW => SW, HEX0 => HEX0, LEDR => LEDR, LEDG => LEDG, fin => final);
 	
 END Structure;
