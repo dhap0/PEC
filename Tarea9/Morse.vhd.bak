@@ -1,0 +1,32 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.all;
+USE IEEE.std_logic_arith.all;
+USE ieee.std_logic_unsigned.all;
+
+ENTITY Morse IS
+ PORT( CLOCK_05		 : IN std_logic;
+		 ini 				 : IN std_logic;
+		 bitsCaracter   : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
+		 lenCaracter    : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+		 LEDR 			 : OUT 
+		 fin 				 : OUT std_logic);
+END ;
+
+ARCHITECTURE Structure OF Morse IS
+
+	signal contadorCaracter : std_logic_vector(lenCaracter'length);
+
+BEGIN
+	contadorCaracter <= lenCaracter 					when rising_edge(CLOCK_05) and ini = 1 else
+							  (contadorCaracter - 1)	when rising_edge(CLOCK_05) and ;
+							  
+							  
+	
+--		process(CLOCK_05) 
+--		begin
+--			if ini = '1' then
+--				contadorCaracter <= lenCaracter;
+--			(rising_edge(CLOCK_05)) then
+--				
+				
+END Structure; 

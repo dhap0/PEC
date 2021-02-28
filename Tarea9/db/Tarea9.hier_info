@@ -2,18 +2,18 @@
 CLOCK_50 => Reloj:rel.CLOCK_50
 KEY[0] => ControladorEstats:ce.KEY[0]
 KEY[1] => ControladorEstats:ce.KEY[1]
-SW[0] => ~NO_FANOUT~
-SW[1] => ~NO_FANOUT~
-SW[2] => ~NO_FANOUT~
-HEX0[0] <= HEX0[0].DB_MAX_OUTPUT_PORT_TYPE
-HEX0[1] <= HEX0[1].DB_MAX_OUTPUT_PORT_TYPE
-HEX0[2] <= HEX0[2].DB_MAX_OUTPUT_PORT_TYPE
-HEX0[3] <= HEX0[3].DB_MAX_OUTPUT_PORT_TYPE
-HEX0[4] <= HEX0[4].DB_MAX_OUTPUT_PORT_TYPE
-HEX0[5] <= HEX0[5].DB_MAX_OUTPUT_PORT_TYPE
-HEX0[6] <= HEX0[6].DB_MAX_OUTPUT_PORT_TYPE
-LEDR[0] <= LEDR[0].DB_MAX_OUTPUT_PORT_TYPE
-LEDG[0] <= comb.DB_MAX_OUTPUT_PORT_TYPE
+SW[0] => Actuador:act.SW[0]
+SW[1] => Actuador:act.SW[1]
+SW[2] => Actuador:act.SW[2]
+HEX0[0] <= Actuador:act.HEX0[0]
+HEX0[1] <= Actuador:act.HEX0[1]
+HEX0[2] <= Actuador:act.HEX0[2]
+HEX0[3] <= Actuador:act.HEX0[3]
+HEX0[4] <= Actuador:act.HEX0[4]
+HEX0[5] <= Actuador:act.HEX0[5]
+HEX0[6] <= Actuador:act.HEX0[6]
+LEDR[0] <= Actuador:act.LEDR[0]
+LEDG[0] <= Actuador:act.LEDG[0]
 
 
 |Tarea9|Reloj:rel
@@ -63,5 +63,144 @@ fin => auxrep.DATAA
 fin => auxini.DATAB
 ini <= ini~reg0.DB_MAX_OUTPUT_PORT_TYPE
 rep <= rep~reg0.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Tarea9|Actuador:act
+rel => Morse:morse_led.rel
+ini => Morse:morse_led.ini
+REP => LEDR.OUTPUTSELECT
+REP => LEDG[0].DATAIN
+SW[0] => mapAbc:abc_m.codigoCaracter[0]
+SW[0] => driver7Segmentos:driver.codigoCaracter[0]
+SW[1] => mapAbc:abc_m.codigoCaracter[1]
+SW[1] => driver7Segmentos:driver.codigoCaracter[1]
+SW[2] => mapAbc:abc_m.codigoCaracter[2]
+SW[2] => driver7Segmentos:driver.codigoCaracter[2]
+HEX0[0] <= driver7Segmentos:driver.bitsCaracter[0]
+HEX0[1] <= driver7Segmentos:driver.bitsCaracter[1]
+HEX0[2] <= driver7Segmentos:driver.bitsCaracter[2]
+HEX0[3] <= driver7Segmentos:driver.bitsCaracter[3]
+HEX0[4] <= driver7Segmentos:driver.bitsCaracter[4]
+HEX0[5] <= driver7Segmentos:driver.bitsCaracter[5]
+HEX0[6] <= driver7Segmentos:driver.bitsCaracter[6]
+LEDR[0] <= LEDR.DB_MAX_OUTPUT_PORT_TYPE
+LEDG[0] <= REP.DB_MAX_OUTPUT_PORT_TYPE
+fin <= Morse:morse_led.fin
+
+
+|Tarea9|Actuador:act|mapAbc:abc_m
+codigoCaracter[0] => Mux0.IN10
+codigoCaracter[0] => Mux1.IN10
+codigoCaracter[0] => Mux2.IN5
+codigoCaracter[0] => Mux3.IN10
+codigoCaracter[0] => Mux4.IN5
+codigoCaracter[0] => Mux5.IN10
+codigoCaracter[0] => Mux6.IN10
+codigoCaracter[0] => Mux7.IN10
+codigoCaracter[0] => Mux8.IN10
+codigoCaracter[0] => Mux9.IN10
+codigoCaracter[0] => Mux10.IN5
+codigoCaracter[0] => Mux11.IN10
+codigoCaracter[0] => Mux12.IN10
+codigoCaracter[1] => Mux0.IN9
+codigoCaracter[1] => Mux1.IN9
+codigoCaracter[1] => Mux2.IN4
+codigoCaracter[1] => Mux3.IN9
+codigoCaracter[1] => Mux4.IN4
+codigoCaracter[1] => Mux5.IN9
+codigoCaracter[1] => Mux6.IN9
+codigoCaracter[1] => Mux7.IN9
+codigoCaracter[1] => Mux8.IN9
+codigoCaracter[1] => Mux9.IN9
+codigoCaracter[1] => Mux10.IN4
+codigoCaracter[1] => Mux11.IN9
+codigoCaracter[1] => Mux12.IN9
+codigoCaracter[2] => Mux0.IN8
+codigoCaracter[2] => Mux1.IN8
+codigoCaracter[2] => Mux3.IN8
+codigoCaracter[2] => Mux5.IN8
+codigoCaracter[2] => Mux6.IN8
+codigoCaracter[2] => Mux7.IN8
+codigoCaracter[2] => Mux8.IN8
+codigoCaracter[2] => Mux9.IN8
+codigoCaracter[2] => Mux11.IN8
+codigoCaracter[2] => Mux12.IN8
+bitsCaracter[0] <= <VCC>
+bitsCaracter[1] <= Mux9.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[2] <= Mux8.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[3] <= Mux7.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[4] <= Mux6.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[5] <= Mux5.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[6] <= Mux4.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[7] <= Mux3.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[8] <= Mux2.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[9] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[10] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
+lenCaracter[0] <= <VCC>
+lenCaracter[1] <= Mux12.DB_MAX_OUTPUT_PORT_TYPE
+lenCaracter[2] <= Mux11.DB_MAX_OUTPUT_PORT_TYPE
+lenCaracter[3] <= Mux10.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Tarea9|Actuador:act|Morse:morse_led
+rel => contadorCaracter[0].CLK
+rel => contadorCaracter[1].CLK
+rel => contadorCaracter[2].CLK
+rel => contadorCaracter[3].CLK
+ini => fin.IN1
+ini => contadorCaracter[0].OUTPUTSELECT
+ini => contadorCaracter[1].OUTPUTSELECT
+ini => contadorCaracter[2].OUTPUTSELECT
+ini => contadorCaracter[3].OUTPUTSELECT
+ini => comb.IN1
+ini => comb.IN1
+bitsCaracter[0] => Mux0.IN19
+bitsCaracter[1] => Mux0.IN18
+bitsCaracter[2] => Mux0.IN17
+bitsCaracter[3] => Mux0.IN16
+bitsCaracter[4] => Mux0.IN15
+bitsCaracter[5] => Mux0.IN14
+bitsCaracter[6] => Mux0.IN13
+bitsCaracter[7] => Mux0.IN12
+bitsCaracter[8] => Mux0.IN11
+bitsCaracter[9] => Mux0.IN10
+bitsCaracter[10] => Mux0.IN9
+lenCaracter[0] => contadorCaracter[0].DATAB
+lenCaracter[1] => contadorCaracter[1].DATAB
+lenCaracter[2] => contadorCaracter[2].DATAB
+lenCaracter[3] => contadorCaracter[3].DATAB
+LEDR[0] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
+fin <= fin$latch.DB_MAX_OUTPUT_PORT_TYPE
+
+
+|Tarea9|Actuador:act|driver7Segmentos:driver
+codigoCaracter[0] => Mux0.IN10
+codigoCaracter[0] => Mux1.IN10
+codigoCaracter[0] => Mux2.IN10
+codigoCaracter[0] => Mux3.IN10
+codigoCaracter[0] => Mux4.IN10
+codigoCaracter[0] => Mux5.IN10
+codigoCaracter[0] => Mux6.IN10
+codigoCaracter[1] => Mux0.IN9
+codigoCaracter[1] => Mux1.IN9
+codigoCaracter[1] => Mux2.IN9
+codigoCaracter[1] => Mux3.IN9
+codigoCaracter[1] => Mux4.IN9
+codigoCaracter[1] => Mux5.IN9
+codigoCaracter[1] => Mux6.IN9
+codigoCaracter[2] => Mux0.IN8
+codigoCaracter[2] => Mux1.IN8
+codigoCaracter[2] => Mux2.IN8
+codigoCaracter[2] => Mux3.IN8
+codigoCaracter[2] => Mux4.IN8
+codigoCaracter[2] => Mux5.IN8
+codigoCaracter[2] => Mux6.IN8
+bitsCaracter[0] <= Mux6.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[1] <= Mux5.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[2] <= Mux4.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[3] <= Mux3.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[4] <= Mux2.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[5] <= Mux1.DB_MAX_OUTPUT_PORT_TYPE
+bitsCaracter[6] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
 
 
