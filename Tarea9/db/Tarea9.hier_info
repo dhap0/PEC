@@ -13,7 +13,23 @@ HEX0[4] <= Actuador:act.HEX0[4]
 HEX0[5] <= Actuador:act.HEX0[5]
 HEX0[6] <= Actuador:act.HEX0[6]
 LEDR[0] <= Actuador:act.LEDR[0]
+LEDR[1] <= <GND>
+LEDR[2] <= <GND>
+LEDR[3] <= <GND>
+LEDR[4] <= <GND>
+LEDR[5] <= <GND>
+LEDR[6] <= <GND>
+LEDR[7] <= Actuador:act.fin
+LEDR[8] <= ControladorEstats:ce.rep
+LEDR[9] <= ControladorEstats:ce.ini
 LEDG[0] <= Actuador:act.LEDG[0]
+LEDG[1] <= <GND>
+LEDG[2] <= <GND>
+LEDG[3] <= <GND>
+LEDG[4] <= <GND>
+LEDG[5] <= <GND>
+LEDG[6] <= ControladorEstats:ce.LEDG[6]
+LEDG[7] <= ControladorEstats:ce.LEDG[7]
 
 
 |Tarea9|Reloj:rel
@@ -55,14 +71,14 @@ reloj <= Equal0.DB_MAX_OUTPUT_PORT_TYPE
 |Tarea9|ControladorEstats:ce
 rellotge => ini~reg0.CLK
 rellotge => rep~reg0.CLK
-KEY[0] => auxini.IN0
-KEY[0] => auxrep.OUTPUTSELECT
-KEY[1] => auxini.OUTPUTSELECT
-KEY[1] => auxini.IN1
-fin => auxrep.DATAA
-fin => auxini.DATAB
+rellotge => estado.CLK
+KEY[0] => KEY_0.CLK
+KEY[1] => KEY_1.CLK
+fin => prxestado.DATAIN
 ini <= ini~reg0.DB_MAX_OUTPUT_PORT_TYPE
 rep <= rep~reg0.DB_MAX_OUTPUT_PORT_TYPE
+LEDG[6] <= estado.DB_MAX_OUTPUT_PORT_TYPE
+LEDG[7] <= prxestado.DB_MAX_OUTPUT_PORT_TYPE
 
 
 |Tarea9|Actuador:act
@@ -148,12 +164,10 @@ rel => contadorCaracter[1].CLK
 rel => contadorCaracter[2].CLK
 rel => contadorCaracter[3].CLK
 ini => fin.IN1
-ini => contadorCaracter[0].OUTPUTSELECT
-ini => contadorCaracter[1].OUTPUTSELECT
-ini => contadorCaracter[2].OUTPUTSELECT
-ini => contadorCaracter[3].OUTPUTSELECT
-ini => comb.IN1
-ini => comb.IN1
+ini => contadorCaracter[0].ALOAD
+ini => contadorCaracter[1].ALOAD
+ini => contadorCaracter[2].ALOAD
+ini => contadorCaracter[3].ALOAD
 bitsCaracter[0] => Mux0.IN19
 bitsCaracter[1] => Mux0.IN18
 bitsCaracter[2] => Mux0.IN17
@@ -165,10 +179,10 @@ bitsCaracter[7] => Mux0.IN12
 bitsCaracter[8] => Mux0.IN11
 bitsCaracter[9] => Mux0.IN10
 bitsCaracter[10] => Mux0.IN9
-lenCaracter[0] => contadorCaracter[0].DATAB
-lenCaracter[1] => contadorCaracter[1].DATAB
-lenCaracter[2] => contadorCaracter[2].DATAB
-lenCaracter[3] => contadorCaracter[3].DATAB
+lenCaracter[0] => contadorCaracter[0].ADATA
+lenCaracter[1] => contadorCaracter[1].ADATA
+lenCaracter[2] => contadorCaracter[2].ADATA
+lenCaracter[3] => contadorCaracter[3].ADATA
 LEDR[0] <= Mux0.DB_MAX_OUTPUT_PORT_TYPE
 fin <= fin$latch.DB_MAX_OUTPUT_PORT_TYPE
 

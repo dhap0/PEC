@@ -39,6 +39,7 @@ END COMPONENT;
 	signal bitsCaracter : std_logic_vector(10 downto 0);
 	signal lenCaracter  : std_logic_vector(3 downto 0);
 	signal morse_ledr	  : std_logic_vector(0 downto 0);
+	signal final : std_logic := '1';
 
 BEGIN
 abc_m : mapAbc
@@ -46,7 +47,9 @@ abc_m : mapAbc
                bitsCaracter => bitsCaracter,
 					lenCaracter => lenCaracter);
 morse_led : Morse
-	PORT MAP(rel => rel, ini => ini, bitsCaracter => bitsCaracter, lenCaracter => lenCaracter, LEDR => morse_ledr, fin => fin);
+	PORT MAP(rel => rel, ini => ini, bitsCaracter => bitsCaracter, lenCaracter => lenCaracter, LEDR => morse_ledr, fin => final);
+	
+	fin <= final;
 	
 	LEDR(0) <= '0' when REP = '1' else morse_ledr(0);
 	LEDG(0) <= '1' when REP = '1' else '0'; 

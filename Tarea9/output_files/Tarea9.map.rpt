@@ -1,5 +1,5 @@
 Analysis & Synthesis report for Tarea9
-Mon Mar 01 00:24:29 2021
+Mon Mar 01 15:16:43 2021
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
 
 
@@ -9,17 +9,15 @@ Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edit
   1. Legal Notice
   2. Analysis & Synthesis Summary
   3. Analysis & Synthesis Settings
-  4. Parallel Compilation
-  5. Analysis & Synthesis Source Files Read
-  6. Analysis & Synthesis Resource Usage Summary
-  7. Analysis & Synthesis Resource Utilization by Entity
-  8. User-Specified and Inferred Latches
-  9. General Register Statistics
- 10. Inverted Register Statistics
- 11. Multiplexer Restructuring Statistics (Restructuring Performed)
- 12. Parameter Settings for User Entity Instance: Reloj:rel
- 13. Elapsed Time Per Partition
- 14. Analysis & Synthesis Messages
+  4. Analysis & Synthesis Source Files Read
+  5. Analysis & Synthesis Resource Usage Summary
+  6. Analysis & Synthesis Resource Utilization by Entity
+  7. User-Specified and Inferred Latches
+  8. General Register Statistics
+  9. Inverted Register Statistics
+ 10. Parameter Settings for User Entity Instance: Reloj:rel
+ 11. Elapsed Time Per Partition
+ 12. Analysis & Synthesis Messages
 
 
 
@@ -45,16 +43,16 @@ applicable agreement for further details.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Mon Mar 01 00:24:29 2021           ;
+; Analysis & Synthesis Status        ; Successful - Mon Mar 01 15:16:43 2021           ;
 ; Quartus II 64-Bit Version          ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
 ; Revision Name                      ; Tarea9                                          ;
 ; Top-level Entity Name              ; Tarea9                                          ;
 ; Family                             ; Cyclone II                                      ;
-; Total logic elements               ; 77                                              ;
-;     Total combinational functions  ; 77                                              ;
-;     Dedicated logic registers      ; 38                                              ;
-; Total registers                    ; 38                                              ;
-; Total pins                         ; 15                                              ;
+; Total logic elements               ; 88                                              ;
+;     Total combinational functions  ; 86                                              ;
+;     Dedicated logic registers      ; 41                                              ;
+; Total registers                    ; 41                                              ;
+; Total pins                         ; 31                                              ;
 ; Total virtual pins                 ; 0                                               ;
 ; Total memory bits                  ; 0                                               ;
 ; Embedded Multiplier 9-bit elements ; 0                                               ;
@@ -147,30 +145,19 @@ applicable agreement for further details.
 +----------------------------------------------------------------------------+--------------------+--------------------+
 
 
-Parallel compilation was disabled, but you have multiple processors available. Enable parallel compilation to reduce compilation time.
-+-------------------------------------+
-; Parallel Compilation                ;
-+----------------------------+--------+
-; Processors                 ; Number ;
-+----------------------------+--------+
-; Number detected on machine ; 2      ;
-; Maximum allowed            ; 1      ;
-+----------------------------+--------+
-
-
-+--------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                           ;
-+----------------------------------+-----------------+-----------------+-----------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type       ; File Name with Absolute Path                                    ; Library ;
-+----------------------------------+-----------------+-----------------+-----------------------------------------------------------------+---------+
-; Morse.vhd                        ; yes             ; User VHDL File  ; C:/Users/BOF/Documents/PEC/www/PEC/Tarea9/Morse.vhd             ;         ;
-; mapAbc.vhd                       ; yes             ; User VHDL File  ; C:/Users/BOF/Documents/PEC/www/PEC/Tarea9/mapAbc.vhd            ;         ;
-; ../Tarea7b/Reloj.vhd             ; yes             ; User VHDL File  ; C:/Users/BOF/Documents/PEC/www/PEC/Tarea7b/Reloj.vhd            ;         ;
-; Tarea9.vhd                       ; yes             ; User VHDL File  ; C:/Users/BOF/Documents/PEC/www/PEC/Tarea9/Tarea9.vhd            ;         ;
-; ControladorEstats.vhd            ; yes             ; User VHDL File  ; C:/Users/BOF/Documents/PEC/www/PEC/Tarea9/ControladorEstats.vhd ;         ;
-; Actuador.vhd                     ; yes             ; User VHDL File  ; C:/Users/BOF/Documents/PEC/www/PEC/Tarea9/Actuador.vhd          ;         ;
-; driver7Segmentos.vhd             ; yes             ; User VHDL File  ; C:/Users/BOF/Documents/PEC/www/PEC/Tarea9/driver7Segmentos.vhd  ;         ;
-+----------------------------------+-----------------+-----------------+-----------------------------------------------------------------+---------+
++--------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                     ;
++----------------------------------+-----------------+-----------------+-----------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type       ; File Name with Absolute Path                              ; Library ;
++----------------------------------+-----------------+-----------------+-----------------------------------------------------------+---------+
+; Morse.vhd                        ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea9/Morse.vhd             ;         ;
+; mapAbc.vhd                       ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea9/mapAbc.vhd            ;         ;
+; ../Tarea7b/Reloj.vhd             ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea7b/Reloj.vhd            ;         ;
+; Tarea9.vhd                       ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea9/Tarea9.vhd            ;         ;
+; ControladorEstats.vhd            ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea9/ControladorEstats.vhd ;         ;
+; Actuador.vhd                     ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea9/Actuador.vhd          ;         ;
+; driver7Segmentos.vhd             ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Tarea9/driver7Segmentos.vhd  ;         ;
++----------------------------------+-----------------+-----------------+-----------------------------------------------------------+---------+
 
 
 +----------------------------------------------------------------+
@@ -178,28 +165,28 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +---------------------------------------------+------------------+
 ; Resource                                    ; Usage            ;
 +---------------------------------------------+------------------+
-; Estimated Total logic elements              ; 77               ;
+; Estimated Total logic elements              ; 88               ;
 ;                                             ;                  ;
-; Total combinational functions               ; 77               ;
+; Total combinational functions               ; 86               ;
 ; Logic element usage by number of LUT inputs ;                  ;
-;     -- 4 input functions                    ; 25               ;
-;     -- 3 input functions                    ; 12               ;
-;     -- <=2 input functions                  ; 40               ;
+;     -- 4 input functions                    ; 30               ;
+;     -- 3 input functions                    ; 15               ;
+;     -- <=2 input functions                  ; 41               ;
 ;                                             ;                  ;
 ; Logic elements by mode                      ;                  ;
-;     -- normal mode                          ; 46               ;
+;     -- normal mode                          ; 55               ;
 ;     -- arithmetic mode                      ; 31               ;
 ;                                             ;                  ;
-; Total registers                             ; 38               ;
-;     -- Dedicated logic registers            ; 38               ;
+; Total registers                             ; 41               ;
+;     -- Dedicated logic registers            ; 41               ;
 ;     -- I/O registers                        ; 0                ;
 ;                                             ;                  ;
-; I/O pins                                    ; 15               ;
+; I/O pins                                    ; 31               ;
 ; Embedded Multiplier 9-bit elements          ; 0                ;
 ; Maximum fan-out node                        ; Reloj:rel|Equal0 ;
-; Maximum fan-out                             ; 38               ;
-; Total fan-out                               ; 331              ;
-; Average fan-out                             ; 2.55             ;
+; Maximum fan-out                             ; 39               ;
+; Total fan-out                               ; 376              ;
+; Average fan-out                             ; 2.38             ;
 +---------------------------------------------+------------------+
 
 
@@ -208,12 +195,12 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +---------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------+--------------+
 ; Compilation Hierarchy Node      ; LC Combinationals ; LC Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                          ; Library Name ;
 +---------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------+--------------+
-; |Tarea9                         ; 77 (0)            ; 38 (0)       ; 0           ; 0            ; 0       ; 0         ; 15   ; 0            ; |Tarea9                                      ; work         ;
-;    |Actuador:act|               ; 29 (8)            ; 4 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea9|Actuador:act                         ; work         ;
-;       |Morse:morse_led|         ; 13 (13)           ; 4 (4)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea9|Actuador:act|Morse:morse_led         ; work         ;
+; |Tarea9                         ; 86 (0)            ; 41 (0)       ; 0           ; 0            ; 0       ; 0         ; 31   ; 0            ; |Tarea9                                      ; work         ;
+;    |Actuador:act|               ; 35 (10)           ; 4 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea9|Actuador:act                         ; work         ;
+;       |Morse:morse_led|         ; 14 (14)           ; 4 (4)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea9|Actuador:act|Morse:morse_led         ; work         ;
 ;       |driver7Segmentos:driver| ; 4 (4)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea9|Actuador:act|driver7Segmentos:driver ; work         ;
-;       |mapAbc:abc_m|            ; 4 (4)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea9|Actuador:act|mapAbc:abc_m            ; work         ;
-;    |ControladorEstats:ce|       ; 4 (4)             ; 2 (2)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea9|ControladorEstats:ce                 ; work         ;
+;       |mapAbc:abc_m|            ; 7 (7)             ; 0 (0)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea9|Actuador:act|mapAbc:abc_m            ; work         ;
+;    |ControladorEstats:ce|       ; 7 (7)             ; 5 (5)        ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea9|ControladorEstats:ce                 ; work         ;
 ;    |Reloj:rel|                  ; 44 (44)           ; 32 (32)      ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |Tarea9|Reloj:rel                            ; work         ;
 +---------------------------------+-------------------+--------------+-------------+--------------+---------+-----------+------+--------------+----------------------------------------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
@@ -225,7 +212,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 ; Latch Name                                         ; Latch Enable Signal         ; Free of Timing Hazards ;
 +----------------------------------------------------+-----------------------------+------------------------+
 ; Actuador:act|Morse:morse_led|fin                   ; GND                         ; yes                    ;
-; ControladorEstats:ce|auxini                        ; ControladorEstats:ce|auxini ; yes                    ;
+; ControladorEstats:ce|prxestado                     ; ControladorEstats:ce|estado ; no                     ;
 ; Number of user-specified and inferred latches = 2  ;                             ;                        ;
 +----------------------------------------------------+-----------------------------+------------------------+
 Note: All latches listed above may not be present at the end of synthesis due to various synthesis optimizations.
@@ -236,53 +223,47 @@ Note: All latches listed above may not be present at the end of synthesis due to
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 38    ;
+; Total registers                              ; 41    ;
 ; Number of registers using Synchronous Clear  ; 0     ;
 ; Number of registers using Synchronous Load   ; 0     ;
-; Number of registers using Asynchronous Clear ; 32    ;
+; Number of registers using Asynchronous Clear ; 38    ;
 ; Number of registers using Asynchronous Load  ; 0     ;
 ; Number of registers using Clock Enable       ; 0     ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
 
-+---------------------------------------------------+
-; Inverted Register Statistics                      ;
-+-----------------------------------------+---------+
-; Inverted Register                       ; Fan out ;
-+-----------------------------------------+---------+
-; Reloj:rel|cnt[6]                        ; 2       ;
-; Reloj:rel|cnt[11]                       ; 2       ;
-; Reloj:rel|cnt[12]                       ; 2       ;
-; Reloj:rel|cnt[13]                       ; 2       ;
-; Reloj:rel|cnt[14]                       ; 2       ;
-; Reloj:rel|cnt[16]                       ; 2       ;
-; Reloj:rel|cnt[18]                       ; 2       ;
-; Reloj:rel|cnt[19]                       ; 2       ;
-; Reloj:rel|cnt[20]                       ; 2       ;
-; Reloj:rel|cnt[21]                       ; 2       ;
-; Reloj:rel|cnt[22]                       ; 2       ;
-; Reloj:rel|cnt[24]                       ; 2       ;
-; Total number of inverted registers = 12 ;         ;
-+-----------------------------------------+---------+
-
-
-+------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                         ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                               ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------+
-; 10:1               ; 2 bits    ; 12 LEs        ; 10 LEs               ; 2 LEs                  ; Yes        ; |Tarea9|Actuador:act|Morse:morse_led|contadorCaracter[1] ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------------------------------------+
++------------------------------------------------------------+
+; Inverted Register Statistics                               ;
++--------------------------------------------------+---------+
+; Inverted Register                                ; Fan out ;
++--------------------------------------------------+---------+
+; Reloj:rel|cnt[7]                                 ; 2       ;
+; Reloj:rel|cnt[12]                                ; 2       ;
+; Reloj:rel|cnt[13]                                ; 2       ;
+; Reloj:rel|cnt[14]                                ; 2       ;
+; Reloj:rel|cnt[15]                                ; 2       ;
+; Reloj:rel|cnt[17]                                ; 2       ;
+; Reloj:rel|cnt[19]                                ; 2       ;
+; Reloj:rel|cnt[20]                                ; 2       ;
+; Reloj:rel|cnt[21]                                ; 2       ;
+; Reloj:rel|cnt[22]                                ; 2       ;
+; Reloj:rel|cnt[23]                                ; 2       ;
+; Reloj:rel|cnt[25]                                ; 2       ;
+; Actuador:act|Morse:morse_led|contadorCaracter[0] ; 8       ;
+; ControladorEstats:ce|KEY_0                       ; 2       ;
+; ControladorEstats:ce|KEY_1                       ; 1       ;
+; Total number of inverted registers = 15          ;         ;
++--------------------------------------------------+---------+
 
 
 +--------------------------------------------------------+
 ; Parameter Settings for User Entity Instance: Reloj:rel ;
-+----------------+--------+------------------------------+
-; Parameter Name ; Value  ; Type                         ;
-+----------------+--------+------------------------------+
-; micros         ; 500000 ; Signed Integer               ;
-+----------------+--------+------------------------------+
++----------------+---------+-----------------------------+
+; Parameter Name ; Value   ; Type                        ;
++----------------+---------+-----------------------------+
+; micros         ; 1000000 ; Signed Integer              ;
++----------------+---------+-----------------------------+
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
@@ -291,7 +272,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:01     ;
+; Top            ; 00:00:00     ;
 +----------------+--------------+
 
 
@@ -301,7 +282,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Analysis & Synthesis
     Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
-    Info: Processing started: Mon Mar 01 00:24:26 2021
+    Info: Processing started: Mon Mar 01 15:16:39 2021
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off Tarea9 -c Tarea9
 Warning (20028): Parallel compilation is not licensed and has been disabled
 Info (12021): Found 2 design units, including 1 entities, in source file morse.vhd
@@ -310,7 +291,7 @@ Info (12021): Found 2 design units, including 1 entities, in source file morse.v
 Info (12021): Found 2 design units, including 1 entities, in source file mapabc.vhd
     Info (12022): Found design unit 1: mapAbc-Structure
     Info (12023): Found entity 1: mapAbc
-Info (12021): Found 2 design units, including 1 entities, in source file /users/bof/documents/pec/www/pec/tarea7b/reloj.vhd
+Info (12021): Found 2 design units, including 1 entities, in source file /users/dhap0/documents/pec/tarea7b/reloj.vhd
     Info (12022): Found design unit 1: Reloj-Structure
     Info (12023): Found entity 1: Reloj
 Info (12021): Found 2 design units, including 1 entities, in source file tarea9.vhd
@@ -326,26 +307,48 @@ Info (12021): Found 2 design units, including 1 entities, in source file driver7
     Info (12022): Found design unit 1: driver7Segmentos-Structure
     Info (12023): Found entity 1: driver7Segmentos
 Info (12127): Elaborating entity "Tarea9" for the top level hierarchy
+Warning (10873): Using initial value X (don't care) for net "LEDR[6..1]" at Tarea9.vhd(11)
+Warning (10873): Using initial value X (don't care) for net "LEDG[5..1]" at Tarea9.vhd(12)
 Info (12128): Elaborating entity "Reloj" for hierarchy "Reloj:rel"
 Info (12128): Elaborating entity "ControladorEstats" for hierarchy "ControladorEstats:ce"
-Info (10041): Inferred latch for "auxini" at ControladorEstats.vhd(19)
+Info (10041): Inferred latch for "prxestado" at ControladorEstats.vhd(36)
 Info (12128): Elaborating entity "Actuador" for hierarchy "Actuador:act"
 Info (12128): Elaborating entity "mapAbc" for hierarchy "Actuador:act|mapAbc:abc_m"
 Info (12128): Elaborating entity "Morse" for hierarchy "Actuador:act|Morse:morse_led"
-Info (10041): Inferred latch for "fin" at Morse.vhd(25)
+Info (10041): Inferred latch for "fin" at Morse.vhd(28)
 Info (12128): Elaborating entity "driver7Segmentos" for hierarchy "Actuador:act|driver7Segmentos:driver"
-Warning (13012): Latch ControladorEstats:ce|auxini has unsafe behavior
-    Warning (13013): Ports D and ENA on the latch are fed by the same signal KEY[1]
+Warning (13012): Latch ControladorEstats:ce|prxestado has unsafe behavior
+    Warning (13013): Ports ENA and PRE on the latch are fed by the same signal ControladorEstats:ce|estado
+Info (13000): Registers with preset signals will power-up high
+Info (13003): DEV_CLRn pin will set, and not reset, register with preset signal due to NOT Gate Push-Back
+Warning (13004): Presettable and clearable registers converted to equivalent circuits with latches. Registers power-up to an undefined state, and DEVCLRn places the registers in an undefined state.
+    Warning (13310): Register "Actuador:act|Morse:morse_led|contadorCaracter[2]" is converted into an equivalent circuit using register "Actuador:act|Morse:morse_led|contadorCaracter[2]~_emulated" and latch "Actuador:act|Morse:morse_led|contadorCaracter[2]~1"
+    Warning (13310): Register "Actuador:act|Morse:morse_led|contadorCaracter[1]" is converted into an equivalent circuit using register "Actuador:act|Morse:morse_led|contadorCaracter[1]~_emulated" and latch "Actuador:act|Morse:morse_led|contadorCaracter[1]~5"
+    Warning (13310): Register "Actuador:act|Morse:morse_led|contadorCaracter[3]" is converted into an equivalent circuit using register "Actuador:act|Morse:morse_led|contadorCaracter[3]~_emulated" and latch "Actuador:act|Morse:morse_led|contadorCaracter[3]~9"
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "LEDR[1]" is stuck at GND
+    Warning (13410): Pin "LEDR[2]" is stuck at GND
+    Warning (13410): Pin "LEDR[3]" is stuck at GND
+    Warning (13410): Pin "LEDR[4]" is stuck at GND
+    Warning (13410): Pin "LEDR[5]" is stuck at GND
+    Warning (13410): Pin "LEDR[6]" is stuck at GND
+    Warning (13410): Pin "LEDG[1]" is stuck at GND
+    Warning (13410): Pin "LEDG[2]" is stuck at GND
+    Warning (13410): Pin "LEDG[3]" is stuck at GND
+    Warning (13410): Pin "LEDG[4]" is stuck at GND
+    Warning (13410): Pin "LEDG[5]" is stuck at GND
+Critical Warning (18061): Ignored Power-Up Level option on the following registers
+    Critical Warning (18010): Register Actuador:act|Morse:morse_led|contadorCaracter[0] will power up to High
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
-Info (21057): Implemented 93 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 120 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 6 input pins
-    Info (21059): Implemented 9 output pins
-    Info (21061): Implemented 78 logic cells
-Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 3 warnings
-    Info: Peak virtual memory: 4638 megabytes
-    Info: Processing ended: Mon Mar 01 00:24:29 2021
-    Info: Elapsed time: 00:00:03
-    Info: Total CPU time (on all processors): 00:00:02
+    Info (21059): Implemented 25 output pins
+    Info (21061): Implemented 89 logic cells
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 23 warnings
+    Info: Peak virtual memory: 4641 megabytes
+    Info: Processing ended: Mon Mar 01 15:16:43 2021
+    Info: Elapsed time: 00:00:04
+    Info: Total CPU time (on all processors): 00:00:03
 
 

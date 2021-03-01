@@ -4,7 +4,7 @@ JedecChain;
 	DefaultMfr(6E);
 
 	P ActionCode(Cfg)
-		Device PartName(EP2C20F484) Path("C:/Users/BOF/Documents/PEC/www/PEC/Tarea9/output_files/") File("Tarea9.sof") MfrSpec(OpMask(1));
+		Device PartName(EP2C20F484) Path("C:/Users/Dhap0/Documents/PEC/Tarea9/output_files/") File("Tarea9.sof") MfrSpec(OpMask(1));
 
 ChainEnd;
 

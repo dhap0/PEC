@@ -8,13 +8,13 @@ ENTITY Tarea9 IS
 		KEY : IN std_logic_vector(1 DOWNTO 0);
 		SW : IN std_logic_vector(2 DOWNTO 0);
 		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
-		LEDR : OUT std_logic_vector(0 DOWNTO 0);
-		LEDG : OUT std_logic_vector(0 DOWNTO 0)
+		LEDR : OUT std_logic_vector(9 DOWNTO 0);
+		LEDG : OUT std_logic_vector(7 DOWNTO 0)
 	);
 END Tarea9;
 ARCHITECTURE Structure OF Tarea9 IS 
 COMPONENT Reloj IS
-	GENERIC (micros : integer := 1000000);	
+	GENERIC (micros : integer := 500000);	
 	PORT (
 		CLOCK_50 : IN std_logic;
 		reloj : OUT std_logic
@@ -26,7 +26,8 @@ COMPONENT ControladorEstats IS
 		KEY : IN std_logic_vector(1 DOWNTO 0);
 		fin : IN std_logic;
 		ini : OUT std_logic;
-		rep : OUT std_logic
+		rep : OUT std_logic;
+		LEDG: OUT std_logic_vector(7 downto 6 )
 	);
 END COMPONENT;
 COMPONENT Actuador IS
@@ -46,13 +47,17 @@ signal rellotge: std_logic := '0';
 signal final, inici, repos : std_logic := '0';
 BEGIN
 rel : Reloj
-  generic map (micros   => 500000)
+  generic map (micros   => 1000000)
   port map    (CLOCK_50   => CLOCK_50,
                reloj => rellotge);
 ce : ControladorEstats
-	PORT MAP(rellotge => rellotge, KEY => KEY, fin => final, ini => inici, rep => repos);
+	PORT MAP(rellotge => rellotge, KEY => KEY, fin => final, ini => inici, rep => repos, LEDG => LEDG(7 downto 6));
 	
 act : Actuador
-	PORT MAP(rel => rellotge, ini => inici, REP => repos, SW => SW, HEX0 => HEX0, LEDR => LEDR, LEDG => LEDG, fin => final);
+	PORT MAP(rel => rellotge, ini => inici, REP => repos, SW => SW, HEX0 => HEX0, LEDR => LEDR(0 downto 0), LEDG => LEDG(0 downto 0), fin => final);
+	
+LEDR(9) <= inici;
+LEDR(8) <= repos;
+LEDR(7) <= final;
 	
 END Structure;

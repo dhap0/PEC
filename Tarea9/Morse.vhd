@@ -16,14 +16,17 @@ END ;
 
 ARCHITECTURE Structure OF Morse IS
 
-	signal contadorCaracter : std_logic_vector(3 DOWNTO 0);
+	signal contadorCaracter : std_logic_vector(3 DOWNTO 0) := "0000";
 
 BEGIN
-	contadorCaracter <= lenCaracter 					when rising_edge(rel) and ini = '1' else
-							  (contadorCaracter - 1)	when rising_edge(rel) and contadorCaracter > 0;
+--	contadorCaracter <= lenCaracter 					when rising_edge(rel) and ini = '1' else
+--							  (contadorCaracter - 1)	when rising_edge(rel) and contadorCaracter > 0;
+
+	contadorCaracter <= lenCaracter 					when ini = '1' else
+							  (contadorCaracter - 1)	when falling_edge(rel) and contadorCaracter > 0;
 							  
-	fin <= '0' when ini = '1' else
-			 '1' when contadorCaracter = 0;
+	fin <= '1' when contadorCaracter = 0 else
+			 '0' when ini = '1';
 			 
 	LEDR(0) <= bitsCaracter(to_integer(unsigned(contadorCaracter - 1)));			
 				
