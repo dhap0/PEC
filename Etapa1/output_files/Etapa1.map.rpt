@@ -1,5 +1,5 @@
 Analysis & Synthesis report for Etapa1
-Fri Mar 12 16:10:28 2021
+Fri Mar 12 17:16:17 2021
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
 
 
@@ -13,9 +13,10 @@ Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edit
   5. Analysis & Synthesis Source Files Read
   6. Analysis & Synthesis Resource Usage Summary
   7. Analysis & Synthesis Resource Utilization by Entity
-  8. General Register Statistics
-  9. Elapsed Time Per Partition
- 10. Analysis & Synthesis Messages
+  8. Registers Removed During Synthesis
+  9. General Register Statistics
+ 10. Elapsed Time Per Partition
+ 11. Analysis & Synthesis Messages
 
 
 
@@ -41,7 +42,7 @@ applicable agreement for further details.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Fri Mar 12 16:10:28 2021           ;
+; Analysis & Synthesis Status        ; Successful - Fri Mar 12 17:16:17 2021           ;
 ; Quartus II 64-Bit Version          ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
 ; Revision Name                      ; Etapa1                                          ;
 ; Top-level Entity Name              ; proc                                            ;
@@ -154,13 +155,20 @@ Parallel compilation was disabled, but you have multiple processors available. E
 +----------------------------+--------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Source Files Read                                                                                                        ;
-+----------------------------------+-----------------+-----------------+--------------------------------------------------------------+---------+
-; File Name with User-Entered Path ; Used in Netlist ; File Type       ; File Name with Absolute Path                                 ; Library ;
-+----------------------------------+-----------------+-----------------+--------------------------------------------------------------+---------+
-; ficheros_etapa1/proc.vhd         ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/proc.vhd ;         ;
-+----------------------------------+-----------------+-----------------+--------------------------------------------------------------+---------+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                                  ;
++-----------------------------------------------------------+-----------------+-----------------+-----------------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path                          ; Used in Netlist ; File Type       ; File Name with Absolute Path                                                                  ; Library ;
++-----------------------------------------------------------+-----------------+-----------------+-----------------------------------------------------------------------------------------------+---------+
+; ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UC_pkg.vhd ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UC_pkg.vhd ;         ;
+; ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UF_pkg.vhd ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UF_pkg.vhd ;         ;
+; ficheros_etapa1/unidad_control.vhd                        ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/unidad_control.vhd                        ;         ;
+; ficheros_etapa1/regfile.vhd                               ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/regfile.vhd                               ;         ;
+; ficheros_etapa1/proc.vhd                                  ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/proc.vhd                                  ;         ;
+; ficheros_etapa1/datapath.vhd                              ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/datapath.vhd                              ;         ;
+; ficheros_etapa1/control_l.vhd                             ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/control_l.vhd                             ;         ;
+; ficheros_etapa1/alu.vhd                                   ; yes             ; User VHDL File  ; C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/alu.vhd                                   ;         ;
++-----------------------------------------------------------+-----------------+-----------------+-----------------------------------------------------------------------------------------------+---------+
 
 
 +-----------------------------------------------------+
@@ -198,6 +206,18 @@ Parallel compilation was disabled, but you have multiple processors available. E
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
++---------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                              ;
++----------------------------------------+----------------------------------------+
+; Register name                          ; Reason for Removal                     ;
++----------------------------------------+----------------------------------------+
+; unidad_control:c0|new_pc[1]            ; Stuck at GND due to stuck port data_in ;
+; unidad_control:c0|new_pc[14,15]        ; Stuck at VCC due to stuck port data_in ;
+; unidad_control:c0|new_pc[2..13]        ; Stuck at GND due to stuck port data_in ;
+; Total Number of Removed Registers = 15 ;                                        ;
++----------------------------------------+----------------------------------------+
+
+
 +------------------------------------------------------+
 ; General Register Statistics                          ;
 +----------------------------------------------+-------+
@@ -228,7 +248,7 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Analysis & Synthesis
     Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
-    Info: Processing started: Fri Mar 12 16:10:26 2021
+    Info: Processing started: Fri Mar 12 17:16:15 2021
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off Etapa1 -c Etapa1
 Warning (20028): Parallel compilation is not licensed and has been disabled
 Info (12021): Found 1 design units, including 0 entities, in source file ficheros_etapa1/tipos_constantes_pkg/cte_tipos_uc_pkg.vhd
@@ -254,7 +274,17 @@ Info (12021): Found 2 design units, including 1 entities, in source file fichero
     Info (12022): Found design unit 1: alu-Structure
     Info (12023): Found entity 1: alu
 Info (12127): Elaborating entity "proc" for the top level hierarchy
-Warning (10541): VHDL Signal Declaration warning at proc.vhd(8): used implicit default value for signal "addr_m" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
+Info (12128): Elaborating entity "unidad_control" for hierarchy "unidad_control:c0"
+Info (12128): Elaborating entity "control_l" for hierarchy "unidad_control:c0|control_l:deco"
+Warning (10541): VHDL Signal Declaration warning at control_l.vhd(7): used implicit default value for signal "op" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
+Warning (10541): VHDL Signal Declaration warning at control_l.vhd(8): used implicit default value for signal "ldpc" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
+Warning (10541): VHDL Signal Declaration warning at control_l.vhd(9): used implicit default value for signal "wrd" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
+Warning (10541): VHDL Signal Declaration warning at control_l.vhd(10): used implicit default value for signal "addr_a" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
+Warning (10541): VHDL Signal Declaration warning at control_l.vhd(11): used implicit default value for signal "addr_d" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
+Warning (10541): VHDL Signal Declaration warning at control_l.vhd(12): used implicit default value for signal "immed" because signal was never assigned a value or an explicit default value. Use of implicit default value may introduce unintended design optimizations.
+Info (12128): Elaborating entity "datapath" for hierarchy "datapath:e0"
+Info (12128): Elaborating entity "regfile" for hierarchy "datapath:e0|regfile:BR"
+Info (12128): Elaborating entity "alu" for hierarchy "datapath:e0|alu:ALUop"
 Warning (13024): Output pins are stuck at VCC or GND
     Warning (13410): Pin "addr_m[0]" is stuck at GND
     Warning (13410): Pin "addr_m[1]" is stuck at GND
@@ -270,8 +300,8 @@ Warning (13024): Output pins are stuck at VCC or GND
     Warning (13410): Pin "addr_m[11]" is stuck at GND
     Warning (13410): Pin "addr_m[12]" is stuck at GND
     Warning (13410): Pin "addr_m[13]" is stuck at GND
-    Warning (13410): Pin "addr_m[14]" is stuck at GND
-    Warning (13410): Pin "addr_m[15]" is stuck at GND
+    Warning (13410): Pin "addr_m[14]" is stuck at VCC
+    Warning (13410): Pin "addr_m[15]" is stuck at VCC
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
 Warning (21074): Design contains 18 input pin(s) that do not drive logic
@@ -296,9 +326,9 @@ Warning (21074): Design contains 18 input pin(s) that do not drive logic
 Info (21057): Implemented 34 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 18 input pins
     Info (21059): Implemented 16 output pins
-Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 38 warnings
-    Info: Peak virtual memory: 4644 megabytes
-    Info: Processing ended: Fri Mar 12 16:10:28 2021
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 43 warnings
+    Info: Peak virtual memory: 4652 megabytes
+    Info: Processing ended: Fri Mar 12 17:16:17 2021
     Info: Elapsed time: 00:00:02
     Info: Total CPU time (on all processors): 00:00:02
 
