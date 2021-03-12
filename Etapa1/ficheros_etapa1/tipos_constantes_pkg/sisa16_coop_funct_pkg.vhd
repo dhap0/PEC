@@ -11,7 +11,7 @@ subtype campofunct1 is std_logic;
 
 -- SISA16 Base
 -- Codigos de operacion (CO)
-constant COOP_MOV:     codigooper := "0101";
+constant COOP_MOV:      codigooper := "0101";
 constant COOP_HALT:     codigooper := "1111";
 
 constant MOV_HI:  campofunct1 := '1';

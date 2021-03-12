@@ -3,6 +3,9 @@ USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;        --Esta libreria sera necesaria si usais conversiones TO_INTEGER
 USE ieee.std_logic_unsigned.all; --Esta libreria sera necesaria si usais conversiones CONV_INTEGER
 
+library work;
+use work.cte_tipos_UF_pkg.all;
+
 ENTITY regfile IS
     PORT (clk    : IN  STD_LOGIC;
           wrd    : IN  STD_LOGIC;
@@ -27,7 +30,7 @@ BEGIN
 	 a <= BR(conv_integer(addr_a));
 	 p_write : process(clk,wrd)
 	 begin
-	   if rising_edge(clk) and wrd = '1' then
+	   if rising_edge(clk) and wrd = PE then
 			BR(conv_integer(addr_d)) <= d;
 		end if;
 	 end process;
