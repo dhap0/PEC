@@ -16,6 +16,6 @@ BEGIN
     -- Aqui iria la definicion del comportamiento de la ALU
 	 with op select w <=
 		y 										when '0', -- MOVI
-		x(7 downto 0) & y(7 downto 0) when '1'; -- MOVHI
+		y(7 downto 0) & x(7 downto 0) when '1'; -- MOVHI
 
 END Structure;
