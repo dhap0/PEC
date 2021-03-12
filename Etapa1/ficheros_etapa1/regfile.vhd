@@ -17,12 +17,20 @@ ARCHITECTURE Structure OF regfile IS
     -- Aqui iria la definicion de los registros
 	type bancRegistres is array (0 to 7) of std_logic_vector(15 downto 0);
 	signal BR: bancRegistres;
+
+	
 BEGIN
 
     -- Aqui iria la definicion del comportamiento del banco de registros
     -- Os puede ser util usar la funcion "conv_integer" o "to_integer"
     -- Una buena (y limpia) implementacion no deberia ocupar m�s de 7 o 8 lineas
 	 a <= BR(conv_integer(addr_a));
-	 BR(conv_integer(addr_d)) <= d when wrd = '1' and rising_edge(clk);
+	 p_write : process(clk,wrd)
+	 begin
+	   if rising_edge(clk) and wrd = '1' then
+			BR(conv_integer(addr_d)) <= d;
+		end if;
+	 end process;
+	
 
 END Structure;

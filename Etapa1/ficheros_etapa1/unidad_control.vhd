@@ -33,7 +33,7 @@ ARCHITECTURE Structure OF unidad_control IS
           immed  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
 	END COMPONENT;
 	
-	signal new_pc : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal new_pc, tmp_pc : STD_LOGIC_VECTOR(15 DOWNTO 0);
 	signal ldpc_s : STD_LOGIC;
 
 BEGIN
@@ -42,10 +42,11 @@ BEGIN
     -- En los esquemas de la documentacion a la instancia de la logica de control le hemos llamado c0
     -- Aqui iria la definicion del comportamiento de la unidad de control y la gestion del PC
 	 deco : control_l PORT MAP(ir => ir, op => op, ldpc => ldpc_s, wrd => wrd, addr_a => addr_a, addr_d => addr_d, immed => immed);
-	 new_pc <= 	PC_INI when boot = '1' else
+	 tmp_pc <= 	x"C000" when boot = '1' else
 					new_pc + 2 when ldpc_s = '1' else
 					new_pc;
-	 pc <= new_pc(15 DOWNTO 1) & '0' when falling_edge(clk);
+	 new_pc <= tmp_pc when falling_edge(clk);
+	 pc <= new_pc(15 DOWNTO 1) & '0';
 	 
 
 END Structure;
