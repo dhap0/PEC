@@ -1,5 +1,5 @@
 Analysis & Synthesis report for Etapa1
-Thu Mar 11 23:28:46 2021
+Fri Mar 12 16:10:28 2021
 Quartus II 64-Bit Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
 
 
@@ -41,7 +41,7 @@ applicable agreement for further details.
 +--------------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                         ;
 +------------------------------------+-------------------------------------------------+
-; Analysis & Synthesis Status        ; Successful - Thu Mar 11 23:28:46 2021           ;
+; Analysis & Synthesis Status        ; Successful - Fri Mar 12 16:10:28 2021           ;
 ; Quartus II 64-Bit Version          ; 13.0.1 Build 232 06/12/2013 SP 1 SJ Web Edition ;
 ; Revision Name                      ; Etapa1                                          ;
 ; Top-level Entity Name              ; proc                                            ;
@@ -228,9 +228,13 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 Info: *******************************************************************
 Info: Running Quartus II 64-Bit Analysis & Synthesis
     Info: Version 13.0.1 Build 232 06/12/2013 Service Pack 1 SJ Web Edition
-    Info: Processing started: Thu Mar 11 23:28:44 2021
+    Info: Processing started: Fri Mar 12 16:10:26 2021
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off Etapa1 -c Etapa1
 Warning (20028): Parallel compilation is not licensed and has been disabled
+Info (12021): Found 1 design units, including 0 entities, in source file ficheros_etapa1/tipos_constantes_pkg/cte_tipos_uc_pkg.vhd
+    Info (12022): Found design unit 1: cte_tipos_UC_pkg
+Info (12021): Found 1 design units, including 0 entities, in source file ficheros_etapa1/tipos_constantes_pkg/cte_tipos_uf_pkg.vhd
+    Info (12022): Found design unit 1: cte_tipos_UF_pkg
 Info (12021): Found 2 design units, including 1 entities, in source file ficheros_etapa1/unidad_control.vhd
     Info (12022): Found design unit 1: unidad_control-Structure
     Info (12023): Found entity 1: unidad_control
@@ -293,8 +297,8 @@ Info (21057): Implemented 34 device resources after synthesis - the final resour
     Info (21058): Implemented 18 input pins
     Info (21059): Implemented 16 output pins
 Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 38 warnings
-    Info: Peak virtual memory: 4660 megabytes
-    Info: Processing ended: Thu Mar 11 23:28:46 2021
+    Info: Peak virtual memory: 4644 megabytes
+    Info: Processing ended: Fri Mar 12 16:10:28 2021
     Info: Elapsed time: 00:00:02
     Info: Total CPU time (on all processors): 00:00:02
 
