@@ -1,0 +1,376 @@
+m255
+K3
+13
+cModel Technology
+dC:\altera\13.0sp1
+Ealu
+Z0 w1615738500
+Z1 DPx4 work 16 cte_tipos_uf_pkg 0 22 DjPV@12KT>h]3eJ7Y00]23
+Z2 DPx4 ieee 11 numeric_std 0 22 O3PF8EB`?j9=z7KT`fn941
+Z3 DPx3 std 6 textio 0 22 5>J:;AW>W0[[dW0I6EN1Q0
+Z4 DPx4 ieee 14 std_logic_1164 0 22 5=aWaoGZSMWIcH0i^f`XF1
+Z5 dC:\Users\Dhap0\Documents\PEC\Etapa1
+Z6 8C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/alu.vhd
+Z7 FC:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/alu.vhd
+l0
+L7
+VGO@l^AEPZNk=HCOaXF1mb3
+Z8 OV;C;10.1d;51
+32
+Z9 !s108 1615738507.768000
+Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/alu.vhd|
+Z11 !s107 C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/alu.vhd|
+Z12 o-work work -2002 -explicit -O0
+Z13 tExplicit 1
+!s100 di[a:nIhO7m2S@k;K=U=W2
+!i10b 1
+Astructure
+R1
+R2
+R3
+R4
+DEx4 work 3 alu 0 22 GO@l^AEPZNk=HCOaXF1mb3
+l16
+L15
+V@[z8=0h40SDj`jcB[Tf9z2
+R8
+32
+R9
+R10
+R11
+R12
+R13
+!s100 >^o9BFiQzQ?_G84CmCX8E1
+!i10b 1
+Econtrol_l
+Z14 w1615579990
+Z15 DPx4 work 16 cte_tipos_uc_pkg 0 22 6o9TZO4@a?6aGiDWP<kn:1
+Z16 DPx4 work 21 sisa16_coop_funct_pkg 0 22 H]g=W;H;WSEDkLf1VM6lP2
+R2
+R3
+R4
+R5
+Z17 8C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/control_l.vhd
+Z18 FC:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/control_l.vhd
+l0
+L9
+V1zA[g?nOf8mQbBebc60Re0
+R8
+32
+Z19 !s108 1615738508.016000
+Z20 !s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/control_l.vhd|
+Z21 !s107 C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/control_l.vhd|
+R12
+R13
+!s100 B9B9ZcIZS[ARJja@F3^0<3
+!i10b 1
+Astructure
+R15
+R16
+R2
+R3
+R4
+DEx4 work 9 control_l 0 22 1zA[g?nOf8mQbBebc60Re0
+l21
+L20
+Vn8kCWKPM]h_EMHK<lPhb11
+R8
+32
+R19
+R20
+R21
+R12
+R13
+!s100 FC7^37HO@ak<TkZz8WOOT0
+!i10b 1
+Pcte_tipos_uc_pkg
+R3
+R4
+R14
+R5
+8C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UC_pkg.vhd
+FC:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UC_pkg.vhd
+l0
+L4
+V6o9TZO4@a?6aGiDWP<kn:1
+R8
+32
+R12
+R13
+!s100 Z513b?fz8TG^;`cS8T2az3
+!i10b 1
+!s108 1615738508.813000
+!s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UC_pkg.vhd|
+!s107 C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UC_pkg.vhd|
+Pcte_tipos_uf_pkg
+R3
+R4
+R14
+R5
+8C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UF_pkg.vhd
+FC:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UF_pkg.vhd
+l0
+L4
+VDjPV@12KT>h]3eJ7Y00]23
+R8
+32
+R12
+R13
+!s100 bSmmUaY^5E2P?K6;2Z9eG0
+!i10b 1
+!s108 1615738509.016000
+!s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UF_pkg.vhd|
+!s107 C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/cte_tipos_UF_pkg.vhd|
+Edatapath
+Z22 w1615501720
+R2
+R3
+R4
+R5
+Z23 8C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/datapath.vhd
+Z24 FC:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/datapath.vhd
+l0
+L5
+VWd5_lNZzjUmXkY5@`5=T32
+R8
+32
+Z25 !s108 1615738508.173000
+Z26 !s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/datapath.vhd|
+Z27 !s107 C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/datapath.vhd|
+R12
+R13
+!s100 GZ`SS236MKH?nAYk_d:Vj0
+!i10b 1
+Astructure
+R2
+R3
+R4
+DEx4 work 8 datapath 0 22 Wd5_lNZzjUmXkY5@`5=T32
+l35
+L15
+Vm2Y`Y;BOf2hln5OCnDdNU1
+R8
+32
+R25
+R26
+R27
+R12
+R13
+!s100 1bV_XUDf;dR?65gk<=@el0
+!i10b 1
+Ememory
+Z28 w1615499409
+Z29 DPx4 ieee 16 std_logic_textio 0 22 ?Il0a149GV276[?[UMDWh2
+Z30 DPx4 ieee 15 std_logic_arith 0 22 4`Y?g_lkdn;7UL9IiJck01
+Z31 DPx4 ieee 18 std_logic_unsigned 0 22 RYmj;=TK`k=k>D@Cz`zoB3
+R3
+R4
+R5
+Z32 8C:/Users/Dhap0/Documents/PEC/Etapa1/memory.vhd
+Z33 FC:/Users/Dhap0/Documents/PEC/Etapa1/memory.vhd
+l0
+L8
+VezVj_W<TQA0lnlE844kA:3
+R8
+32
+Z34 !s108 1615738507.407000
+Z35 !s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/memory.vhd|
+Z36 !s107 C:/Users/Dhap0/Documents/PEC/Etapa1/memory.vhd|
+R12
+R13
+!s100 6`[ncjZncnKIIQlJ;Qz4a2
+!i10b 1
+Acomportament
+R29
+R30
+R31
+R3
+R4
+DEx4 work 6 memory 0 22 ezVj_W<TQA0lnlE844kA:3
+l48
+L20
+VPkAg]G57>]66WXLfTgc2g1
+R8
+32
+R34
+R35
+R36
+R12
+R13
+!s100 ^2]_]@0E]lMjXY_dJce3b3
+!i10b 1
+Eproc
+Z37 w1615562614
+R3
+R4
+R5
+Z38 8C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/proc.vhd
+Z39 FC:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/proc.vhd
+l0
+L4
+VV[^C@`ZKHFP1Fh1HzI]b=1
+R8
+32
+Z40 !s108 1615738508.329000
+Z41 !s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/proc.vhd|
+Z42 !s107 C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/proc.vhd|
+R12
+R13
+!s100 :DYC`>><kI`Nfe7naBeNJ2
+!i10b 1
+Astructure
+R3
+R4
+DEx4 work 4 proc 0 22 V[^C@`ZKHFP1Fh1HzI]b=1
+l41
+L12
+VDJA;NWRe59G^4EF4>CSVP2
+R8
+32
+R40
+R41
+R42
+R12
+R13
+!s100 X6KV8Hfghc;YUIzg3ZmTX0
+!i10b 1
+Eregfile
+Z43 w1615737985
+R1
+R30
+R31
+R2
+R3
+R4
+R5
+Z44 8C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/regfile.vhd
+Z45 FC:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/regfile.vhd
+l0
+L9
+VRWSkC_d197nAMedBdfN4G3
+R8
+32
+Z46 !s108 1615738508.485000
+Z47 !s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/regfile.vhd|
+Z48 !s107 C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/regfile.vhd|
+R12
+R13
+!s100 hSS`OKleckQ1QRcK3jS7X2
+!i10b 1
+Astructure
+R1
+R30
+R31
+R2
+R3
+R4
+DEx4 work 7 regfile 0 22 RWSkC_d197nAMedBdfN4G3
+l25
+L19
+VmEM60oT2MhU?Oh5n14n902
+R8
+32
+R46
+R47
+R48
+R12
+R13
+!s100 WFHd7R9dbYXYj=jcYi_c50
+!i10b 1
+Psisa16_coop_funct_pkg
+R3
+R4
+R14
+R5
+8C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/sisa16_coop_funct_pkg.vhd
+FC:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/sisa16_coop_funct_pkg.vhd
+l0
+L4
+VH]g=W;H;WSEDkLf1VM6lP2
+!s100 nBQFMk=UZ<T_kzN;e`OT<2
+R8
+32
+!i10b 1
+!s108 1615738509.191000
+!s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/sisa16_coop_funct_pkg.vhd|
+!s107 C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/tipos_constantes_pkg/sisa16_coop_funct_pkg.vhd|
+R12
+R13
+Etest_sisa
+R28
+R3
+R4
+R5
+Z49 8C:/Users/Dhap0/Documents/PEC/Etapa1/test_sisa.vhd
+Z50 FC:/Users/Dhap0/Documents/PEC/Etapa1/test_sisa.vhd
+l0
+L5
+VkAdhfn89W5`mY_=KPlfV]3
+R8
+32
+Z51 !s108 1615738507.627000
+Z52 !s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/test_sisa.vhd|
+Z53 !s107 C:/Users/Dhap0/Documents/PEC/Etapa1/test_sisa.vhd|
+R12
+R13
+!s100 688X_8OZ0BkG::B3fT5kf3
+!i10b 1
+Acomportament
+R3
+R4
+DEx4 work 9 test_sisa 0 22 kAdhfn89W5`mY_=KPlfV]3
+l38
+L8
+V4k4aJ72YP_Wzj`TVJaQ?l2
+R8
+32
+R51
+R52
+R53
+R12
+R13
+!s100 M^2H7oCBH9I:<O?Y4:zDd1
+!i10b 1
+Eunidad_control
+R14
+R15
+R30
+R31
+R2
+R3
+R4
+R5
+Z54 8C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/unidad_control.vhd
+Z55 FC:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/unidad_control.vhd
+l0
+L9
+VAMWaLMj]QAP6>Amm0X[iU0
+R8
+32
+Z56 !s108 1615738508.595000
+Z57 !s90 -reportprogress|300|-work|work|-2002|-explicit|C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/unidad_control.vhd|
+Z58 !s107 C:/Users/Dhap0/Documents/PEC/Etapa1/ficheros_etapa1/unidad_control.vhd|
+R12
+R13
+!s100 ]jeibMjMhkHB>g=PP>9?j1
+!i10b 1
+Astructure
+R15
+R30
+R31
+R2
+R3
+R4
+DEx4 work 14 unidad_control 0 22 AMWaLMj]QAP6>Amm0X[iU0
+l40
+L21
+V`cMf=`kImcT9nJj?3@53A0
+R8
+32
+R56
+R57
+R58
+R12
+R13
+!s100 f;;4kTDS0@L=zbcSFXmOJ3
+!i10b 1
