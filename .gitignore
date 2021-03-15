@@ -3,3 +3,8 @@ incremental_db/
 output_files/
 simulation/
 *.bak
+*.cr.mti
+*.mpf
+transcript
+vsim.wlf
+
