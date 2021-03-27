@@ -10,7 +10,7 @@ entity MemoryController is
           rd_data   : out std_logic_vector(15 downto 0);
           we        : in  std_logic;
           byte_m    : in  std_logic;
-          -- señales para la placa de desarrollo
+          -- seï¿½ales para la placa de desarrollo
           SRAM_ADDR : out   std_logic_vector(17 downto 0);
           SRAM_DQ   : inout std_logic_vector(15 downto 0);
           SRAM_UB_N : out   std_logic;
@@ -21,6 +21,42 @@ entity MemoryController is
 end MemoryController;
 
 architecture comportament of MemoryController is
+	component SRAMController is
+	 port (clk         : in    std_logic;
+          -- seï¿½ales para la placa de desarrollo
+          SRAM_ADDR   : out   std_logic_vector(17 downto 0);
+          SRAM_DQ     : inout std_logic_vector(15 downto 0);
+          SRAM_UB_N   : out   std_logic;
+          SRAM_LB_N   : out   std_logic;
+          SRAM_CE_N   : out   std_logic;
+          SRAM_OE_N   : out   std_logic;
+          SRAM_WE_N   : out   std_logic;
+          -- seï¿½ales internas del procesador
+          address     : in    std_logic_vector(15 downto 0);
+          dataReaded  : out   std_logic_vector(15 downto 0);
+          dataToWrite : in    std_logic_vector(15 downto 0);
+          WR          : in    std_logic;
+          byte_m      : in    std_logic);
+	end component SRAMController;
+	
+	signal sram_wr : std_logic;
 begin
-
-end comportament;
+	sram_wr <= '0' when addr < x"C000" else
+					we;
+	sram : component SRAMController
+		port map(clk => CLOCK_50,
+					 -- seï¿½ales para la placa de desarrollo
+					SRAM_ADDR   =>  SRAM_ADDR,
+					SRAM_DQ     =>  SRAM_DQ,
+					SRAM_UB_N   =>  SRAM_UB_N,
+					SRAM_LB_N   =>  SRAM_LB_N,
+					SRAM_CE_N   =>  SRAM_CE_N,
+					SRAM_OE_N   =>  SRAM_OE_N,
+					SRAM_WE_N   =>  SRAM_WE_N,
+					-- seï¿½ales internas del procesador
+					address     =>  address,
+					dataReaded  =>  rd_data,
+					dataToWrite =>  wr_data,
+					WR          =>  sram_wr,
+					byte_m      =>  byte_m);
+	end comportament;
