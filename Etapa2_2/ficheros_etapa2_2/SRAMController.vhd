@@ -49,5 +49,5 @@ begin
 					  std_logic_vector(resize(signed(SRAM_DQ(7 downto 0)), dataReaded'length))	when lb_n = '0' else
 					  std_logic_vector(resize(signed(SRAM_DQ(15 downto 8)), dataReaded'length)) when ub_n = '0'; -- lectura de word
 	
-	SRAM_ADDR <= '0' & address(15 downto 1);
+	SRAM_ADDR <= "000" & address(15 downto 1);
 end comportament;

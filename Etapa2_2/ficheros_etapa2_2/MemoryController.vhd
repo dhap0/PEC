@@ -54,7 +54,7 @@ begin
 					SRAM_OE_N   =>  SRAM_OE_N,
 					SRAM_WE_N   =>  SRAM_WE_N,
 					-- se�ales internas del procesador
-					address     =>  address,
+					address     =>  addr,
 					dataReaded  =>  rd_data,
 					dataToWrite =>  wr_data,
 					WR          =>  sram_wr,
