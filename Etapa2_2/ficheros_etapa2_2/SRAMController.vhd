@@ -1,7 +1,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.std_logic_arith.all;
-use ieee.std_logic_unsigned.all;
+--use ieee.std_logic_arith.all;
+--use ieee.std_logic_unsigned.all;
+USE ieee.numeric_std.all;
 
 entity SRAMController is
     port (clk         : in    std_logic;
@@ -22,23 +23,31 @@ entity SRAMController is
 end SRAMController;
 
 architecture comportament of SRAMController is
+
+	signal lb_n, ub_n : std_logic;
 begin
 
-	-- READ MODE: 
-	SRAM_CE_N <= '0' ;
-	SRAM_OE_N <= '0';
-	SRAM_LB_N <= '0';
-	SRAM_UE_N <= '0';
-	SRAM_WE_N <= '1'; -- write not enabled
-	dataReaded <= SRAM_DQ; -- lectura de word
+	lb_n <= byte_m and address(0); -- si access a word o acces al byte de menys pes (negat)
+	ub_n <=  byte_m and (not address(0)); -- si access a word o acces al byte de mes pes (negat)
 
-	-- WRITE MODE
+
+
+
+	-- READ/WRITE MODE
 	SRAM_CE_N <= '0' ;
-	SRAM_OE_N <= 'X';
-	SRAM_LB_N <= '0'; -- 0 si es vol accedir al low byte (7 - 0)
-	SRAM_UE_N <= '0'; -- 0 si es vol accedir al upper byte (15 - 8)
-	SRAM_WE_N <= '0';  -- write enabled
-	SRAM_DQ(7 downto 0) <= dataToWrite(7 downto 0);-- when SRAM_LB_N = '0' else (others => 'Z');
-	SRAM_DQ(15 downto 8) <= dataToWrite(15 downto 8);-- when SRAM_UB_N = '0' else (others => 'Z');
+	SRAM_OE_N <= 'X' when WR = '1' else '0';
+	SRAM_LB_N <= lb_n; -- 0 si es vol accedir al low byte (7 - 0)
+	SRAM_UB_N <= ub_n; -- 0 si es vol accedir al upper byte (15 - 8)
+	SRAM_WE_N <= not WR;  
 	
+	SRAM_DQ <= (others => 'Z') when WR = '0' else
+					dataToWrite		when lb_n = '0' and ub_n = '0' else
+					"ZZZZZZZZ" & dataToWrite(7 downto 0) when lb_n = '0' else
+					dataToWrite(15 downto 8) & "ZZZZZZZZ" when ub_n = '0';
+					
+	dataReaded <= SRAM_DQ when lb_n = '0' and ub_n = '0' else
+					  std_logic_vector(resize(signed(SRAM_DQ(7 downto 0)), dataReaded'length))	when lb_n = '0' else
+					  std_logic_vector(resize(signed(SRAM_DQ(15 downto 8)), dataReaded'length)) when ub_n = '0'; -- lectura de word
+	
+	SRAM_ADDR <= '0' & address(15 downto 1);
 end comportament;
