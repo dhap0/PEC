@@ -48,7 +48,7 @@ BEGIN
 
     -- Aqui iria la declaracion del "mapeo" (PORT MAP) de los nombres de las entradas/salidas de los componentes
     -- En los esquemas de la documentacion a la instancia del banco de registros le hemos llamado reg0 y a la de la alu le hemos llamado alu0
-	BR: regfile PORT MAP(clk => clk, wrd => wrd, d => wtod , addr_a => addr_a, addr_b => addr_b, addr_d => addr_d, a => atox, b => data_wr );
+	BR: regfile PORT MAP(clk => clk, wrd => wrd, d => reg_d , addr_a => addr_a, addr_b => addr_b, addr_d => addr_d, a => atox, b => data_wr );
 	ALUop: alu PORT MAP(x => atox, y => immed_y , op => op, w => wtod );
 	 
 	with immed_x2 select immed_y <=

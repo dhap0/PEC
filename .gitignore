@@ -2,10 +2,12 @@ db/
 incremental_db/
 output_files/
 simulation/
+work/
 *.qws
 *.bak
 *.cr.mti
 *.mpf
+wlft??????
 transcript
 vsim.wlf
 

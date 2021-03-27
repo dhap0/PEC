@@ -46,7 +46,7 @@ begin
 	end process;
 
 	-- Output depends solely on the current state
-	outputs: process (state)
+	outputs: process (state, ldpc_l, wrd_l, wr_m_l, w_b)
 	begin
 		case state is
 			when F =>
@@ -66,6 +66,7 @@ begin
 			
 		end case;
 	end process;
+	
 
 end Structure;
 

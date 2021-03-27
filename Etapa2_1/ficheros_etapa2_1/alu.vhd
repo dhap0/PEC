@@ -1,6 +1,6 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
-USE ieee.numeric_std.all;
+USE ieee.std_logic_unsigned.all;
 LIBRARY work;
 USE work.cte_tipos_UF_pkg.all;
 
@@ -15,11 +15,11 @@ END alu;
 ARCHITECTURE Structure OF alu IS
 BEGIN
 
-    -- Aqui iria la definicion del comportamiento de la ALU
+    -- Aqui iria la definicion del comportamiento de la ALU	
 	 with op select w <=
-		y 										              when ALU_MOVI,
-		y(7 downto 0) & x(7 downto 0)               when ALU_MOVHI,
-		std_logic_vector(unsigned(x) + unsigned(y)) when ALU_SUM,
+		y 										  when ALU_MOVI,
+		y(7 downto 0) & x(7 downto 0)   when ALU_MOVHI,
+		x + y                           when ALU_SUM,
 		(others => '0') when others;
 
 END Structure;

@@ -24,12 +24,17 @@ END control_l;
 
 
 ARCHITECTURE Structure OF control_l IS
-	signal coop: codigooper  := ir(15 downto 16-tamcoop);
-	signal f1:   campofunct1 := ir(8);
-	signal immed_6:   std_logic_vector(5 downto 0) := ir(5 downto 0);
-	signal immed_8:   std_logic_vector(7 downto 0) := ir(7 downto 0);
+	signal coop: codigooper;
+	signal f1:   campofunct1;
+	signal immed_6:   std_logic_vector(5 downto 0);
+	signal immed_8:   std_logic_vector(7 downto 0);
 BEGIN
-		
+	
+	coop    <= ir(15 downto 16-tamcoop);
+	f1      <= ir(8);
+	immed_6 <= ir(5 downto 0);
+	immed_8 <= ir(7 downto 0);
+	
 	op <= ALU_MOVHI when coop = COOP_MOV and f1 = F1_MOVHI else
 			ALU_MOVI  when coop = COOP_MOV and f1 = F1_MOVI  else
 			ALU_SUM   when coop = COOP_LD                    else
@@ -41,10 +46,9 @@ BEGIN
 	
 	ldpc <= haltSI when ir(15 downto 0) = x"FFFF" else '1';
 	
-	wrd <= PE when coop = COOP_MOV else 
-	       PE when coop = COOP_ST  else
-			 PE when coop = COOP_STB else 
-			 not PE;
+	wrd <= PE when coop = COOP_MOV or
+	               coop = COOP_LD  or
+						coop = COOP_LDB else not PE;
 			 
 	addr_a <= ir(11 downto 9) when coop = COOP_MOV else
 	          ir(8  downto 6) when coop = COOP_LD  else
@@ -60,9 +64,34 @@ BEGIN
 	addr_d <= ir(11 downto 9);
 
 	immed <= std_logic_vector(resize(signed(immed_8), immed'length)) when coop = COOP_MOV else
-		      std_logic_vector(resize(signed(immed_6), immed'length)) when coop = COOP_ST or 
-				                                                             coop = COOP_LD;
+		      std_logic_vector(resize(signed(immed_6), immed'length)) when coop = COOP_ST  or 
+				                                                             coop = COOP_LD  or
+																								 coop = COOP_STB or 
+																								 coop = COOP_LDB;
 	
+--	immed(5 downto 0) <= immed_8(5 downto 0) when coop = COOP_MOV else
+--			               immed_6             when coop = COOP_ST  or 
+--																 coop = COOP_LD  or
+--															    coop = COOP_STB or
+--																 coop = COOP_LDB else
+--								(others => '0');
+--																 
+--	
+--	immed(7 downto 6) <= immed_8(7 downto 6)  when coop = COOP_MOV else
+--			               (others => immed_6(5)) when coop = COOP_ST or 
+--															     coop = COOP_LD  or
+--																  coop = COOP_STB or
+--																 coop = COOP_LDB else
+--								(others => '0');
+--
+--	immed(15 downto 8) <= (others => immed_8(7)) when coop = COOP_MOV else
+--			                (others => immed_6(5)) when coop = COOP_ST or 
+--																 coop = COOP_LD  or 
+--																 coop = COOP_STB or
+--																 coop = COOP_LDB else
+--								(others => '0');
+
+
 	wr_m <= PE when coop = COOP_ST  else
 	        PE when coop = COOP_STB else 
 			  not PE;
