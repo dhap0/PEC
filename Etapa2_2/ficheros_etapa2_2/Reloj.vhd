@@ -10,12 +10,12 @@ ENTITY Reloj IS
 	);
 END Reloj;
 ARCHITECTURE Structure OF Reloj IS 
-signal cnt: integer := factor;
+signal cnt: integer := factor/2;
 signal aux: std_logic := '0';
 BEGIN
-cnt <= factor when cnt = 0 else cnt-1 when rising_edge(CLOCK_50);
-reloj <= '1' when cnt = 0 else '0';
-
+cnt <= factor/2 when cnt = 0 else cnt-1 when rising_edge(CLOCK_50);
+aux <= not aux when cnt = 0;
+reloj <= aux;
 
 
 END Structure;

@@ -43,7 +43,7 @@ begin
 	SRAM_DQ <= (others => 'Z') when WR = '0' else
 					dataToWrite		when lb_n = '0' and ub_n = '0' else
 					"ZZZZZZZZ" & dataToWrite(7 downto 0) when lb_n = '0' else
-					dataToWrite(15 downto 8) & "ZZZZZZZZ" when ub_n = '0';
+					dataToWrite(7 downto 0) & "ZZZZZZZZ" when ub_n = '0';
 					
 	dataReaded <= SRAM_DQ when lb_n = '0' and ub_n = '0' else
 					  std_logic_vector(resize(signed(SRAM_DQ(7 downto 0)), dataReaded'length))	when lb_n = '0' else
