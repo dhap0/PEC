@@ -6,7 +6,7 @@ USE ieee.numeric_std.all;
 
 entity SRAMController is
     port (clk         : in    std_logic;
-          -- se�ales para la placa de desarrollo
+          -- seï¿½ales para la placa de desarrollo
           SRAM_ADDR   : out   std_logic_vector(17 downto 0);
           SRAM_DQ     : inout std_logic_vector(15 downto 0);
           SRAM_UB_N   : out   std_logic;
@@ -14,7 +14,7 @@ entity SRAMController is
           SRAM_CE_N   : out   std_logic := '1';
           SRAM_OE_N   : out   std_logic := '1';
           SRAM_WE_N   : out   std_logic := '1';
-          -- se�ales internas del procesador
+          -- seï¿½ales internas del procesador
           address     : in    std_logic_vector(15 downto 0) := "0000000000000000";
           dataReaded  : out   std_logic_vector(15 downto 0);
           dataToWrite : in    std_logic_vector(15 downto 0);
@@ -23,8 +23,10 @@ entity SRAMController is
 end SRAMController;
 
 architecture comportament of SRAMController is
+type state_enum is (Idl, Esc);
+signal state : state_enum := Idl;
 
-	signal lb_n, ub_n : std_logic;
+	signal lb_n, ub_n, we: std_logic := '0';
 begin
 
 	lb_n <= byte_m and address(0); -- si access a word o acces al byte de menys pes (negat)
@@ -35,10 +37,10 @@ begin
 
 	-- READ/WRITE MODE
 	SRAM_CE_N <= '0' ;
-	SRAM_OE_N <= 'X' when WR = '1' else '0';
+	SRAM_OE_N <= '0'; --'X' when WR = '1' else '0';
 	SRAM_LB_N <= lb_n; -- 0 si es vol accedir al low byte (7 - 0)
 	SRAM_UB_N <= ub_n; -- 0 si es vol accedir al upper byte (15 - 8)
-	SRAM_WE_N <= not WR;  
+	SRAM_WE_N <= '0' when state = Esc else '1';  
 	
 	SRAM_DQ <= (others => 'Z') when WR = '0' else
 					dataToWrite		when lb_n = '0' and ub_n = '0' else
@@ -50,4 +52,30 @@ begin
 					  std_logic_vector(resize(signed(SRAM_DQ(15 downto 8)), dataReaded'length)) when ub_n = '0'; -- lectura de word
 	
 	SRAM_ADDR <= "000" & address(15 downto 1);
+	
+	
+	-- TODO: aixo sha de millorar
+	process(clk)
+	begin
+		case state is 
+			when Idl =>
+				if WR = '1' and we = '0' then
+					state <= Esc;
+				elsif WR = '0' then
+				  we <= '0';
+				end if;
+			when Esc =>
+			   if we = '0' then
+					we <= '1';
+				 else 
+				  state <= Idl;
+				 end if;
+
+
+		end case;		
+	end process;
+
+	
+	
 end comportament;
+
