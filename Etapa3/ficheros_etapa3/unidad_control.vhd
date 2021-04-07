@@ -11,7 +11,7 @@ ENTITY unidad_control IS
 		boot : IN STD_LOGIC;
 		clk : IN STD_LOGIC;
 		datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		op : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		op : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
 		wrd : OUT STD_LOGIC;
 		addr_a : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 		addr_b : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -33,7 +33,7 @@ ARCHITECTURE Structure OF unidad_control IS
     -- Aqui iria la definicion del program counter
 	 COMPONENT control_l IS
 		PORT (ir        : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-				op        : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+				op        : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
 				ldpc      : OUT STD_LOGIC;
 				wrd       : OUT STD_LOGIC;
 				addr_a    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -68,8 +68,32 @@ BEGIN
     -- Aqui iria la declaracion del "mapeo" (PORT MAP) de los nombres de las entradas/salidas de los componentes
     -- En los esquemas de la documentacion a la instancia de la logica de control le hemos llamado c0
     -- Aqui iria la definicion del comportamiento de la unidad de control y la gestion del PC
-	 deco : control_l PORT MAP(ir => ir_reg, op => op, ldpc => ldpc_t, wrd => wrd_t, addr_a => addr_a, addr_b => addr_b, addr_d => addr_d, immed => immed, wr_m => wr_m_t, in_d => in_d, immed_x2 => immed_x2, word_byte => w_b_t);
-	 m0 : multi PORT MAP(clk => clk,	boot => boot, ldpc_l => ldpc_t, wrd_l => wrd_t, wr_m_l => wr_m_t, w_b => w_b_t, ldpc => ldpc_o, wrd => wrd, wr_m => wr_m, ldir => ldir_o, ins_dad =>  ins_dad, word_byte => word_byte);
+	 deco : control_l PORT MAP(ir         =>  ir_reg,
+	                           op         =>  op,
+										ldpc       =>  ldpc_t,
+										wrd        =>  wrd_t,
+										addr_a     =>  addr_a,
+										addr_b     =>  addr_b,
+										addr_d     =>  addr_d,
+										immed      =>  immed,
+										wr_m       =>  wr_m_t,
+										in_d       =>  in_d,
+										immed_x2   =>  immed_x2,
+										word_byte  =>  w_b_t);
+										
+	 m0 : multi PORT MAP(clk        =>  clk,
+	                     boot       =>  boot,
+								ldpc_l     =>  ldpc_t,
+								wrd_l      =>  wrd_t,
+								wr_m_l     =>  wr_m_t,
+								w_b        =>  w_b_t,
+								ldpc       =>  ldpc_o,
+								wrd        =>  wrd,
+								wr_m       =>  wr_m,
+								ldir       =>  ldir_o,
+								ins_dad    =>  ins_dad,
+								word_byte  =>  word_byte);
+								
 	 tmp_pc <= 	x"C000" when boot = '1' else
 					new_pc + 2 when ldpc_o = '1' else
 					new_pc;
