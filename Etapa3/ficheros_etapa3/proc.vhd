@@ -1,5 +1,7 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
+LIBRARY work;
+USE work.cte_tipos_UF_pkg.all;
 
 ENTITY proc IS
 	PORT (
@@ -21,7 +23,7 @@ ARCHITECTURE Structure OF proc IS
     -- Tambien crearemos los cables/buses (signals) necesarios para unir las entidades
 	 COMPONENT datapath IS
 		PORT (clk : IN STD_LOGIC;
-				op : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+				op : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 				wrd : IN STD_LOGIC;
 				addr_a : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
 				addr_b : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -39,7 +41,7 @@ ARCHITECTURE Structure OF proc IS
 		PORT (boot : IN STD_LOGIC;
 				clk : IN STD_LOGIC;
 				datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-				op : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+				op : OUT  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 				wrd : OUT STD_LOGIC;
 				addr_a : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 				addr_b : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -54,7 +56,7 @@ ARCHITECTURE Structure OF proc IS
 	);
 	END COMPONENT;
 	signal w2w, insd2insd, ix2ix, ind2ind : STD_LOGIC;
-	signal o2o : STD_LOGIC_VECTOR(3 DOWNTO 0);
+	signal o2o : STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 	signal a2a, b2b, d2d: STD_LOGIC_VECTOR(2 DOWNTO 0);
 	signal i2i, pc2pc : STD_LOGIC_VECTOR(15 DOWNTO 0);
 

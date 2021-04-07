@@ -37,10 +37,10 @@ BEGIN
 	
 	op <= ALU_MOVHI when coop = COOP_MOV and f1 = F1_MOVHI else
 			ALU_MOVI  when coop = COOP_MOV and f1 = F1_MOVI  else
-			ALU_SUM   when coop = COOP_LD                    else
-			ALU_SUM   when coop = COOP_ST                    else
-			ALU_SUM   when coop = COOP_LDB                   else
-			ALU_SUM   when coop = COOP_STB                   else
+			ALU_ADD   when coop = COOP_LD  or 
+			               coop = COOP_ST  or
+			               coop = COOP_LDB or
+			               coop = COOP_STB                   else
 			(others => '0');
 			
 	

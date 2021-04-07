@@ -15,8 +15,17 @@ END alu;
 
 
 ARCHITECTURE Structure OF alu IS
-signal w_t, resta: std_logic_vector(15 downto 0);
+signal w_t   : std_logic_vector(15 downto 0);
+signal resta : std_logic_vector(15 downto 0);
+signal div   : std_logic_vector(15 downto 0);
+signal divu  : std_logic_vector(15 downto 0);
+
+signal mul, mulu: std_logic_vector(31 downto 0);
+
 signal eq, cmpltu: std_logic;
+signal sha : signed(15 downto 0);
+signal shl : unsigned(15 downto 0);
+signal shift_y: integer;
 
 BEGIN
 	w <= w_t;
@@ -25,18 +34,43 @@ BEGIN
 	resta <= x - y;
 	eq <= '1' when x = y else '0';
 	cmpltu <= '1' when unsigned(x) < unsigned(y) else '0';
+	
+	shift_y <= conv_integer(y(4 downto 0));
+	sha <= shift_right(signed(x), shift_y) when shift_y < 0 else
+			 shift_left(signed(x), shift_y) ;
+	shl <= shift_right(unsigned(x), shift_y) when shift_y < 0 else
+			 shift_left(unsigned(x), shift_y) ;
+			 
+			 
+	mul <= std_logic_vector(signed(x) * signed(y));
+	mulu <= std_logic_vector(unsigned(x) * unsigned(y));
+	
+	div <= std_logic_vector(signed(x) / signed(y));
+	divu <= std_logic_vector(unsigned(x) / unsigned(y));
 
 	
 	with op select w_t <=
 		y 										         when ALU_MOVI,
 		y(7 downto 0) & x(7 downto 0)          when ALU_MOVHI,
-		x + y                           			when ALU_SUM,
+		x + y                           			when ALU_ADD,
 		"000000000000000" &  resta(15)         when ALU_CMPLT,
 		"000000000000000" & (resta(15) or eq)  when ALU_CMPLE,
 		"000000000000000" &  eq                when ALU_CMPLEQ,
 		"000000000000000" &  cmpltu            when ALU_CMPLTU,
 		"000000000000000" & (cmpltu    or eq)  when ALU_CMPLEU,
-		
+		x and y											when ALU_AND,
+		x or y											when ALU_OR,
+		x xor y											when ALU_XOR,
+		not x											   when ALU_NOT,
+		resta                                  when ALU_SUB,
+		std_logic_vector(sha)						when ALU_SHA,
+		std_logic_vector(shl)						when ALU_SHL,
+		mul(15 downto 0)                       when ALU_MUL,
+		mul(31 downto 16)                      when ALU_MULH,
+		mulu(31 downto 16)                     when ALU_MULHU,
+		div                                    when ALU_DIV,
+		divu                                   when ALU_DIVU,
+
 		
 		(others => '0') when others;
 		

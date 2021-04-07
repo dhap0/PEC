@@ -5,13 +5,14 @@ USE ieee.std_logic_unsigned.all;
 
 LIBRARY work;
 USE work.cte_tipos_UC_pkg.all;
+USE work.cte_tipos_UF_pkg.all;
 
 ENTITY unidad_control IS
 	PORT (
 		boot : IN STD_LOGIC;
 		clk : IN STD_LOGIC;
 		datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		op : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+		op : OUT  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		wrd : OUT STD_LOGIC;
 		addr_a : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 		addr_b : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -33,7 +34,7 @@ ARCHITECTURE Structure OF unidad_control IS
     -- Aqui iria la definicion del program counter
 	 COMPONENT control_l IS
 		PORT (ir        : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-				op        : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+				op        : OUT  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 				ldpc      : OUT STD_LOGIC;
 				wrd       : OUT STD_LOGIC;
 				addr_a    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);

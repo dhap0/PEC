@@ -34,4 +34,16 @@ constant F3_CMPEQ : campofunct3  := "011";
 constant F3_CMPLTU : campofunct3 := "100";
 constant F3_CMPLEU : campofunct3 := "101";
 
+-- F3_A_L
+constant F3_AND : campofunct3 := "000";
+constant F3_OR :  campofunct3 := "001";
+constant F3_XOR : campofunct3 := "010";
+constant F3_NOT : campofunct3 := "011";
+constant F3_ADD : campofunct3 := "100";
+constant F3_SUB : campofunct3 := "101";
+constant F3_SHA : campofunct3 := "110";
+constant F3_SHL : campofunct3 := "111";
+
+
+
 END PACKAGE sisa16_coop_funct_pkg;
