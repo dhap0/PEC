@@ -69,9 +69,7 @@ BEGIN
 		mul(31 downto 16)                      when ALU_MULH,
 		mulu(31 downto 16)                     when ALU_MULHU,
 		div                                    when ALU_DIV,
-		divu                                   when ALU_DIVU,
-
-		
+		divu                                   when ALU_DIVU,	
 		(others => '0') when others;
 		
 

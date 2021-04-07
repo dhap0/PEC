@@ -24,6 +24,7 @@ ARCHITECTURE Structure OF proc IS
 	 COMPONENT datapath IS
 		PORT (clk : IN STD_LOGIC;
 				op : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
+				Rb_N: IN STD_LOGIC;
 				wrd : IN STD_LOGIC;
 				addr_a : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
 				addr_b : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -42,6 +43,7 @@ ARCHITECTURE Structure OF proc IS
 				clk : IN STD_LOGIC;
 				datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 				op : OUT  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
+				Rb_N: OUT STD_LOGIC;
 				wrd : OUT STD_LOGIC;
 				addr_a : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 				addr_b : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -59,6 +61,7 @@ ARCHITECTURE Structure OF proc IS
 	signal o2o : STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 	signal a2a, b2b, d2d: STD_LOGIC_VECTOR(2 DOWNTO 0);
 	signal i2i, pc2pc : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal rb2rb : STD_LOGIC;
 
 BEGIN
 
@@ -68,6 +71,7 @@ BEGIN
 	                              clk       => clk,
 											datard_m  => datard_m,
 											op        => o2o,
+											Rb_N      => rb2rb,
 											wrd       => w2w,
 											addr_a    => a2a,
 											addr_b    => b2b,
@@ -82,6 +86,7 @@ BEGIN
 											
 	 e0 : datapath PORT MAP(clk       =>  clk,
 	                        op        =>  o2o,
+									Rb_N      =>  rb2rb,
 									wrd       =>  w2w,
 									addr_a    =>  a2a,
 									addr_b    =>  b2b,

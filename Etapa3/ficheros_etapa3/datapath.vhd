@@ -18,6 +18,7 @@ ENTITY datapath IS
 		ins_dad : IN STD_LOGIC;
 		pc : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		in_d : IN STD_LOGIC;
+		Rb_N : IN STD_LOGIC;
 		addr_m : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)); 
 END datapath;
@@ -46,13 +47,17 @@ ARCHITECTURE Structure OF datapath IS
 			w : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
 	END COMPONENT;
 signal atox, wtod, immed_y, reg_d: STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal y_i : std_logic_vector(15 downto 0);
+signal b_o : std_logic_vector(15 downto 0);
 BEGIN
 
-    -- Aqui iria la declaracion del "mapeo" (PORT MAP) de los nombres de las entradas/salidas de los componentes
-    -- En los esquemas de la documentacion a la instancia del banco de registros le hemos llamado reg0 y a la de la alu le hemos llamado alu0
-	BR: regfile PORT MAP(clk => clk, wrd => wrd, d => reg_d , addr_a => addr_a, addr_b => addr_b, addr_d => addr_d, a => atox, b => data_wr );
-	ALUop: alu PORT MAP(x => atox, y => immed_y , op => op, w => wtod );
+	data_wr <= b_o;
+
+	BR: regfile PORT MAP(clk => clk, wrd => wrd, d => reg_d , addr_a => addr_a, addr_b => addr_b, addr_d => addr_d, a => atox, b => b_o );
+	ALUop: alu PORT MAP(x => atox, y => y_i , op => op, w => wtod );
 	 
+	y_i <= b_o when Rb_N = '0' else immed_y;
+	
 	with immed_x2 select immed_y <=
 		immed(14 downto 0) & '0' when '1',
 		immed when others;

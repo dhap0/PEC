@@ -14,10 +14,13 @@ subtype campofunct3 is std_logic_vector(tamfunct3-1 downto 0);
 -- SISA16 Base
 -- Codigos de operacion (CO)
 
+constant COOP_AL:       codigooper := "0000";
 constant COOP_CMP:      codigooper := "0001";
+constant COOP_ADDI:     codigooper := "0010";
 constant COOP_LD:       codigooper := "0011";
 constant COOP_ST:       codigooper := "0100";
 constant COOP_MOV:      codigooper := "0101";
+constant COOP_EA:       codigooper := "1000";
 constant COOP_LDB:      codigooper := "1101";
 constant COOP_STB:      codigooper := "1110";
 constant COOP_HALT:     codigooper := "1111";
@@ -30,11 +33,11 @@ constant F1_MOVI:   campofunct1 := '0';
 constant F3_CMPLT : campofunct3  := "000";
 constant F3_CMPLE : campofunct3  := "001";
 --                                  "010"
-constant F3_CMPEQ : campofunct3  := "011";
+constant F3_CMPLEQ : campofunct3 := "011";
 constant F3_CMPLTU : campofunct3 := "100";
 constant F3_CMPLEU : campofunct3 := "101";
 
--- F3_A_L
+-- F3_AL
 constant F3_AND : campofunct3 := "000";
 constant F3_OR :  campofunct3 := "001";
 constant F3_XOR : campofunct3 := "010";
@@ -44,6 +47,12 @@ constant F3_SUB : campofunct3 := "101";
 constant F3_SHA : campofunct3 := "110";
 constant F3_SHL : campofunct3 := "111";
 
+-- F3_EA
+constant F3_MUL   : campofunct3 := "000";
+constant F3_MULH  : campofunct3 := "001";
+constant F3_MULHU : campofunct3 := "010";
+constant F3_DIV   : campofunct3 := "100";
+constant F3_DIVU  : campofunct3 := "101";
 
 
 END PACKAGE sisa16_coop_funct_pkg;
