@@ -113,7 +113,9 @@ BEGIN
 	        '1' when coop = COOP_LDB else
 			  '0';
 			  
-	immed_x2 <= '1' when coop = COOP_LD or coop = COOP_ST else '0';
+	immed_x2 <= '1' when coop = COOP_LD 
+	                  or coop = COOP_ST 
+							or coop = COOP_BR else '0';
 	
 	word_byte <= '1' when coop = COOP_LDB else
 	             '1' when coop = COOP_STB else
