@@ -37,6 +37,9 @@ constant ALU_MULHU:   codigo_alu_op := "10001";
 constant ALU_DIV:     codigo_alu_op := "10010";
 constant ALU_DIVU:    codigo_alu_op := "10011";
 
+-- Z
+constant ALU_X:       codigo_alu_op := "10100";
+
 constant PE:  std_logic:= '1';
 
 END PACKAGE cte_tipos_UF_pkg;

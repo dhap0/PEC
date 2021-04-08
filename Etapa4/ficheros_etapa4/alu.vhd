@@ -51,6 +51,7 @@ BEGIN
 	
 	with op select w_t <=
 		y 										         when ALU_MOVI,
+		x                                      when ALU_X,
 		y(7 downto 0) & x(7 downto 0)          when ALU_MOVHI,
 		x + y                           			when ALU_ADD,
 		"000000000000000" &  resta(15)         when ALU_CMPLT,
