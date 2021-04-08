@@ -85,7 +85,9 @@ BEGIN
 				 ir(8  downto 6);
 				 
 	addr_b <= ir(11 downto 9) when coop = COOP_ST
-	                            or coop = COOP_STB else
+	                            or coop = COOP_STB 
+										 or coop = COOP_BR 
+										 or coop = COOP_JMP else
 				 ir(2  downto 0) when coop = COOP_AL   
 				                   or coop = COOP_CMP 
 				                   or coop = COOP_EA  else
