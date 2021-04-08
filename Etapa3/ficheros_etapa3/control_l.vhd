@@ -97,7 +97,8 @@ BEGIN
 		      std_logic_vector(resize(signed(immed_6), immed'length)) when coop = COOP_ST  or 
 				                                                             coop = COOP_LD  or
 																								 coop = COOP_STB or 
-																								 coop = COOP_LDB;
+																								 coop = COOP_LDB or
+																								 coop = COOP_ADDI;
 
 
 	wr_m <= PE when coop = COOP_ST  else

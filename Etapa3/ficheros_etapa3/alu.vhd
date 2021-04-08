@@ -35,10 +35,10 @@ BEGIN
 	eq <= '1' when x = y else '0';
 	cmpltu <= '1' when unsigned(x) < unsigned(y) else '0';
 	
-	shift_y <= conv_integer(y(4 downto 0));
-	sha <= shift_right(signed(x), shift_y) when shift_y < 0 else
-			 shift_left(signed(x), shift_y) ;
-	shl <= shift_right(unsigned(x), shift_y) when shift_y < 0 else
+	shift_y <= to_integer(signed(y(4 downto 0)));
+	sha <= shift_right(signed(x), -shift_y) when y(4) = '1' else
+			   shift_left(signed(x), shift_y) ;
+	shl <= shift_right(unsigned(x), -shift_y) when y(4) = '1' else
 			 shift_left(unsigned(x), shift_y) ;
 			 
 			 
