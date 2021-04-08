@@ -78,10 +78,11 @@ BEGIN
 						coop = COOP_EA else not PE;
 			 
 	addr_a <= ir(11 downto 9) when coop = COOP_MOV else
-	          ir(8  downto 6) when coop = COOP_LD  else
-				 ir(8  downto 6) when coop = COOP_ST  else
-				 ir(8  downto 6) when coop = COOP_LDB else
-				 ir(8  downto 6) when coop = COOP_STB else
+	          ir(8  downto 6) when coop = COOP_LD
+				                   or coop = COOP_ST
+				                   or coop = COOP_LDB
+				                   or coop = COOP_STB 
+										 or coop = COOP_JMP else
 				 ir(8  downto 6);
 				 
 	addr_b <= ir(11 downto 9) when coop = COOP_ST
