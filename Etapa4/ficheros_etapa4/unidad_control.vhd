@@ -36,6 +36,7 @@ ARCHITECTURE Structure OF unidad_control IS
     -- Aqui iria la definicion del program counter
 	 COMPONENT control_l IS
 		PORT (ir        : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+				z         : IN STD_LOGIC;
 				op        : OUT  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 				Rb_N      : OUT STD_LOGIC;
 				ldpc      : OUT STD_LOGIC;
@@ -75,11 +76,12 @@ BEGIN
 	 deco : control_l PORT MAP(ir         =>  ir_reg,
 	                           op         =>  op,
 	                           Rb_N       =>  Rb_N,
-								           		ldpc       =>  ldpc_t,
-										       		wrd        =>  wrd_t,
-										       		addr_a     =>  addr_a,
-										       		addr_b     =>  addr_b,
-       				        		       	addr_d     =>  addr_d,
+										z          =>  z,
+								      ldpc       =>  ldpc_t,
+										wrd        =>  wrd_t,
+										addr_a     =>  addr_a,
+										addr_b     =>  addr_b,
+       				        		addr_d     =>  addr_d,
 										immed      =>  immed,
 										wr_m       =>  wr_m_t,
 										in_d       =>  in_d,
