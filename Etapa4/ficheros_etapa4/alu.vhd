@@ -32,25 +32,27 @@ BEGIN
 	z <= '1' when w_t = 0 else '0';
 	
 	resta <= x - y;
+	
 	eq <= '1' when x = y else '0';
+	
 	cmpltu <= '1' when unsigned(x) < unsigned(y) else '0';
 	
 	shift_y <= to_integer(signed(y(4 downto 0)));
-	sha <= shift_right(signed(x), -shift_y) when y(4) = '1' else
-			   shift_left(signed(x), shift_y) ;
+	sha <= shift_right(signed(x), -shift_y)   when y(4) = '1' else
+			 shift_left(signed(x),   shift_y);
 	shl <= shift_right(unsigned(x), -shift_y) when y(4) = '1' else
-			 shift_left(unsigned(x), shift_y) ;
+			 shift_left(unsigned(x),   shift_y);
 			 
 			 
-	mul <= std_logic_vector(signed(x) * signed(y));
-	mulu <= std_logic_vector(unsigned(x) * unsigned(y));
+	mul  <= std_logic_vector(signed(x)   *  signed(y));
+	mulu <= std_logic_vector(unsigned(x) *  unsigned(y));
 	
-	div <= std_logic_vector(signed(x) / signed(y));
-	divu <= std_logic_vector(unsigned(x) / unsigned(y));
+	div  <= std_logic_vector(signed(x)   /  signed(y));
+	divu <= std_logic_vector(unsigned(x) /  unsigned(y));
 
 	
 	with op select w_t <=
-		y 										         when ALU_MOVI,
+		y 										         when ALU_Y,
 		x                                      when ALU_X,
 		y(7 downto 0) & x(7 downto 0)          when ALU_MOVHI,
 		x + y                           			when ALU_ADD,
@@ -73,7 +75,4 @@ BEGIN
 		divu                                   when ALU_DIVU,	
 		(others => '0') when others;
 		
-
-	
-
 END Structure;

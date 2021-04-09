@@ -53,22 +53,33 @@ BEGIN
 
 	data_wr <= b_o;
 
-	BR: regfile PORT MAP(clk => clk, wrd => wrd, d => reg_d , addr_a => addr_a, addr_b => addr_b, addr_d => addr_d, a => atox, b => b_o );
-	ALUop: alu PORT MAP(x => atox, y => y_i , op => op, w => wtod );
+	BR: regfile PORT MAP(clk     =>  clk,
+	                     wrd     =>  wrd,
+								d       =>  reg_d ,
+								addr_a  =>  addr_a,
+								addr_b  =>  addr_b,
+								addr_d  =>  addr_d,
+								a       =>  atox,
+								b       =>  b_o );
+
+	ALUop: alu PORT MAP(x   =>  atox,
+	                    y   =>  y_i,
+							  op  =>  op,
+							  w   =>  wtod );
 	 
 	y_i <= b_o when Rb_N = '0' else immed_y;
 	
-	with immed_x2 select immed_y <=
-		immed(14 downto 0) & '0' when '1',
-		immed when others;
+	with immed_x2 select immed_y <= 
+	   immed(14 downto 0) & '0' when  '1',
+		immed                    when  others;
 		
 	with in_d select reg_d <=
-		datard_m when '1',
-		wtod when others;
+		datard_m  when  '1',
+		wtod      when  others;
 		
 	with ins_dad select addr_m <=
-		wtod when '1',
-		pc when others;
+		wtod  when  '1',
+		pc    when  others;
 
 
 END Structure;

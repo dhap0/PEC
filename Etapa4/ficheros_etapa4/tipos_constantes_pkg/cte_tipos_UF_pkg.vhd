@@ -25,9 +25,9 @@ constant ALU_CMPLEQ:  codigo_alu_op := "01010";
 constant ALU_CMPLTU:  codigo_alu_op := "01011";
 constant ALU_CMPLEU:  codigo_alu_op := "01100";
 
--- MOV
-constant ALU_MOVI:    codigo_alu_op := "01101";
-constant ALU_MOVHI:   codigo_alu_op := "01110";
+-- Z
+constant ALU_Y:    codigo_alu_op := "01101";
+constant ALU_X:    codigo_alu_op := "01110";
 
 -- MUL/DIV
 
@@ -37,8 +37,8 @@ constant ALU_MULHU:   codigo_alu_op := "10001";
 constant ALU_DIV:     codigo_alu_op := "10010";
 constant ALU_DIVU:    codigo_alu_op := "10011";
 
--- Z
-constant ALU_X:       codigo_alu_op := "10100";
+-- MOV
+constant ALU_MOVHI:   codigo_alu_op := "10100";
 
 constant PE:  std_logic:= '1';
 
