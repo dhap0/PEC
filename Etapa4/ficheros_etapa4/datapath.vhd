@@ -42,11 +42,11 @@ ARCHITECTURE Structure OF datapath IS
 	END COMPONENT;
 	COMPONENT alu IS
 		PORT (
-			x : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-			y : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+			x  : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+			y  : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 			op : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
-			w : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-			z : OUT STD_LOGIC);
+			w  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			z  : OUT STD_LOGIC);
 	END COMPONENT;
 signal atox, wtod, immed_y, reg_d: STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal y_i : std_logic_vector(15 downto 0);

@@ -101,14 +101,17 @@ BEGIN
 								ins_dad    =>  ins_dad,
 								word_byte  =>  word_byte);
 								
-	 tmp_pc <= 	x"C000" when boot = '1' else
-					new_pc + 2 when ldpc_o = '1' else
+	 tmp_pc <= 	x"C000"     when boot = '1'    else
+					new_pc + 2  when ldpc_o = '1'  else
 					new_pc;
+					
 	 new_pc <= tmp_pc when rising_edge(clk);
-	 pc <= new_pc(15 DOWNTO 1) & '0';
-	 ir <= 	x"C000" when boot = '1' else
-					datard_m when ldir_o = '1' else
-					ir_reg;
-	 ir_reg <= ir when rising_edge(clk);
+	 
+	 pc     <= new_pc(15 DOWNTO 1) & '0';
+	 
+	 ir     <= 	x"C000"    when boot = '1'    else
+				   datard_m   when ldir_o = '1'  else  ir_reg;
+	 
+	 ir_reg <=  ir         when rising_edge(clk);
 
 END Structure;
