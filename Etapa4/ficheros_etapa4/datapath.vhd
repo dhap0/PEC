@@ -6,21 +6,22 @@ USE work.cte_tipos_UF_pkg.all;
 
 ENTITY datapath IS
 	PORT (
-		clk : IN STD_LOGIC;
-		op : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
-		wrd : IN STD_LOGIC;
-		addr_a : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-		addr_b : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-		addr_d : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
-		immed : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		immed_x2 : IN STD_LOGIC;
-		datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		ins_dad : IN STD_LOGIC;
-		pc : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		in_d : IN STD_LOGIC;
-		Rb_N : IN STD_LOGIC;
-		addr_m : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)); 
+		clk:       IN  STD_LOGIC;
+		op:        IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
+		wrd:       IN  STD_LOGIC;
+		addr_a:    IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+		addr_b:    IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+		addr_d:    IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+		immed:     IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		immed_x2:  IN  STD_LOGIC;
+		datard_m:  IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		ins_dad:   IN  STD_LOGIC;
+		pc:        IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		in_d:      IN  STD_LOGIC;
+		Rb_N:      IN  STD_LOGIC;
+		z:         OUT STD_LOGIC;
+		addr_m:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		data_wr:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0)); 
 END datapath;
 
 
@@ -44,7 +45,8 @@ ARCHITECTURE Structure OF datapath IS
 			x : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 			y : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 			op : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
-			w : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
+			w : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			z : OUT STD_LOGIC);
 	END COMPONENT;
 signal atox, wtod, immed_y, reg_d: STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal y_i : std_logic_vector(15 downto 0);
@@ -65,7 +67,8 @@ BEGIN
 	ALUop: alu PORT MAP(x   =>  atox,
 	                    y   =>  y_i,
 							  op  =>  op,
-							  w   =>  wtod );
+							  w   =>  wtod,
+							  z   =>  z);
 	 
 	y_i <= b_o when Rb_N = '0' else immed_y;
 	

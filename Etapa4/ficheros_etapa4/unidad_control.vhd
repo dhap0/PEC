@@ -9,22 +9,23 @@ USE work.cte_tipos_UF_pkg.all;
 
 ENTITY unidad_control IS
 	PORT (
-		boot : IN STD_LOGIC;
-		clk : IN STD_LOGIC;
-		datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		op : OUT  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
-		Rb_N : OUT STD_LOGIC;
-		wrd : OUT STD_LOGIC;
-		addr_a : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-		addr_b : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-		addr_d : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-		immed : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		pc : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		ins_dad : OUT STD_LOGIC;
-		in_d : OUT STD_LOGIC;
-		immed_x2 : OUT STD_LOGIC;
-		wr_m : OUT STD_LOGIC;
-		word_byte : OUT STD_LOGIC);
+		boot:      IN STD_LOGIC;
+		clk :      IN STD_LOGIC;
+		datard_m:  IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		z:         IN STD_LOGIC;
+		op:        OUT  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
+		Rb_N:      OUT STD_LOGIC;
+		wrd:       OUT STD_LOGIC;
+		addr_a:    OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+		addr_b:    OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+		addr_d:    OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+		immed:     OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		pc:        OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		ins_dad:   OUT STD_LOGIC;
+		in_d:      OUT STD_LOGIC;
+		immed_x2:  OUT STD_LOGIC;
+		wr_m:      OUT STD_LOGIC;
+		word_byte: OUT STD_LOGIC);
 END unidad_control;
 
 ARCHITECTURE Structure OF unidad_control IS

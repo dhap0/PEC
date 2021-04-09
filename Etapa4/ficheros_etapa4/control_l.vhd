@@ -8,14 +8,16 @@ use work.cte_tipos_UC_pkg.all;
 use work.cte_tipos_UF_pkg.all;
 
 ENTITY control_l IS
- PORT (ir        : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+ PORT (ir        : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+       z         : IN  STD_LOGIC;
+		 tknbr     : OUT STD_LOGIC;
 		 op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 DOWNTO 0);
 		 Rb_N      : OUT STD_LOGIC;
 		 ldpc      : OUT STD_LOGIC;
 		 wrd       : OUT STD_LOGIC;
-		 addr_a    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-		 addr_b    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-		 addr_d    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+		 addr_a    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
+		 addr_b    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
+		 addr_d    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
 		 immed     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		 wr_m      : OUT STD_LOGIC;
 		 in_d      : OUT STD_LOGIC;
