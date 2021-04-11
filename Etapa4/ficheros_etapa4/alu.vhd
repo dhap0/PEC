@@ -29,7 +29,7 @@ signal shift_y: integer;
 
 BEGIN
 	w <= w_t;
-	z <= '1' when w_t = 0 else '0';
+	z <= '1' when y = x"0" else '0';
 	
 	resta <= x - y;
 	

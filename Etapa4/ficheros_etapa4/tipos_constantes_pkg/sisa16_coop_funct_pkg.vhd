@@ -38,7 +38,8 @@ constant F1_BNZ   : campofunct1 := '1';
 -- F3_JMP
 constant F3_JZ    : campofunct3  := "000";
 constant F3_JNZ   : campofunct3  := "001";
-constant F3_JMP   : campofunct3  := "100";
+constant F3_JMP   : campofunct3  := "011";
+constant F3_JAL   : campofunct3  := "100";
 
 -- F3_CMP
 constant F3_CMPLT : campofunct3  := "000";
