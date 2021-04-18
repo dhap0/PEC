@@ -23,9 +23,11 @@ ENTITY datapath IS
 		in_d:      IN  STD_LOGIC_VECTOR(1  DOWNTO 0);
 		Rb_N:      IN  STD_LOGIC;
 		tknbr:     IN  STD_LOGIC_VECTOR(1  DOWNTO 0);
+		rd_io:     IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		pc_out:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		z:         OUT STD_LOGIC;
 		addr_m:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		wr_io:     OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0)); 
 END datapath;
 ARCHITECTURE Structure OF datapath IS
@@ -38,7 +40,7 @@ ARCHITECTURE Structure OF datapath IS
           wrd    : IN  STD_LOGIC;
           d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
-			    addr_b : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+			 addr_b : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
           b      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
@@ -83,6 +85,7 @@ BEGIN
 		datard_m        when  REGFILE_D_MEM,
 		pc_in + 2       when  REGFILE_D_PC,
 		wtod            when  REGFILE_D_ALU,
+		rd_io           when  REGFILE_D_IO,
 		(others => '0') when others;
 		
 	with ins_dad select addr_m <= 
@@ -97,5 +100,6 @@ BEGIN
 		pc_in                when others; 
 	
 	pc_out <= pc_next;
+	wr_io <= b_o;
 
 END Structure;

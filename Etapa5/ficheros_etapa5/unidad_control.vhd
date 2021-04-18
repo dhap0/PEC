@@ -27,6 +27,9 @@ ENTITY unidad_control IS
 		in_d:      OUT  STD_LOGIC_VECTOR(1  DOWNTO 0);
 		immed_x2:  OUT  STD_LOGIC;
 		wr_m:      OUT  STD_LOGIC;
+		addr_io   : OUT STD_LOGIC_VECTOR(7 downto 0);
+		rd_in     : OUT STD_LOGIC;
+	   wr_out     : OUT STD_LOGIC;
 		word_byte: OUT  STD_LOGIC);
 END unidad_control;
 
@@ -50,6 +53,9 @@ ARCHITECTURE Structure OF unidad_control IS
 		      wr_m      : OUT STD_LOGIC;
 		      in_d      : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
 		      immed_x2  : OUT STD_LOGIC;
+				addr_io   : OUT STD_LOGIC_VECTOR(7 downto 0);
+			   rd_in     : OUT STD_LOGIC;
+			   wr_out     : OUT STD_LOGIC;
 		      word_byte : OUT STD_LOGIC);
 	END COMPONENT;
 	COMPONENT multi IS
@@ -96,6 +102,9 @@ BEGIN
 	                           wr_m       =>  wr_m_t,
 	                           in_d       =>  in_d,
 	                           immed_x2   =>  immed_x2,
+										addr_io   => addr_io, 
+			                     rd_in     => rd_in, 
+			                     wr_out     => wr_out,
 	                           word_byte  =>  w_b_t);
 										
 	 m0 : multi PORT MAP(clk        =>  clk,

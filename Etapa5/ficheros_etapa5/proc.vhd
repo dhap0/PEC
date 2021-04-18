@@ -7,15 +7,16 @@ ENTITY proc IS
 	PORT (
 		clk:       IN  STD_LOGIC;
 		boot:      IN  STD_LOGIC;
+		rd_io:     IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		datard_m:  IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		addr_m:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		wr_m:      OUT STD_LOGIC;
 		word_byte: OUT STD_LOGIC;
-		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
-		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
-		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
-		HEX3 : OUT std_logic_vector(6 DOWNTO 0)
+		addr_io   : OUT STD_LOGIC_VECTOR(7 downto 0); 
+		rd_in     : OUT STD_LOGIC; 
+		wr_io:     OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		wr_out     : OUT STD_LOGIC
 	);
 END proc;
 
@@ -26,7 +27,9 @@ ARCHITECTURE Structure OF proc IS
     -- Usaremos la palabra reservada COMPONENT ...
     -- Tambien crearemos los cables/buses (signals) necesarios para unir las entidades
 	 COMPONENT datapath IS
-		PORT (clk:      IN  STD_LOGIC;			   op:       IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);			   Rb_N:     IN  STD_LOGIC;			   wrd:      IN  STD_LOGIC;			   addr_a:   IN  STD_LOGIC_VECTOR(2 DOWNTO 0);			   addr_b:   IN  STD_LOGIC_VECTOR(2 DOWNTO 0);			   addr_d:   IN  STD_LOGIC_VECTOR(2 DOWNTO 0);			   immed:    IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   immed_x2: IN  STD_LOGIC;			   datard_m: IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   ins_dad:  IN  STD_LOGIC;			   pc_in:    IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   in_d:     IN  STD_LOGIC_VECTOR(1  DOWNTO 0);			   tknbr:    IN  STD_LOGIC_VECTOR(1  DOWNTO 0);			   pc_out:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   addr_m:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   data_wr:  OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   z:        OUT STD_LOGIC); 
+		PORT (clk:      IN  STD_LOGIC;			   op:       IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);			   Rb_N:     IN  STD_LOGIC;			   wrd:      IN  STD_LOGIC;			   addr_a:   IN  STD_LOGIC_VECTOR(2 DOWNTO 0);			   addr_b:   IN  STD_LOGIC_VECTOR(2 DOWNTO 0);			   addr_d:   IN  STD_LOGIC_VECTOR(2 DOWNTO 0);			   immed:    IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   immed_x2: IN  STD_LOGIC;			   datard_m: IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   ins_dad:  IN  STD_LOGIC;			   pc_in:    IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   in_d:     IN  STD_LOGIC_VECTOR(1  DOWNTO 0);			   tknbr:    IN  STD_LOGIC_VECTOR(1  DOWNTO 0);
+				rd_io:     IN STD_LOGIC_VECTOR(15 DOWNTO 0);			   pc_out:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   addr_m:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+				wr_io:     OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   data_wr:  OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   z:        OUT STD_LOGIC); 
 	END COMPONENT;
 	COMPONENT unidad_control IS
 		PORT (boot:      IN  STD_LOGIC;
@@ -47,21 +50,12 @@ ARCHITECTURE Structure OF proc IS
 		      in_d:      OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
 		      immed_x2:  OUT STD_LOGIC;
 		      wr_m:      OUT STD_LOGIC;
+				addr_io: OUT STD_LOGIC_VECTOR(7 downto 0);
+			   rd_in: OUT STD_LOGIC;
+			   wr_out: OUT STD_LOGIC;
 		      word_byte: OUT STD_LOGIC
 	);
 	END COMPONENT;
-	
-	
-	COMPONENT driverHex IS
-	PORT (
-		num : IN std_logic_vector(15 DOWNTO 0);
-		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
-		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
-		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
-		HEX3 : OUT std_logic_vector(6 DOWNTO 0)
-	);
-END COMPONENT;
-
 
 
 	signal w2w:          STD_LOGIC;
@@ -102,6 +96,10 @@ BEGIN
 	                              ins_dad   => insd2insd,
 	                              in_d      => ind2ind,
 	                              wr_m      => wr_m,
+											addr_io   => addr_io, 
+			                        rd_in     => rd_in, 
+			                        wr_out     => wr_out,
+											
 	                              word_byte => word_byte);
 											
 	 e0 : datapath PORT MAP(clk       =>  clk,
@@ -118,17 +116,13 @@ BEGIN
 	                        ins_dad   =>  insd2insd,
 	                        pc_in     =>  c0_pc_out,
 	                        pc_out    =>  e0_pc_out,
+									rd_io     => rd_io,
+									wr_io      => wr_io,
 	                        in_d      =>  ind2ind,
 	                        tknbr     =>  c0_tknbr_out,
 	                        addr_m    =>  addr_m,
 	                        data_wr   =>  data_wr);
 									
-									
-driver : driverHex
-  port map    (num  => c0_pc_out,
-               HEX0 => HEX0,
-					HEX1 => HEX1,
-					HEX2 => HEX2,
-					HEX3 => HEX3);
+
 
 END Structure;

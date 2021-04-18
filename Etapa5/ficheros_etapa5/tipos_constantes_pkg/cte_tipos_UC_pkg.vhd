@@ -18,6 +18,7 @@ constant PC_BLOQ:  std_logic_vector(1 downto 0) := "11";
 constant REGFILE_D_ALU: std_logic_vector(1 downto 0) := "00";
 constant REGFILE_D_MEM: std_logic_vector(1 downto 0) := "01";
 constant REGFILE_D_PC:  std_logic_vector(1 downto 0) := "10";
+constant REGFILE_D_IO:  std_logic_vector(1 downto 0) := "11";
 
 constant PC_INI: std_logic_vector(15 downto 0) := x"C000";
 

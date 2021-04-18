@@ -21,6 +21,9 @@ ENTITY control_l IS
     		 wr_m      : OUT STD_LOGIC;
     		 in_d      : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
     		 immed_x2  : OUT STD_LOGIC;
+		    addr_io   : OUT STD_LOGIC_VECTOR(7 downto 0);
+		    rd_in     : OUT STD_LOGIC;
+	       wr_out     : OUT STD_LOGIC;
     		 word_byte : OUT STD_LOGIC);
 END control_l;
 
@@ -45,8 +48,8 @@ BEGIN
 	
 	op <= ALU_MOVHI  when  coop = COOP_MOV  and f1 = F1_MOVHI  else
 	      ALU_X      when  coop = COOP_JMP                     else
-			  ALU_Y      when  coop = COOP_MOV  and f1 = F1_MOVI   else
-			  ALU_ADD    when  coop = COOP_LD   
+			ALU_Y      when  coop = COOP_MOV  and f1 = F1_MOVI   else
+			ALU_ADD    when  coop = COOP_LD   
 			               or  coop = COOP_ST 
 			               or  coop = COOP_LDB  
 					      		   or  coop = COOP_STB
@@ -76,7 +79,7 @@ BEGIN
 	              or coop = COOP_EA
 	              or coop = COOP_BR 
 	              or coop = COOP_JMP else '1';
-	
+	--  addr_io, rd_in, wr_out y la señal del nuevo multiplexor del datapath.
 	wrd <= PE when coop = COOP_MOV  or
 	               coop = COOP_LD   or
 	               coop = COOP_LDB  or
@@ -96,15 +99,21 @@ BEGIN
 				 
 	addr_b <= ir(11 downto 9) when coop = COOP_ST
 	                            or coop = COOP_STB 
-	                            or coop = COOP_BR 
+	                            or coop = COOP_BR
+										 or coop = COOP_IO 
 	                            or coop = COOP_JMP else
             ir(2  downto 0) when coop = COOP_AL   
                               or coop = COOP_CMP 
                               or coop = COOP_EA  else (others => '0');
 				 
 	addr_d <= ir(11 downto 9);
+	
+	addr_io <= immed_8;
+	rd_in  <= not f1 when coop = COOP_IO else '0';
+	wr_out <= f1 when coop = COOP_IO else '0';
 
-	immed <= std_logic_vector(resize(signed(immed_8), immed'length)) when coop = COOP_MOV  else
+	immed <= std_logic_vector(resize(signed(immed_8), immed'length)) when coop = COOP_MOV 
+	                                                                   or coop = COOP_IO else
 		      std_logic_vector(resize(signed(immed_6), immed'length))  when coop = COOP_ST 
 				                                                             or coop = COOP_LD
 				                                                             or coop = COOP_STB 

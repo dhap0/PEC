@@ -21,6 +21,7 @@ constant COOP_LD:       codigooper := "0011";
 constant COOP_ST:       codigooper := "0100";
 constant COOP_MOV:      codigooper := "0101";
 constant COOP_BR:       codigooper := "0110";
+constant COOP_IO:       codigooper := "0111";
 constant COOP_EA:       codigooper := "1000";
 constant COOP_JMP:      codigooper := "1010";
 constant COOP_LDB:      codigooper := "1101";
@@ -30,6 +31,9 @@ constant COOP_HALT:     codigooper := "1111";
 
 constant F1_MOVHI:  campofunct1 := '1';
 constant F1_MOVI:   campofunct1 := '0';
+
+constant F1_IN: campofunct1 := '0';
+constant F1_OUT: campofunct1 := '1';
 
 -- F3_BR
 constant F1_BZ    : campofunct1 := '0';
