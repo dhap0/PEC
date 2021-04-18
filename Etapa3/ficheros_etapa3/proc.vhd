@@ -1,5 +1,8 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
+USE ieee.numeric_std.all;
+USE ieee.std_logic_unsigned.all;
+
 LIBRARY work;
 USE work.cte_tipos_UF_pkg.all;
 
@@ -11,7 +14,12 @@ ENTITY proc IS
 		addr_m : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		wr_m : OUT STD_LOGIC;
-		word_byte : OUT STD_LOGIC
+		word_byte : OUT STD_LOGIC;
+		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX3 : OUT std_logic_vector(6 DOWNTO 0);
+		LEDR : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
 	);
 END proc;
 
@@ -33,8 +41,10 @@ ARCHITECTURE Structure OF proc IS
 				immed_x2 : IN STD_LOGIC;
 				datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 				ins_dad : IN STD_LOGIC;
-				pc : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+				pc_in : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 				in_d : IN STD_LOGIC;
+				ldpc_o : IN STD_LOGIC;
+				pc_out : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				addr_m : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)); 
 	END COMPONENT;
@@ -49,19 +59,35 @@ ARCHITECTURE Structure OF proc IS
 				addr_b : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 				addr_d : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 				immed : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-				pc : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+				pc_in : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+				pc_out : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				ins_dad : OUT STD_LOGIC;
 				in_d : OUT STD_LOGIC;
+				ldpc_o : OUT STD_LOGIC;
 				immed_x2 : OUT STD_LOGIC;
 				wr_m : OUT STD_LOGIC;
 				word_byte : OUT STD_LOGIC
 	);
 	END COMPONENT;
+	
+	COMPONENT driverHex IS
+	PORT (
+		num : IN std_logic_vector(15 DOWNTO 0);
+		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX3 : OUT std_logic_vector(6 DOWNTO 0)
+	);
+	END COMPONENT;
+
+
 	signal w2w, insd2insd, ix2ix, ind2ind : STD_LOGIC;
 	signal o2o : STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 	signal a2a, b2b, d2d: STD_LOGIC_VECTOR(2 DOWNTO 0);
-	signal i2i, pc2pc : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal i2i, c0_pc_out : STD_LOGIC_VECTOR(15 DOWNTO 0);
 	signal rb2rb : STD_LOGIC;
+	signal e0_pc_out : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal c0_ldpc_o : STD_LOGIC;
 
 BEGIN
 
@@ -70,6 +96,7 @@ BEGIN
 	 c0 : unidad_control PORT MAP(boot      => boot,
 	                              clk       => clk,
 											datard_m  => datard_m,
+											pc_in     => e0_pc_out,
 											op        => o2o,
 											Rb_N      => rb2rb,
 											wrd       => w2w,
@@ -78,10 +105,11 @@ BEGIN
 											addr_d    => d2d,
 											immed     => i2i,
 											immed_x2  => ix2ix,
-											pc        => pc2pc,
+											pc_out        => c0_pc_out,
 											ins_dad   => insd2insd,
 											in_d      => ind2ind,
 											wr_m      => wr_m,
+											ldpc_o    => c0_ldpc_o,
 											word_byte => word_byte);
 											
 	 e0 : datapath PORT MAP(clk       =>  clk,
@@ -95,9 +123,20 @@ BEGIN
 									immed_x2  =>  ix2ix,
 									datard_m  =>  datard_m,
 									ins_dad   =>  insd2insd,
-									pc        =>  pc2pc,
+									pc_in        =>  c0_pc_out,
+									pc_out    => e0_pc_out,
+									ldpc_o    => c0_ldpc_o,
 									in_d      =>  ind2ind,
 									addr_m    =>  addr_m,
 									data_wr   =>  data_wr);
+									
+LEDR(0) <= c0_ldpc_o;
+
+driver : driverHex
+  port map    (num  => c0_pc_out,--"0000000000000001",
+               HEX0 => HEX0,
+					HEX1 => HEX1,
+					HEX2 => HEX2,
+					HEX3 => HEX3);
 
 END Structure;

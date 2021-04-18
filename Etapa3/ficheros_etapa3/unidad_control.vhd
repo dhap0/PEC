@@ -11,6 +11,7 @@ ENTITY unidad_control IS
 	PORT (
 		boot : IN STD_LOGIC;
 		clk : IN STD_LOGIC;
+		pc_in     : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		op : OUT  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		Rb_N : OUT STD_LOGIC;
@@ -19,12 +20,13 @@ ENTITY unidad_control IS
 		addr_b : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 		addr_d : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 		immed : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		pc : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		pc_out : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		ins_dad : OUT STD_LOGIC;
 		in_d : OUT STD_LOGIC;
 		immed_x2 : OUT STD_LOGIC;
 		wr_m : OUT STD_LOGIC;
-		word_byte : OUT STD_LOGIC);
+		word_byte : OUT STD_LOGIC;
+		ldpc_o : OUT STD_LOGIC);
 END unidad_control;
 
 ARCHITECTURE Structure OF unidad_control IS
@@ -63,8 +65,13 @@ ARCHITECTURE Structure OF unidad_control IS
 				word_byte : OUT STD_LOGIC);
 	END COMPONENT;
 	
-	signal new_pc, tmp_pc, ir, ir_reg : STD_LOGIC_VECTOR(15 DOWNTO 0);
-	signal ldpc_t, ldpc_o, wrd_t, wr_m_t, w_b_t, ldir_o: STD_LOGIC;
+	signal pc_new, pc_tmp, ir, ir_reg : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal ldpc_t: STD_LOGIC;
+	signal m0_ldpc_o: STD_LOGIC;
+	signal wrd_t: STD_LOGIC;
+	signal wr_m_t: STD_LOGIC;
+	signal w_b_t: STD_LOGIC;
+	signal ldir_o: STD_LOGIC;
 
 BEGIN
 
@@ -98,11 +105,21 @@ BEGIN
 								ins_dad    =>  ins_dad,
 								word_byte  =>  word_byte);
 								
-	 tmp_pc <= 	x"C000" when boot = '1' else
-					new_pc + 2 when ldpc_o = '1' else
-					new_pc;
-	 new_pc <= tmp_pc when rising_edge(clk);
-	 pc <= new_pc(15 DOWNTO 1) & '0';
+--	 tmp_pc <= 	x"C000" when boot = '1' else
+--					new_pc + 2 when ldpc_o = '1' else
+--					x"C000";
+--	 new_pc <= tmp_pc when rising_edge(clk);
+--	 pc <= new_pc(15 DOWNTO 1) & '0';
+
+	 pc_tmp <= 	x"C000" when boot  = '1' else pc_in;
+					
+	 pc_new <= pc_tmp when rising_edge(clk);
+	 
+	 pc_out <= pc_new(15 DOWNTO 1) & '0';
+	 
+	 --ldpc_o <= m0_ldpc_o;
+	 --ldpc_o <= ldpc_t;
+
 	 ir <= 	x"C000" when boot = '1' else
 					datard_m when ldir_o = '1' else
 					ir_reg;

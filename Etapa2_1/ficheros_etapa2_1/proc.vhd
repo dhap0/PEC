@@ -9,7 +9,12 @@ ENTITY proc IS
 		addr_m : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		wr_m : OUT STD_LOGIC;
-		word_byte : OUT STD_LOGIC
+		word_byte : OUT STD_LOGIC;
+		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX3 : OUT std_logic_vector(6 DOWNTO 0);
+		LEDR : OUT std_logic_vector(9 downto 0)
 	);
 END proc;
 
@@ -33,7 +38,8 @@ ARCHITECTURE Structure OF proc IS
 				pc : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 				in_d : IN STD_LOGIC;
 				addr_m : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-				data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)); 
+				data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)
+			); 
 	END COMPONENT;
 	COMPONENT unidad_control IS
 		PORT (boot : IN STD_LOGIC;
@@ -53,6 +59,18 @@ ARCHITECTURE Structure OF proc IS
 				word_byte : OUT STD_LOGIC
 	);
 	END COMPONENT;
+	
+	component driverHex IS
+	PORT (
+		num : IN std_logic_vector(15 DOWNTO 0);
+		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX3 : OUT std_logic_vector(6 DOWNTO 0)
+	);
+END component;
+
+
 	signal w2w, insd2insd, ix2ix, ind2ind : STD_LOGIC;
 	signal o2o : STD_LOGIC_VECTOR(1 DOWNTO 0);
 	signal a2a, b2b, d2d: STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -66,5 +84,10 @@ BEGIN
 											immed => i2i, pc => pc2pc, ins_dad => insd2insd, in_d => ind2ind, immed_x2 => ix2ix, wr_m => wr_m, word_byte => word_byte );
 	 e0 : datapath PORT MAP(clk => clk, op => o2o, wrd => w2w, addr_a => a2a, addr_b => b2b, addr_d => d2d, immed => i2i, immed_x2 => ix2ix,
 									datard_m => datard_m, ins_dad => insd2insd, pc => pc2pc, in_d => ind2ind, addr_m => addr_m, data_wr => data_wr);
-
+driver : driverHex
+  port map    (num  => datard_m, --"0000000000000001",
+               HEX0 => HEX0,
+					HEX1 => HEX1,
+					HEX2 => HEX2,
+					HEX3 => HEX3);
 END Structure;

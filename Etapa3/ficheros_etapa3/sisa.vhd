@@ -12,7 +12,14 @@ ENTITY sisa IS
           SRAM_CE_N : out   std_logic := '1';
           SRAM_OE_N : out   std_logic := '1';
           SRAM_WE_N : out   std_logic := '1';
-          SW        : in std_logic_vector(9 downto 9));
+          -- SW        : in std_logic_vector(9 downto 9));
+			 SW        : in std_logic_vector(9 downto 0);
+			 KEY       : in std_logic_vector(0 downto 0);
+			 LEDR :  OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
+			 HEX0 : OUT std_logic_vector(6 DOWNTO 0);
+		    HEX1 : OUT std_logic_vector(6 DOWNTO 0);
+		    HEX2 : OUT std_logic_vector(6 DOWNTO 0);
+		    HEX3 : OUT std_logic_vector(6 DOWNTO 0));
 END sisa;
 
 ARCHITECTURE Structure OF sisa IS
@@ -40,7 +47,12 @@ component proc IS
 		addr_m : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		wr_m : OUT STD_LOGIC;
-		word_byte : OUT STD_LOGIC
+		word_byte : OUT STD_LOGIC;
+		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX3 : OUT std_logic_vector(6 DOWNTO 0);
+		LEDR : OUT std_logic_vector(9 downto 0)
 	);
 end component;
 component Reloj is
@@ -61,7 +73,12 @@ BEGIN
 								  addr_m => addr_m_t,
 								  data_wr => data_wr_t,
 								  wr_m => wr_m_t,
-								  word_byte => word_byte_t);
+								  word_byte => word_byte_t,
+								  HEX0 => HEX0,
+								  HEX1 => HEX1,
+								  HEX2 => HEX2,
+								  HEX3 => HEX3,
+								  LEDR => LEDR);
 								  
 	mem0	: memoryController PORT MAP (CLOCK_50 => CLOCK_50, 
 												  addr => addr_m_t,
@@ -76,5 +93,6 @@ BEGIN
                                       SRAM_CE_N => SRAM_CE_N,
                                       SRAM_OE_N => SRAM_OE_N,
                                       SRAM_WE_N => SRAM_WE_N);
+
 
 END Structure;

@@ -11,7 +11,11 @@ ENTITY proc IS
 		addr_m:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		wr_m:      OUT STD_LOGIC;
-		word_byte: OUT STD_LOGIC
+		word_byte: OUT STD_LOGIC;
+		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX3 : OUT std_logic_vector(6 DOWNTO 0)
 	);
 END proc;
 
@@ -46,20 +50,34 @@ ARCHITECTURE Structure OF proc IS
 		      word_byte: OUT STD_LOGIC
 	);
 	END COMPONENT;
-	signal w2w:       STD_LOGIC;
-	signal insd2insd: STD_LOGIC;
-	signal ix2ix:     STD_LOGIC;
-	signal ind2ind:   STD_LOGIC_VECTOR(1 DOWNTO 0);
-	signal rb2rb:     STD_LOGIC;
-	signal z2z:       STD_LOGIC;
-	signal o2o:       STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
-	signal a2a:       STD_LOGIC_VECTOR(2 DOWNTO 0);
-	signal b2b:       STD_LOGIC_VECTOR(2 DOWNTO 0);
-	signal d2d:       STD_LOGIC_VECTOR(2 DOWNTO 0);
-	signal i2i:       STD_LOGIC_VECTOR(15 DOWNTO 0);
-	signal e0_pc_out: STD_LOGIC_VECTOR(15 DOWNTO 0);
-	signal c0_pc_out: STD_LOGIC_VECTOR(15 DOWNTO 0);
-	signal c0_tknbr:  STD_LOGIC_VECTOR(1  DOWNTO 0);
+	
+	
+	COMPONENT driverHex IS
+	PORT (
+		num : IN std_logic_vector(15 DOWNTO 0);
+		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
+		HEX3 : OUT std_logic_vector(6 DOWNTO 0)
+	);
+END COMPONENT;
+
+
+
+	signal w2w:          STD_LOGIC;
+	signal insd2insd:    STD_LOGIC;
+	signal ix2ix:        STD_LOGIC;
+	signal ind2ind:      STD_LOGIC_VECTOR(1 DOWNTO 0);
+	signal rb2rb:        STD_LOGIC;
+	signal z2z:          STD_LOGIC;
+	signal o2o:          STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
+	signal a2a:          STD_LOGIC_VECTOR(2 DOWNTO 0);
+	signal b2b:          STD_LOGIC_VECTOR(2 DOWNTO 0);
+	signal d2d:          STD_LOGIC_VECTOR(2 DOWNTO 0);
+	signal i2i:          STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal e0_pc_out:    STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal c0_pc_out:    STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal c0_tknbr_out: STD_LOGIC_VECTOR(1  DOWNTO 0);
 	
 
 BEGIN
@@ -73,7 +91,7 @@ BEGIN
 	                              Rb_N      => rb2rb,
 	                              z         => z2z,
 	                              wrd       => w2w,
-	                              tknbr     => c0_tknbr,
+	                              tknbr     => c0_tknbr_out,
 	                              addr_a    => a2a,
 	                              addr_b    => b2b,
 	                              addr_d    => d2d,
@@ -101,8 +119,16 @@ BEGIN
 	                        pc_in     =>  c0_pc_out,
 	                        pc_out    =>  e0_pc_out,
 	                        in_d      =>  ind2ind,
-	                        tknbr     =>  c0_tknbr,
+	                        tknbr     =>  c0_tknbr_out,
 	                        addr_m    =>  addr_m,
 	                        data_wr   =>  data_wr);
+									
+									
+driver : driverHex
+  port map    (num  => c0_pc_out,
+               HEX0 => HEX0,
+					HEX1 => HEX1,
+					HEX2 => HEX2,
+					HEX3 => HEX3);
 
 END Structure;

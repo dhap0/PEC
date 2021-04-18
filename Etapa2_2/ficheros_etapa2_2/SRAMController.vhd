@@ -54,28 +54,27 @@ begin
 	SRAM_ADDR <= "000" & address(15 downto 1);
 	
 	
-	-- TODO: aixo sha de millorar
-	process(clk)
+
+		process(clk, WR)
 	begin
-		case state is 
-			when Idl =>
-				if WR = '1' and we = '0' then
-					state <= Esc;
-				elsif WR = '0' then
-				  we <= '0';
-				end if;
-			when Esc =>
-			   if we = '0' then
-					we <= '1';
-				 else 
-				  state <= Idl;
-				 end if;
-
-
-		end case;		
+		if WR = '0' then
+			we <= '1';
+		elsif rising_edge(clk) then
+			case state is
+				when Idl => 
+					if we = '1' then
+						state <= Esc;
+						we <= '0';
+					else state <= Idl;
+					end if;
+				when others => 
+					state <= Idl;
+					
+			end case;
+			
+		end if;
 	end process;
 
 	
 	
 end comportament;
-

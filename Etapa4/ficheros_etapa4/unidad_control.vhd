@@ -120,8 +120,8 @@ BEGIN
 	 pc_out <= pc_new(15 DOWNTO 1) & '0';
 	 
 	 ir     <= 	x"C000"    when boot = '1'    else
-				   datard_m   when ldir_o = '1'  else  
-				   ir_reg;
+				      datard_m   when ldir_o = '1'  else  
+				      ir_reg;
 					
 	 ir_reg <=  ir when rising_edge(clk);
 	 

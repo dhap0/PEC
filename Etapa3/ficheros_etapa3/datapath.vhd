@@ -1,6 +1,9 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 USE ieee.numeric_std.all;
+USE ieee.std_logic_unsigned.all;
+
+
 LIBRARY work;
 USE work.cte_tipos_UF_pkg.all;
 
@@ -16,9 +19,11 @@ ENTITY datapath IS
 		immed_x2 : IN STD_LOGIC;
 		datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		ins_dad : IN STD_LOGIC;
-		pc : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		pc_in : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		in_d : IN STD_LOGIC;
 		Rb_N : IN STD_LOGIC;
+		ldpc_o : IN STD_LOGIC;
+		pc_out : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		addr_m : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)); 
 END datapath;
@@ -68,7 +73,8 @@ BEGIN
 		
 	with ins_dad select addr_m <=
 		wtod when '1',
-		pc when others;
+		pc_in when others;
 
+	pc_out <= pc_in + 2 when ldpc_o = '0' else pc_in;
 
 END Structure;

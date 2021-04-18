@@ -13,15 +13,15 @@ ENTITY control_l IS
        tknbr     : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
        op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 DOWNTO 0);
        Rb_N      : OUT STD_LOGIC;
-		 wrd       : OUT STD_LOGIC;
-		 addr_a    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
-		 addr_b    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
-		 addr_d    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
-		 immed     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		 wr_m      : OUT STD_LOGIC;
-		 in_d      : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
-		 immed_x2  : OUT STD_LOGIC;
-		 word_byte : OUT STD_LOGIC);
+    		 wrd       : OUT STD_LOGIC;
+    		 addr_a    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
+    		 addr_b    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
+    		 addr_d    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
+    		 immed     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+    		 wr_m      : OUT STD_LOGIC;
+    		 in_d      : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
+    		 immed_x2  : OUT STD_LOGIC;
+    		 word_byte : OUT STD_LOGIC);
 END control_l;
 
 
@@ -45,31 +45,31 @@ BEGIN
 	
 	op <= ALU_MOVHI  when  coop = COOP_MOV  and f1 = F1_MOVHI  else
 	      ALU_X      when  coop = COOP_JMP                     else
-			ALU_Y      when  coop = COOP_MOV  and f1 = F1_MOVI   else
-			ALU_ADD    when  coop = COOP_LD   
-			             or  coop = COOP_ST 
-			             or  coop = COOP_LDB  
-			     		    or  coop = COOP_STB
-							 or  coop = COOP_ADDI 
-							 or (coop = COOP_AL  and f3 = F3_ADD)   else
-		   ALU_CMPLT  when  coop = COOP_CMP  and f3 = F3_CMPLT  else
-		   ALU_CMPLE  when  coop = COOP_CMP  and f3 = F3_CMPLE  else
-		   ALU_CMPLEQ when  coop = COOP_CMP  and f3 = F3_CMPLEQ else
-		   ALU_CMPLTU when  coop = COOP_CMP  and f3 = F3_CMPLTU else
-		   ALU_CMPLEU when  coop = COOP_CMP  and f3 = F3_CMPLEU else
-		   ALU_AND    when  coop = COOP_AL   and f3 = F3_AND    else
-		   ALU_OR     when  coop = COOP_AL   and f3 = F3_OR     else
-		   ALU_XOR    when  coop = COOP_AL   and f3 = F3_XOR    else
-		   ALU_NOT    when  coop = COOP_AL   and f3 = F3_NOT    else
-		   ALU_SUB    when  coop = COOP_AL   and f3 = F3_SUB    else
-		   ALU_SHA    when  coop = COOP_AL   and f3 = F3_SHA    else
-		   ALU_SHL    when  coop = COOP_AL   and f3 = F3_SHL    else
-		   ALU_MUL    when  coop = COOP_EA   and f3 = F3_MUL    else
-		   ALU_MULH   when  coop = COOP_EA   and f3 = F3_MULH   else
-		   ALU_MULHU  when  coop = COOP_EA   and f3 = F3_MULHU  else
-		   ALU_DIV    when  coop = COOP_EA   and f3 = F3_DIV    else
-		   ALU_DIVU   when  coop = COOP_EA   and f3 = F3_DIVU   else
-		  (others => '0');
+			  ALU_Y      when  coop = COOP_MOV  and f1 = F1_MOVI   else
+			  ALU_ADD    when  coop = COOP_LD   
+			               or  coop = COOP_ST 
+			               or  coop = COOP_LDB  
+					      		   or  coop = COOP_STB
+							       or  coop = COOP_ADDI 
+							       or (coop = COOP_AL   and f3 = F3_ADD)   else
+			  ALU_CMPLT  when  coop = COOP_CMP  and f3 = F3_CMPLT  else
+			  ALU_CMPLE  when  coop = COOP_CMP  and f3 = F3_CMPLE  else
+			  ALU_CMPLEQ when  coop = COOP_CMP  and f3 = F3_CMPLEQ else
+			  ALU_CMPLTU when  coop = COOP_CMP  and f3 = F3_CMPLTU else
+			  ALU_CMPLEU when  coop = COOP_CMP  and f3 = F3_CMPLEU else
+			  ALU_AND    when  coop = COOP_AL   and f3 = F3_AND    else
+			  ALU_OR     when  coop = COOP_AL   and f3 = F3_OR     else
+			  ALU_XOR    when  coop = COOP_AL   and f3 = F3_XOR    else
+			  ALU_NOT    when  coop = COOP_AL   and f3 = F3_NOT    else
+			  ALU_SUB    when  coop = COOP_AL   and f3 = F3_SUB    else
+			  ALU_SHA    when  coop = COOP_AL   and f3 = F3_SHA    else
+			  ALU_SHL    when  coop = COOP_AL   and f3 = F3_SHL    else
+			  ALU_MUL    when  coop = COOP_EA   and f3 = F3_MUL    else
+			  ALU_MULH   when  coop = COOP_EA   and f3 = F3_MULH   else
+			  ALU_MULHU  when  coop = COOP_EA   and f3 = F3_MULHU  else
+			  ALU_DIV    when  coop = COOP_EA   and f3 = F3_DIV    else
+			  ALU_DIVU   when  coop = COOP_EA   and f3 = F3_DIVU   else
+			 (others => '0');
 	
 	Rb_N <= '0' when coop = COOP_AL
 	              or coop = COOP_CMP
@@ -106,18 +106,18 @@ BEGIN
 
 	immed <= std_logic_vector(resize(signed(immed_8), immed'length)) when coop = COOP_MOV  else
 		      std_logic_vector(resize(signed(immed_6), immed'length))  when coop = COOP_ST 
-				                                                           or coop = COOP_LD
-				                                                           or coop = COOP_STB 
-				                                                           or coop = COOP_LDB
-				                                                           or coop = COOP_ADDI
-				                                                           or coop = COOP_BR;
+				                                                             or coop = COOP_LD
+				                                                             or coop = COOP_STB 
+				                                                             or coop = COOP_LDB
+				                                                             or coop = COOP_ADDI
+				                                                             or coop = COOP_BR;
 
 	wr_m <= PE when coop = COOP_ST  else
 	        PE when coop = COOP_STB else
 			    not PE;
 			  
-	in_d <= REGFILE_D_MEM    when coop = COOP_LD 
-	                           or coop = COOP_LDB  else
+	in_d <= REGFILE_D_MEM  when coop = COOP_LD 
+	                         or coop = COOP_LDB  else
 			    REGFILE_D_PC   when coop = COOP_JMP  else
 			    REGFILE_D_ALU;
 			  
@@ -132,14 +132,14 @@ BEGIN
 	                  or (f1 = F1_BZ  and z = '1')  else '0';
 							
 	jmp_si_t <= '1' when (f3 = F3_JNZ and z = '0') 
-                     or (f3 = F3_JZ  and z = '1')
-                     or  f3 = F3_JMP               
-                     or  f3 = F3_JAL               else '0';
+                    or (f3 = F3_JZ  and z = '1')
+                    or  f3 = F3_JMP               
+                    or  f3 = F3_JAL               else '0';
 							
 --	ldpc <= haltSI when ir(15 downto 0) = x"FFFF" else '1';
 	tknbr <= BR_SI    when coop = COOP_BR   and br_si_t  = '1'  else 
 	         JMP_SI   when coop = COOP_JMP  and jmp_si_t = '1'  else
 	         PC_BLOQ  when coop = COOP_HALT                     else
-				PC_INCR;
+				   PC_INCR;
 				
 END Structure;

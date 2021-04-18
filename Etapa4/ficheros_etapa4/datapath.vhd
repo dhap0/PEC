@@ -35,13 +35,13 @@ ARCHITECTURE Structure OF datapath IS
     -- Tambien crearemos los cables/buses (signals) necesarios para unir las entidades
 	COMPONENT regfile IS
 		PORT (clk    : IN  STD_LOGIC;
-            wrd    : IN  STD_LOGIC;
-            d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
-            addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
-			   addr_b : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
-            addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
-            a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-            b      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
+          wrd    : IN  STD_LOGIC;
+          d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+          addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+			    addr_b : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+          addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+          a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+          b      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
 	END COMPONENT;
 	COMPONENT alu IS
 		PORT (x  : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -60,12 +60,12 @@ BEGIN
 
 	BR: regfile PORT MAP(clk     =>  clk,
 	                     wrd     =>  wrd,
-								d       =>  reg_d ,
-								addr_a  =>  addr_a,
-								addr_b  =>  addr_b,
-								addr_d  =>  addr_d,
-								a       =>  atox,
-								b       =>  b_o );
+								       d       =>  reg_d ,
+								       addr_a  =>  addr_a,
+								       addr_b  =>  addr_b,
+								       addr_d  =>  addr_d,
+								       a       =>  atox,
+								       b       =>  b_o );
 
 	ALUop: alu PORT MAP(x   =>  atox,
 	                    y   =>  y_i,
