@@ -12,8 +12,8 @@ ENTITY sisa IS
           SRAM_CE_N : out   std_logic := '1';
           SRAM_OE_N : out   std_logic := '1';
           SRAM_WE_N : out   std_logic := '1';
-          SW        : in std_logic_vector(9 downto 8);
-			 KEY       : in std_logic_vector(0 downto 0);
+          SW        : in std_logic_vector(9 downto 0);
+			 KEY       : in std_logic_vector(3 downto 0);
 			 LEDR : OUT std_logic_vector(7 DOWNTO 0);
 			 LEDG : OUT std_logic_vector(7 DOWNTO 0);
 			 HEX0 : OUT std_logic_vector(6 DOWNTO 0);
@@ -72,19 +72,16 @@ COMPONENT controladores_IO IS
 		wr_out : IN std_logic;
 		rd_in : IN std_logic;
 		led_verdes : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-		led_rojos : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
-	);
-END COMPONENT;
-	
-COMPONENT driverHex IS
-	PORT (
-		num : IN std_logic_vector(15 DOWNTO 0);
+		led_rojos : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+		KEY       : in std_logic_vector(3 downto 0);
+		SW        : in std_logic_vector(7 downto 0);
 		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
 		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
 		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
 		HEX3 : OUT std_logic_vector(6 DOWNTO 0)
 	);
 END COMPONENT;
+
 
 signal rellotge, word_byte_t, wr_m_t : std_logic;
 signal addr_m_t, data_wr_t, rd_data_t : STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -134,13 +131,15 @@ BEGIN
 		wr_out => wr_io_en,
 		rd_in => rd_io_en,
 		led_verdes => LEDG,
-		led_rojos => LEDR
+		led_rojos => LEDR,
+		key => KEY,
+		sw  => SW(7 downto 0),
+		HEX0 => HEX0,
+		HEX1 => HEX1,
+		HEX2 => HEX2,
+		HEX3 => HEX3
 	);
 												
-	driver : driverHex port map    (num  => addr_m_t,
-               HEX0 => HEX0,
-					HEX1 => HEX1,
-					HEX2 => HEX2,
-					HEX3 => HEX3);
+
 
 END Structure;
