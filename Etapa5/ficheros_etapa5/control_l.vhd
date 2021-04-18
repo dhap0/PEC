@@ -87,6 +87,7 @@ BEGIN
 	               coop = COOP_CMP  or
 	               coop = COOP_ADDI or
 	               coop = COOP_EA   or
+						(coop = COOP_IO   and f1 = F1_IN) or
 	              (coop = COOP_JMP  and f3 = F3_JAL) else 
 	       not PE;
 			 
@@ -109,8 +110,11 @@ BEGIN
 	addr_d <= ir(11 downto 9);
 	
 	addr_io <= immed_8;
-	rd_in  <= not f1 when coop = COOP_IO else '0';
-	wr_out <= f1 when coop = COOP_IO else '0';
+	--rd_in  <= not f1 when coop = COOP_IO else '0';
+	--wr_out <= f1 when coop = COOP_IO else '0';
+
+	rd_in  <= '1' when coop = COOP_IO and f1 = F1_IN  else '0';
+	wr_out <= '1' when coop = COOP_IO and f1 = F1_OUT else '0';
 
 	immed <= std_logic_vector(resize(signed(immed_8), immed'length)) when coop = COOP_MOV 
 	                                                                   or coop = COOP_IO else
@@ -127,8 +131,9 @@ BEGIN
 			  
 	in_d <= REGFILE_D_MEM  when coop = COOP_LD 
 	                         or coop = COOP_LDB  else
-			    REGFILE_D_PC   when coop = COOP_JMP  else
-			    REGFILE_D_ALU;
+			  REGFILE_D_IO   when coop = COOP_IO   else
+			  REGFILE_D_PC   when coop = COOP_JMP  else
+			  REGFILE_D_ALU;
 			  
 	immed_x2 <= '1' when coop = COOP_LD 
 	                  or coop = COOP_ST 

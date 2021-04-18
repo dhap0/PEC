@@ -20,7 +20,7 @@ ENTITY controladores_IO IS
 	);
 END controladores_IO;
 ARCHITECTURE Structure OF controladores_IO IS 
-	type bancRegistres is array (0 to 256) of std_logic_vector(15 downto 0);
+	type bancRegistres is array (0 to 255) of std_logic_vector(15 downto 0);
 	signal mem: bancRegistres;
 	
 BEGIN

@@ -97,7 +97,7 @@ signal rd_io_en: std_logic;
 BEGIN
 	rellotge_proves <= rellotge when SW(8) = '1' else KEY(0);
 	rel0  : Reloj GENERIC MAP ( factor => 8) PORT MAP (CLOCK_50 => CLOCK_50, reloj => rellotge);
-	proc0 : proc PORT MAP (clk => rellotge,
+	proc0 : proc PORT MAP (clk => rellotge_proves,
 								  boot => SW(9),
 								  datard_m => rd_data_t,
 								  rd_io => rd_io_t,
