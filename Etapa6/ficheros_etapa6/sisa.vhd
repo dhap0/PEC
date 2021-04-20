@@ -14,6 +14,8 @@ ENTITY sisa IS
           SRAM_WE_N : out   std_logic := '1';
           SW        : in std_logic_vector(9 downto 0);
 			 KEY       : in std_logic_vector(3 downto 0);
+			 PS2_CLK   : inout std_logic;
+          PS2_DAT  : inout std_logic;
 			 LEDR : OUT std_logic_vector(7 DOWNTO 0);
 			 LEDG : OUT std_logic_vector(7 DOWNTO 0);
 			 HEX0 : OUT std_logic_vector(6 DOWNTO 0);
@@ -31,7 +33,7 @@ component MemoryController is
           we        : in  std_logic;
           byte_m    : in  std_logic;
           -- se�ales para la placa de desarrollo
-          SRAM_ADDR : out   std_logic_vector(17 downto 0);
+			 SRAM_ADDR : out   std_logic_vector(17 downto 0);
           SRAM_DQ   : inout std_logic_vector(15 downto 0);
           SRAM_UB_N : out   std_logic;
           SRAM_LB_N : out   std_logic;
@@ -73,6 +75,8 @@ COMPONENT controladores_IO IS
 		rd_in : IN std_logic;
 		led_verdes : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		led_rojos : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+		PS2_CLK   : inout std_logic;
+      PS2_DAT  : inout std_logic;
 		KEY       : in std_logic_vector(3 downto 0);
 		SW        : in std_logic_vector(7 downto 0);
 		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
@@ -132,6 +136,8 @@ BEGIN
 		rd_in => rd_io_en,
 		led_verdes => LEDG,
 		led_rojos => LEDR,
+		PS2_CLK => PS2_CLK,
+		PS2_DAT => PS2_DAT,
 		key => KEY,
 		sw  => SW(7 downto 0),
 		HEX0 => HEX0,
