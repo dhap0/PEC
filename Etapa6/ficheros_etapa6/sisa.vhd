@@ -16,6 +16,11 @@ ENTITY sisa IS
 			 KEY       : in std_logic_vector(3 downto 0);
 			 PS2_CLK   : inout std_logic;
           PS2_DAT  : inout std_logic;
+          VGA_R     : out std_logic_vector(3 downto 0); -- vga red pixel value
+          VGA_G     : out std_logic_vector(3 downto 0); -- vga green pixel value
+          VGA_B     : out std_logic_vector(3 downto 0); -- vga blue pixel value
+          VGA_HS : out std_logic; -- vga control signal
+          VGA_VS  : out std_logic; -- vga control signal
 			 LEDR : OUT std_logic_vector(7 DOWNTO 0);
 			 LEDG : OUT std_logic_vector(7 DOWNTO 0);
 			 HEX0 : OUT std_logic_vector(6 DOWNTO 0);
@@ -85,38 +90,58 @@ COMPONENT controladores_IO IS
 		HEX3 : OUT std_logic_vector(6 DOWNTO 0)
 	);
 END COMPONENT;
+component vga_controller is
+    port(clk_50mhz      : in  std_logic; -- system clock signal
+         reset          : in  std_logic; -- system reset
+         red_out        : out std_logic_vector(7 downto 0); -- vga red pixel value
+         green_out      : out std_logic_vector(7 downto 0); -- vga green pixel value
+         blue_out       : out std_logic_vector(7 downto 0); -- vga blue pixel value
+         horiz_sync_out : out std_logic; -- vga control signal
+         vert_sync_out  : out std_logic; -- vga control signal
+         --
+         addr_vga          : in std_logic_vector(12 downto 0);
+         we                : in std_logic;
+         wr_data           : in std_logic_vector(15 downto 0);
+         rd_data           : out std_logic_vector(15 downto 0);
+         byte_m            : in std_logic);                     -- simplemente lo ignoramos, este controlador no lo tiene implementado
+end component;
 
 
-signal rellotge, word_byte_t, wr_m_t : std_logic;
-signal addr_m_t, data_wr_t, rd_data_t : STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal rellotge, proc0_word_byte, wr_m_t : std_logic;
+signal proc0_addr_m, proc0_data_wr, proc0_datard_m, vga_rd_data, mem0_rd_data : STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal rellotge_proves: std_logic;
 signal addr_io_t: std_logic_vector(7 downto 0);
 signal rd_io_t: std_logic_vector(15 downto 0);
 signal wr_io_t: std_logic_vector(15 downto 0);
 signal wr_io_en: std_logic;
 signal rd_io_en: std_logic;
+signal vga_we: std_logic;
+signal mem0_we: std_logic;
+signal proc0_wr_m: std_logic;
+signal vga_access: std_logic;
+signal vga_addr_vga: std_logic_vector(15 downto 0);
 BEGIN
 	rellotge_proves <= rellotge when SW(8) = '1' else KEY(0);
 	rel0  : Reloj GENERIC MAP ( factor => 8) PORT MAP (CLOCK_50 => CLOCK_50, reloj => rellotge);
 	proc0 : proc PORT MAP (clk => rellotge_proves,
 								  boot => SW(9),
-								  datard_m => rd_data_t,
+								  datard_m => mem0_rd_data,
 								  rd_io => rd_io_t,
-								  addr_m => addr_m_t,
-								  data_wr => data_wr_t,
-								  wr_m => wr_m_t,
+								  addr_m => proc0_addr_m,
+								  data_wr => proc0_data_wr,
+								  wr_m => proc0_wr_m,
 								  addr_io => addr_io_t,
 								  rd_in => rd_io_en,
 								  wr_out => wr_io_en,
 								  wr_io => wr_io_t,
-								  word_byte => word_byte_t);
+								  word_byte => proc0_word_byte);
 								  
 	mem0	: memoryController PORT MAP (CLOCK_50 => CLOCK_50, 
-												  addr => addr_m_t,
-                                      wr_data => data_wr_t,
-												  rd_data => rd_data_t,
-                                      we => wr_m_t,
-                                      byte_m => word_byte_t,
+												  addr => proc0_addr_m,
+                                      wr_data => proc0_data_wr,
+												  rd_data => mem0_rd_data,
+                                      we => mem0_we,
+                                      byte_m => proc0_word_byte,
                                       SRAM_ADDR => SRAM_ADDR,
                                       SRAM_DQ => SRAM_DQ,
                                       SRAM_UB_N => SRAM_UB_N,
@@ -145,7 +170,26 @@ BEGIN
 		HEX2 => HEX2,
 		HEX3 => HEX3
 	);
-												
-
+	--blank_out, csync_out, horiz_sync_out, vert_sync_out, red_out, green_out y blue_out s
+	vga: vga_controller  port map(clk_50mhz  => CLOCK_50, -- system clock signal
+         reset         => SW(9), -- system reset
+         red_out(3 downto 0)   => VGA_R, -- vga red pixel value
+         green_out(3 downto 0) =>  VGA_G, -- vga green pixel value
+         blue_out(3 downto 0)  => VGA_B, -- vga blue pixel value
+         horiz_sync_out => VGA_HS, -- vga control signal
+         vert_sync_out  => VGA_VS, -- vga control signal
+         --
+         addr_vga       => vga_addr_vga(12 downto 0),
+         we             => vga_we,
+         wr_data        => proc0_data_wr,
+         rd_data        => vga_rd_data,
+         byte_m         => proc0_word_byte);  
+		
+		--addr_vga_t <= 
+	 vga_access <= '1' when proc0_addr_m >= x"A000"	and proc0_addr_m < x"B2C0"	else '0';
+	 vga_we     <= proc0_wr_m when vga_access = '1' else '0';
+	 mem0_we    <= proc0_wr_m when vga_access = '0'	else '0';	
+	 proc0_datard_m <= vga_rd_data when vga_access = '1' else mem0_rd_data;
+	 vga_addr_vga <= proc0_addr_m - x"A000";
 
 END Structure;
