@@ -1,0 +1,2 @@
+./bin/sisa-as ${1}.s
+./bin/sisa-objdump -d a.out | awk '/^....:/ {if (NR > 6){print $2}}' > contingut.memoria.hexa16.${1}.rom
