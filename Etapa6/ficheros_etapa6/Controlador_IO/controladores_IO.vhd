@@ -57,13 +57,14 @@ END COMPONENT;
 	signal kb_read_char : std_logic_vector(7 downto 0);
 	signal kb_data_ready : std_logic;
 	signal clear_char : std_logic;
+	
+	signal contador_ciclos       : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
+	signal contador_milisegundos : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
+
 BEGIN
 	 rd_io <= mem(conv_integer(addr_io(4 downto 0)));
 	 led_rojos <= mem(6)(7 downto 0);
 	 led_verdes <= mem(5)(7 downto 0);
-	 
-	 
-	 
 	 
 	 process(CLOCK_50,wr_out)
 	 begin
@@ -74,6 +75,8 @@ BEGIN
 				mem(8) <= "00000000"     	  & SW;
 				mem(15) <= "00000000"        & kb_read_char;
 				mem(16) <= "000000000000000" & kb_data_ready;
+				mem(20) <= contador_ciclos;
+				mem(21) <= contador_milisegundos;
 				hex_num <= mem(10);
 				hex_display_en <= mem(9)(3 downto 0);
 				if wr_out = PE then
@@ -82,6 +85,8 @@ BEGIN
 					elsif addr_io = 15 then
 					elsif addr_io = 16 then
 					  clear_char <= '1';
+					elsif addr_io = 20 then
+					elsif addr_io = 21 then
 					else
 					  mem(conv_integer(addr_io(4 downto 0))) <= wr_io;
 					end if;
@@ -104,4 +109,20 @@ BEGIN
 					HEX1 => HEX1,
 					HEX2 => HEX2,
 					HEX3 => HEX3);
+					
+	timer: process(CLOCK_50)
+	 begin
+		 if rising_edge(CLOCK_50) then
+			 if contador_ciclos=0 then
+				contador_ciclos<=x"C350"; -- tiempo de ciclo=20ns(50Mhz) 1ms=50000ciclos
+				if wr_out = PE and addr_io = 21 then
+					contador_milisegundos <= wr_io;
+				elsif contador_milisegundos>0 then
+					contador_milisegundos <= contador_milisegundos-1;
+				end if;
+			 else
+			  contador_ciclos <= contador_ciclos-1;
+			 end if;
+		 end if;
+	 end process;
 END Structure;
