@@ -37,7 +37,7 @@ component MemoryController is
           rd_data   : out std_logic_vector(15 downto 0);
           we        : in  std_logic;
           byte_m    : in  std_logic;
-          -- se�ales para la placa de desarrollo
+          -- seï¿½ales para la placa de desarrollo
 			 SRAM_ADDR : out   std_logic_vector(17 downto 0);
           SRAM_DQ   : inout std_logic_vector(15 downto 0);
           SRAM_UB_N : out   std_logic;
@@ -125,7 +125,7 @@ BEGIN
 	rel0  : Reloj GENERIC MAP ( factor => 8) PORT MAP (CLOCK_50 => CLOCK_50, reloj => rellotge);
 	proc0 : proc PORT MAP (clk => rellotge_proves,
 								  boot => SW(9),
-								  datard_m => mem0_rd_data,
+								  datard_m => proc0_datard_m,
 								  rd_io => rd_io_t,
 								  addr_m => proc0_addr_m,
 								  data_wr => proc0_data_wr,

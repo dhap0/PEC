@@ -6,7 +6,7 @@ USE ieee.numeric_std.all;
 
 entity SRAMController is
     port (clk         : in    std_logic;
-          -- seï¿½ales para la placa de desarrollo
+          -- seÃ¯Â¿Â½ales para la placa de desarrollo
           SRAM_ADDR   : out   std_logic_vector(17 downto 0);
           SRAM_DQ     : inout std_logic_vector(15 downto 0);
           SRAM_UB_N   : out   std_logic;
@@ -14,7 +14,7 @@ entity SRAMController is
           SRAM_CE_N   : out   std_logic := '1';
           SRAM_OE_N   : out   std_logic := '1';
           SRAM_WE_N   : out   std_logic := '1';
-          -- seï¿½ales internas del procesador
+          -- seÃ¯Â¿Â½ales internas del procesador
           address     : in    std_logic_vector(15 downto 0) := "0000000000000000";
           dataReaded  : out   std_logic_vector(15 downto 0);
           dataToWrite : in    std_logic_vector(15 downto 0);
@@ -26,7 +26,8 @@ architecture comportament of SRAMController is
 type state_enum is (Idl, Esc);
 signal state : state_enum := Idl;
 
-	signal lb_n, ub_n, we: std_logic := '0';
+	signal lb_n, ub_n: std_logic := '0';
+	signal we_n: std_logic := '1';
 begin
 
 	lb_n <= byte_m and address(0); -- si access a word o acces al byte de menys pes (negat)
@@ -58,14 +59,15 @@ begin
 		process(clk, WR)
 	begin
 		if WR = '0' then
-			we <= '1';
+			we_n <= '1';
+			state <= Idl;
 		elsif rising_edge(clk) then
 			case state is
 				when Idl => 
-					if we = '1' then
+					if WR = '1' and we_n = '1' then
+						we_n <= '0';
+					elsif WR= '1' and we_n = '0' then 
 						state <= Esc;
-						we <= '0';
-					else state <= Idl;
 					end if;
 				when others => 
 					state <= Idl;
