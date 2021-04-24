@@ -37,7 +37,7 @@ component MemoryController is
           rd_data   : out std_logic_vector(15 downto 0);
           we        : in  std_logic;
           byte_m    : in  std_logic;
-          -- seï¿½ales para la placa de desarrollo
+          -- se�ales para la placa de desarrollo
 			 SRAM_ADDR : out   std_logic_vector(17 downto 0);
           SRAM_DQ   : inout std_logic_vector(15 downto 0);
           SRAM_UB_N : out   std_logic;
@@ -107,23 +107,36 @@ component vga_controller is
 end component;
 
 
-signal rellotge, proc0_word_byte, wr_m_t : std_logic;
-signal proc0_addr_m, proc0_data_wr, proc0_datard_m, vga_rd_data, mem0_rd_data : STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal rellotge, wr_m_t : std_logic;
+
 signal rellotge_proves: std_logic;
 signal addr_io_t: std_logic_vector(7 downto 0);
 signal rd_io_t: std_logic_vector(15 downto 0);
 signal wr_io_t: std_logic_vector(15 downto 0);
 signal wr_io_en: std_logic;
 signal rd_io_en: std_logic;
-signal vga_we: std_logic;
-signal mem0_we: std_logic;
-signal proc0_wr_m: std_logic;
-signal vga_access: std_logic;
-signal vga_addr_vga: std_logic_vector(15 downto 0);
+
+signal mem0_rd_data: STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal mem0_we:      std_logic;
+
+signal proc0_word_byte: std_logic;
+signal proc0_wr_m:      std_logic;
+signal proc0_addr_m:    STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal proc0_data_wr:   STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal proc0_datard_m:  STD_LOGIC_VECTOR(15 DOWNTO 0);
+
+signal vga_rd_data :    STD_LOGIC_VECTOR(15 DOWNTO 0);
+signal vga_we:        std_logic;
+signal vga_access:    std_logic;
+signal vga_addr_vga:  std_logic_vector(15 downto 0);
+signal vga_red_out:   std_logic_vector(7 downto 0);
+signal vga_green_out: std_logic_vector(7 downto 0);
+signal vga_blue_out:  std_logic_vector(7 downto 0);
+
 BEGIN
 	rellotge_proves <= rellotge when SW(8) = '1' else KEY(0);
 	rel0  : Reloj GENERIC MAP ( factor => 8) PORT MAP (CLOCK_50 => CLOCK_50, reloj => rellotge);
-	proc0 : proc PORT MAP (clk => rellotge_proves,
+	proc0 : proc PORT MAP (clk => rellotge,
 								  boot => SW(9),
 								  datard_m => proc0_datard_m,
 								  rd_io => rd_io_t,
@@ -171,11 +184,14 @@ BEGIN
 		HEX3 => HEX3
 	);
 	--blank_out, csync_out, horiz_sync_out, vert_sync_out, red_out, green_out y blue_out s
+	VGA_R <= vga_red_out(3   downto 0);
+	VGA_G <= vga_green_out(3 downto 0);
+	VGA_B <= vga_blue_out(3  downto 0);
 	vga: vga_controller  port map(clk_50mhz  => CLOCK_50, -- system clock signal
-         reset         => SW(9), -- system reset
-         red_out(3 downto 0)   => VGA_R, -- vga red pixel value
-         green_out(3 downto 0) =>  VGA_G, -- vga green pixel value
-         blue_out(3 downto 0)  => VGA_B, -- vga blue pixel value
+         reset          => SW(9), -- system reset
+         red_out        => vga_red_out, -- vga red pixel value
+         green_out      => vga_green_out, -- vga green pixel value
+         blue_out       => vga_blue_out, -- vga blue pixel value
          horiz_sync_out => VGA_HS, -- vga control signal
          vert_sync_out  => VGA_VS, -- vga control signal
          --
@@ -188,8 +204,11 @@ BEGIN
 		--addr_vga_t <= 
 	 vga_access <= '1' when proc0_addr_m >= x"A000"	and proc0_addr_m < x"B2C0"	else '0';
 	 vga_we     <= proc0_wr_m when vga_access = '1' else '0';
-	 mem0_we    <= proc0_wr_m when vga_access = '0'	else '0';	
-	 proc0_datard_m <= vga_rd_data when vga_access = '1' else mem0_rd_data;
 	 vga_addr_vga <= proc0_addr_m - x"A000";
+	 
+	 mem0_we    <= proc0_wr_m when vga_access = '0'	else '0';	
+	 
+	 proc0_datard_m <= vga_rd_data when vga_access = '1' else mem0_rd_data;
+	 
 
 END Structure;
