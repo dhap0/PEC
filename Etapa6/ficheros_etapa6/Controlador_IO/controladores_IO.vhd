@@ -117,22 +117,22 @@ BEGIN
 					HEX3 => HEX3);
 					
 timer: process(CLOCK_50)
-	 begin
-	   if rising_edge(CLOCK_50) then
+	begin
+		if rising_edge(CLOCK_50) then
 		
 			if cont_ciclos=0 then
 				cont_ciclos <= x"C350"; -- tiempo de ciclo=20ns(50Mhz) 1ms=50000ciclos
 			else
 				cont_ciclos <= cont_ciclos-1;
 			end if;
-			 
+		
 			if wr_out = PE and addr_io = IO_PORT_CONT_MILI then
 				cont_mili <= wr_io;
-	      elsif cont_mili > 0 then
-	         cont_mili <= cont_mili-1;
-	      end if;
-			 
-		 end if;
-	 end process;
+			elsif cont_mili > 0 then
+				cont_mili <= cont_mili-1;
+			end if;
+			
+		end if;
+	end process;
 
 END Structure;
