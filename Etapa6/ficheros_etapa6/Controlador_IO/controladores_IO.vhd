@@ -128,7 +128,7 @@ timer: process(CLOCK_50)
 		
 			if wr_out = PE and addr_io = IO_PORT_CONT_MILI then
 				cont_mili <= wr_io;
-			elsif cont_mili > 0 then
+			elsif cont_mili > 0 and cont_ciclos = 0 then
 				cont_mili <= cont_mili-1;
 			end if;
 			
