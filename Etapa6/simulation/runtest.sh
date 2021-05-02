@@ -25,21 +25,27 @@ echo "foreach_in_collection asgn_id [get_all_assignments -name VHDL_FILE -type g
 
 FILES=$(quartus_sh -t getfiles.tcl | grep -v -P 'Info.*:' | tac )
 
-if [  -z $1 ] && [ ! -f $SIM_DIR/contingut.memoria.hexa16.rom ]; then
-  echo No existeix el fitxer contingut.memoria.hexa16.rom, cal passar el path del programa a simular com a primer argument.
-  echo Exemple:
-  echo ./runtest.sh ../../eines-sisa/contingut.memoria.hexa16.saltos_absolutos.rom 
-  exit
-fi
 
 
-if [ -f "$1" ]; then
-  rm $SIM_DIR/contingut.memoria.hexa16.rom
-  ln -s $1 $SIM_DIR/contingut.memoria.hexa16.rom 
+if [  -z $1 ];  then
+  if [ ! -f $SIM_DIR/contingut.memoria.hexa16.rom ]; then
+    echo No existeix el fitxer contingut.memoria.hexa16.rom, cal passar el path del programa a simular com a primer argument.
+    echo Exemple:
+    echo ./runtest.sh ../../eines-sisa/contingut.memoria.hexa16.saltos_absolutos.rom 
+    exit
+  fi
 else
-  echo Error: $1 not found.
-  exit
+  if [ -f "$1" ]; then
+    rm $SIM_DIR/contingut.memoria.hexa16.rom
+    ln -s $1 $SIM_DIR/contingut.memoria.hexa16.rom 
+  else
+    echo Error: $1 not found.
+    exit
+  fi
+
 fi
+
+
 
 vcom -work work ${TESTFILES[@]} $FILES
 vsim work.test_sisa -fsmdebug  -do "view wave" -do "do wave.do" -do "run $CYCLES"
