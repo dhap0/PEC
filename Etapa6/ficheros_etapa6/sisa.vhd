@@ -118,14 +118,14 @@ signal rd_io_en: std_logic;
 signal vga_we: std_logic;
 signal mem0_we: std_logic;
 signal proc0_wr_m: std_logic;
-signal vga_access: std_logic;
+
 signal vga_addr_vga: std_logic_vector(15 downto 0);
 BEGIN
 	rellotge_proves <= rellotge when SW(8) = '1' else KEY(0);
 	rel0  : Reloj GENERIC MAP ( factor => 8) PORT MAP (CLOCK_50 => CLOCK_50, reloj => rellotge);
 	proc0 : proc PORT MAP (clk => rellotge_proves,
 								  boot => SW(9),
-								  datard_m => mem0_rd_data,
+								  datard_m => proc0_datard_m,
 								  rd_io => rd_io_t,
 								  addr_m => proc0_addr_m,
 								  data_wr => proc0_data_wr,
@@ -185,11 +185,25 @@ BEGIN
          rd_data        => vga_rd_data,
          byte_m         => proc0_word_byte);  
 		
-		--addr_vga_t <= 
-	 vga_access <= '1' when proc0_addr_m >= x"A000"	and proc0_addr_m < x"B2C0"	else '0';
-	 vga_we     <= proc0_wr_m when vga_access = '1' else '0';
-	 mem0_we    <= proc0_wr_m when vga_access = '0'	else '0';	
-	 proc0_datard_m <= vga_rd_data when vga_access = '1' else mem0_rd_data;
-	 vga_addr_vga <= proc0_addr_m - x"A000";
 
+	 vga_addr_vga <= proc0_addr_m - x"A000";
+	 process (CLOCK_50, SW(9)) begin
+	   if SW(9) = '1' then
+			vga_we <= '0';
+			mem0_we <= '0';
+			proc0_datard_m <= mem0_rd_data;
+		else 
+		  if rising_edge(CLOCK_50) then
+		    if (proc0_addr_m >= x"A000"	and proc0_addr_m < x"B2C0") then
+			   vga_we <= proc0_wr_m;
+				mem0_we <= '0';
+				proc0_datard_m <= vga_rd_data;
+			 else
+			   vga_we <= '0';
+				mem0_we <= proc0_wr_m;
+				proc0_datard_m <= mem0_rd_data;
+			 end if;
+		  end if;
+		end if;
+    end process;
 END Structure;
