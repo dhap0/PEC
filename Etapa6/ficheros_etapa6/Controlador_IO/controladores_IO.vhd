@@ -75,8 +75,8 @@ BEGIN
 				mem(8) <= "00000000"     	  & SW;
 				mem(15) <= "00000000"        & kb_read_char;
 				mem(16) <= "000000000000000" & kb_data_ready;
-				mem(20) <= contador_ciclos;
-				mem(21) <= contador_milisegundos;
+				--mem(20) <= contador_ciclos;
+				--mem(21) <= contador_milisegundos;
 				hex_num <= mem(10);
 				hex_display_en <= mem(9)(3 downto 0);
 				if wr_out = PE then
