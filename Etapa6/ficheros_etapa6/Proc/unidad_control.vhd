@@ -73,10 +73,10 @@ ARCHITECTURE Structure OF unidad_control IS
 	         word_byte : OUT STD_LOGIC);
 	END COMPONENT;
 	
-	signal pc_new     : STD_LOGIC_VECTOR(15 DOWNTO 0);
-	signal pc_tmp     : STD_LOGIC_VECTOR(15 DOWNTO 0);
-	signal ir         : STD_LOGIC_VECTOR(15 DOWNTO 0);
-	signal ir_reg     : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal pc_q     : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal pc_d     : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal ir_d         : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal ir_q     : STD_LOGIC_VECTOR(15 DOWNTO 0);
 	signal wrd_t      : STD_LOGIC;
 	signal wr_m_t     : STD_LOGIC;
 	signal w_b_t      : STD_LOGIC;
@@ -89,7 +89,7 @@ BEGIN
     -- Aqui iria la declaracion del "mapeo" (PORT MAP) de los nombres de las entradas/salidas de los componentes
     -- En los esquemas de la documentacion a la instancia de la logica de control le hemos llamado c0
     -- Aqui iria la definicion del comportamiento de la unidad de control y la gestion del PC
-	 deco : control_l PORT MAP(ir         =>  ir_reg,
+	 deco : control_l PORT MAP(ir         =>  ir_q,
 	                           op         =>  op,
 	                           tknbr      =>  deco_tknbr,
 	                           Rb_N       =>  Rb_N,
@@ -122,17 +122,24 @@ BEGIN
 	
 
 
-	 pc_tmp <= 	x"C000" when boot  = '1' else pc_in;
+	 pc_d <= 	x"C000" when boot  = '1' else pc_in;
 					
-	 pc_new <= pc_tmp when rising_edge(clk);
+	 -- pc_new <= pc_tmp when rising_edge(clk);
 	 
-	 pc_out <= pc_new(15 DOWNTO 1) & '0';
+	 pc_out <= pc_q(15 DOWNTO 1) & '0';
 	 
-	 ir     <= 	x"C000"    when boot = '1'    else
+	 ir_d     <= 	x"0000"    when boot = '1'    else
 				      datard_m   when ldir_o = '1'  else  
-				      ir_reg;
+				      ir_q;
 					
-	 ir_reg <=  ir when rising_edge(clk);
+	 -- ir_reg <=  ir when rising_edge(clk);
+	 
+	 process (clk) begin
+		if rising_edge(clk) then
+			pc_q <= pc_d;
+			ir_q <= ir_d;
+		end if;
+	 end process;
 	 
 
 END Structure;

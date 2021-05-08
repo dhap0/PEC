@@ -2,6 +2,7 @@ LIBRARY ieee;
 USE ieee.std_logic_1164.all;
 USE ieee.std_logic_arith.all;
 USE ieee.std_logic_unsigned.all;
+USE ieee.numeric_std.all;  
 
 ENTITY sisa IS
     PORT (CLOCK_50  : IN    STD_LOGIC;
@@ -62,13 +63,22 @@ component proc IS
 		word_byte : OUT STD_LOGIC
 	);
 end component;
-component Reloj is
-	GENERIC (factor : integer := 8);	
-	PORT (
-		CLOCK_50 : IN std_logic;
-		reloj : OUT std_logic
-	);
-end component;
+
+--component Reloj is
+--	GENERIC (factor : integer := 8);	
+--	PORT (
+--		CLOCK_50 : IN std_logic;
+--		reloj : OUT std_logic
+--	);
+-- end component;
+
+component clock IS
+ GENERIC (N : integer);
+ PORT( CLOCK_50 : IN std_logic;
+ contador : in std_logic_vector (N-1 downto 0);
+ clk : out std_logic);
+END component;
+
 COMPONENT controladores_IO IS
 	PORT (
 		boot : IN STD_LOGIC;
@@ -121,10 +131,13 @@ signal proc0_wr_m: std_logic;
 
 signal vga_addr_vga: std_logic_vector(15 downto 0);
 BEGIN
-	--rellotge_proves <= rellotge when SW(8) = '1' else KEY(0);
-	rel0  : Reloj GENERIC MAP ( factor => 8) PORT MAP (CLOCK_50 => CLOCK_50, reloj => rellotge);
+--	rel0  : Reloj GENERIC MAP ( factor => 8) PORT MAP (CLOCK_50 => CLOCK_50, reloj => rellotge);
+	
+	clk_c: clock generic map (4)
+					 port map (CLOCK_50 => CLOCK_50, contador => std_logic_vector(to_unsigned(8, 4)), clk => rellotge);
+	
 	proc0 : proc PORT MAP (clk => rellotge,
-								  boot => SW(9),
+								  boot => SW(8),
 								  datard_m => proc0_datard_m,
 								  rd_io => rd_io_t,
 								  addr_m => proc0_addr_m,
@@ -152,7 +165,7 @@ BEGIN
 												  
 												  
 	io0: controladores_IO port map (
-	   boot => SW(9),
+	   boot => SW(8),
 		CLOCK_50 => CLOCK_50,
 		addr_io => addr_io_t,
 		wr_io => wr_io_t,
@@ -172,7 +185,7 @@ BEGIN
 	);
 	--blank_out, csync_out, horiz_sync_out, vert_sync_out, red_out, green_out y blue_out s
 	vga: vga_controller  port map(clk_50mhz  => CLOCK_50, -- system clock signal
-         reset         => SW(9), -- system reset
+         reset         => SW(8), -- system reset
          red_out(3 downto 0)   => VGA_R, -- vga red pixel value
          green_out(3 downto 0) =>  VGA_G, -- vga green pixel value
          blue_out(3 downto 0)  => VGA_B, -- vga blue pixel value
@@ -187,8 +200,8 @@ BEGIN
 		
 
 	 vga_addr_vga <= proc0_addr_m - x"A000";
-	 process (CLOCK_50, SW(9)) begin
-	   if SW(9) = '1' then
+	 process (CLOCK_50, SW(8)) begin
+	   if SW(8) = '1' then
 			vga_we <= '0';
 			mem0_we <= '0';
 			proc0_datard_m <= mem0_rd_data;

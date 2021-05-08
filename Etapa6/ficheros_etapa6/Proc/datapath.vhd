@@ -79,7 +79,7 @@ BEGIN
 	
 	with immed_x2 select immed_y <= 
 	   immed(14 downto 0) & '0' when  '1',
-		 immed                     when  others;
+		immed                     when  others;
 		
 	with in_d select reg_d <=
 		datard_m        when  REGFILE_D_MEM,

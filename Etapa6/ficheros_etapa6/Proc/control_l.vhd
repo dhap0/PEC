@@ -117,13 +117,13 @@ BEGIN
 	wr_out <= '1' when coop = COOP_IO and f1 = F1_OUT else '0';
 
 	immed <= std_logic_vector(resize(signed(immed_8), immed'length)) when coop = COOP_MOV 
-	                                                                   or coop = COOP_IO else
-		      std_logic_vector(resize(signed(immed_6), immed'length))  when coop = COOP_ST 
-				                                                             or coop = COOP_LD
-				                                                             or coop = COOP_STB 
-				                                                             or coop = COOP_LDB
-				                                                             or coop = COOP_ADDI
-				                                                             or coop = COOP_BR;
+	                                                                   or coop = COOP_IO
+				                                                          or coop = COOP_BR else
+		      std_logic_vector(resize(signed(immed_6), immed'length)) when coop = COOP_ST 
+				                                                          or coop = COOP_LD
+				                                                          or coop = COOP_STB 
+				                                                          or coop = COOP_LDB
+				                                                          or coop = COOP_ADDI;
 
 	wr_m <= PE when coop = COOP_ST  else
 	        PE when coop = COOP_STB else
