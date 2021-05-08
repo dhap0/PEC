@@ -5,6 +5,7 @@ USE ieee.std_logic_unsigned.all; --Esta libreria sera necesaria si usais convers
 
 library work;
 use work.cte_tipos_UF_pkg.all;
+use work.cte_tipos_IO_pkg.all;
 
 ENTITY controladores_IO IS
 	PORT (
@@ -58,35 +59,38 @@ END COMPONENT;
 	signal kb_data_ready : std_logic;
 	signal clear_char : std_logic;
 	
-	signal contador_ciclos       : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
-	signal contador_milisegundos : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
+	signal cont_ciclos  : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
+	signal cont_mili    : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
 
 BEGIN
-	 rd_io <= mem(conv_integer(addr_io(4 downto 0)));
-	 led_rojos <= mem(6)(7 downto 0);
-	 led_verdes <= mem(5)(7 downto 0);
+	 rd_io      <= mem(conv_integer(addr_io(4 downto 0)));
+	 led_rojos  <= mem(IO_PORT_LEDR)(7 downto 0);
+	 led_verdes <= mem(IO_PORT_LEDG)(7 downto 0);
 	 
 	 process(CLOCK_50,wr_out)
 	 begin
 		if boot = '0' then
 			if rising_edge(CLOCK_50) then
 			   clear_char <= '0';
-				mem(7) <= "000000000000"     & KEY;
-				mem(8) <= "00000000"     	  & SW;
-				mem(15) <= "00000000"        & kb_read_char;
-				mem(16) <= "000000000000000" & kb_data_ready;
-				--mem(20) <= contador_ciclos;
-				--mem(21) <= contador_milisegundos;
-				hex_num <= mem(10);
-				hex_display_en <= mem(9)(3 downto 0);
+				
+				mem(IO_PORT_KEY)           <= "000000000000"    & KEY;
+				mem(IO_PORT_SW)            <= "00000000"     	& SW;
+				mem(IO_PORT_KB_READ_CHAR)  <= "00000000"        & kb_read_char;
+				mem(IO_PORT_KB_DATA_READY) <= "000000000000000" & kb_data_ready;
+				mem(IO_PORT_CONT_CICLOS)   <= cont_ciclos;
+				mem(IO_PORT_CONT_MILI)     <= cont_mili;
+				
+				hex_num        <= mem(IO_PORT_HEX_DISPLAY_EN);
+				hex_display_en <= mem(IO_PORT_HEX_NUM)(3 downto 0);
+				
 				if wr_out = PE then
-					if    addr_io = 7 then
-					elsif addr_io = 8 then
-					elsif addr_io = 15 then
-					elsif addr_io = 16 then
+					if    addr_io = IO_PORT_KEY then
+					elsif addr_io = IO_PORT_SW then
+					elsif addr_io = IO_PORT_KB_READ_CHAR then
+					elsif addr_io = IO_PORT_KB_DATA_READY then
 					  clear_char <= '1';
-					elsif addr_io = 20 then
-					elsif addr_io = 21 then
+					elsif addr_io = IO_PORT_CONT_CICLOS then
+					elsif addr_io = IO_PORT_CONT_MILI then
 					else
 					  mem(conv_integer(addr_io(4 downto 0))) <= wr_io;
 					end if;
@@ -96,9 +100,9 @@ BEGIN
 	 end process;
 	 
 	 kb : keyboard_controller port map (clk => CLOCK_50,
-          reset    => boot,
-          ps2_clk  => PS2_CLK,
-          ps2_data => PS2_DAT,
+          reset      => boot,
+          ps2_clk    => PS2_CLK,
+          ps2_data   => PS2_DAT,
           read_char  => kb_read_char,
           clear_char => clear_char,
 			 data_ready => kb_data_ready); 
@@ -109,20 +113,24 @@ BEGIN
 					HEX1 => HEX1,
 					HEX2 => HEX2,
 					HEX3 => HEX3);
-					
-	timer: process(CLOCK_50)
-	 begin
-		 if rising_edge(CLOCK_50) then
-			 if contador_ciclos=0 then
-				contador_ciclos<=x"C350"; -- tiempo de ciclo=20ns(50Mhz) 1ms=50000ciclos
-				if wr_out = PE and addr_io = 21 then
-					contador_milisegundos <= wr_io;
-				elsif contador_milisegundos>0 then
-					contador_milisegundos <= contador_milisegundos-1;
-				end if;
-			 else
-			  contador_ciclos <= contador_ciclos-1;
-			 end if;
-		 end if;
-	 end process;
+
+timer: process(CLOCK_50)
+	begin
+		if rising_edge(CLOCK_50) then
+		
+			if cont_ciclos=0 then
+				cont_ciclos <= x"C350"; -- tiempo de ciclo=20ns(50Mhz) 1ms=50000ciclos
+			else
+				cont_ciclos <= cont_ciclos-1;
+			end if;
+		
+			if wr_out = PE and addr_io = IO_PORT_CONT_MILI then
+				cont_mili <= wr_io;
+			elsif cont_mili > 0 and cont_ciclos = 0 then
+				cont_mili <= cont_mili-1;
+			end if;
+			
+		end if;
+	end process;
+
 END Structure;
