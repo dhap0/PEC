@@ -87,6 +87,7 @@ BEGIN
 	              or coop = COOP_EA
 	              or coop = COOP_BR 
 	              or coop = COOP_JMP else '1';
+					  
 	--  addr_io, rd_in, wr_out y la señal del nuevo multiplexor del datapath.
 	wrd <= PE when coop = COOP_MOV  or
 	               coop = COOP_LD   or
