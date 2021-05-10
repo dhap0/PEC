@@ -166,9 +166,10 @@ BEGIN
 	         PC_BLOQ  when  coop = COOP_INT  and f5       = F5_HALT  else
 				PC_INCR;
 				
-	a_sys <= '1' when coop = COOP_INT and f5 = F5_RDS else '0';
+	a_sys <= '1' when coop = COOP_INT and (f5 = F5_RDS
+													or f5 = F5_RETI) else '0';
 	
-	d_sys <= '1' when coop = COOP_INT and f5 = F5_WRS  else '0';
+	d_sys <= '1' when coop = COOP_INT and  f5 = F5_WRS  else '0';
 	
 	op_sys <= "01" when coop = COOP_INT and f5 = F5_EI   else
 	          "10" when coop = COOP_INT and f5 = F5_DI   else 
