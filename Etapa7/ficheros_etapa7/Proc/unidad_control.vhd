@@ -9,31 +9,31 @@ USE work.cte_tipos_UF_pkg.all;
 
 ENTITY unidad_control IS
 	PORT (
-		boot:      IN STD_LOGIC;
-		clk :      IN STD_LOGIC;
-		datard_m:  IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		z:         IN STD_LOGIC;
-		pc_in:     IN   STD_LOGIC_VECTOR(15 DOWNTO 0);
-		op:        OUT  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
-		Rb_N:      OUT  STD_LOGIC;
-		tknbr:     OUT  STD_LOGIC_VECTOR(1  DOWNTO 0);
-		wrd:       OUT  STD_LOGIC;
-		addr_a:    OUT  STD_LOGIC_VECTOR(2  DOWNTO 0);
-		addr_b:    OUT  STD_LOGIC_VECTOR(2  DOWNTO 0);
-		addr_d:    OUT  STD_LOGIC_VECTOR(2  DOWNTO 0);
-		immed:     OUT  STD_LOGIC_VECTOR(15 DOWNTO 0);
-		pc_out:    OUT  STD_LOGIC_VECTOR(15 DOWNTO 0);
-		ins_dad:   OUT  STD_LOGIC;
-		in_d:      OUT  STD_LOGIC_VECTOR(1  DOWNTO 0);
-		immed_x2:  OUT  STD_LOGIC;
-		wr_m:      OUT  STD_LOGIC;
+		boot      : IN  STD_LOGIC;
+		clk       : IN  STD_LOGIC;
+		datard_m  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		z         : IN  STD_LOGIC;
+		pc_in     : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
+		Rb_N      : OUT STD_LOGIC;
+		tknbr     : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
+		wrd       : OUT STD_LOGIC;
+		addr_a    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
+		addr_b    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
+		addr_d    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
+		immed     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		pc_out    : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		ins_dad   : OUT STD_LOGIC;
+		in_d      : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
+		immed_x2  : OUT STD_LOGIC;
+		wr_m      : OUT STD_LOGIC;
 		addr_io   : OUT STD_LOGIC_VECTOR(7 downto 0);
 		rd_in     : OUT STD_LOGIC;
 	   wr_out    : OUT STD_LOGIC;
 		a_sys     : OUT STD_LOGIC;
 		d_sys     : OUT STD_LOGIC;
 		op_sys    : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-		word_byte: OUT  STD_LOGIC);
+		word_byte : OUT STD_LOGIC);
 END unidad_control;
 
 ARCHITECTURE Structure OF unidad_control IS
@@ -79,10 +79,12 @@ ARCHITECTURE Structure OF unidad_control IS
 	         word_byte : OUT STD_LOGIC);
 	END COMPONENT;
 	
-	signal pc_q     : STD_LOGIC_VECTOR(15 DOWNTO 0);
-	signal pc_d     : STD_LOGIC_VECTOR(15 DOWNTO 0);
-	signal ir_d         : STD_LOGIC_VECTOR(15 DOWNTO 0);
-	signal ir_q     : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal pc_q       : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal pc_d       : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	
+	signal ir_d       : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal ir_q       : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	
 	signal wrd_t      : STD_LOGIC;
 	signal wr_m_t     : STD_LOGIC;
 	signal w_b_t      : STD_LOGIC;

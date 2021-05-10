@@ -34,11 +34,11 @@ BEGIN
   begin
     if rising_edge(clk) then
       if int = '1' then
-        BR(0) <= BR(7);
-        BR(1) <= d; -- TODO in_d com al jal!
-        BR(2) <= x"000F";
+        BR(0)    <= BR(7);
+        BR(1)    <= d; -- TODO in_d com al jal!
+        BR(2)    <= x"000F";
         BR(7)(1) <= '0';
-      else  
+      else
         case op_d is
           when "00" =>
             if wrd = PE then
@@ -46,7 +46,7 @@ BEGIN
             end if;
           when "01" => BR(7)(1) <= '1'; --EI
           when "10" => BR(7)(1) <= '0'; --DI
-          when "11" => BR(7) <= BR(0); --DI
+          when "11" => BR(7)    <= BR(0); --DI
         end case; 
       end if;
     end if;

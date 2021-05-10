@@ -81,19 +81,19 @@ END component;
 
 COMPONENT controladores_IO IS
 	PORT (
-		boot : IN STD_LOGIC;
-		CLOCK_50 : IN std_logic;
-		addr_io : IN std_logic_vector(7 DOWNTO 0);
-		wr_io : IN std_logic_vector(15 DOWNTO 0);
-		rd_io : OUT std_logic_vector(15 DOWNTO 0);
-		wr_out : IN std_logic;
-		rd_in : IN std_logic;
+		boot       : IN STD_LOGIC;
+		CLOCK_50   : IN std_logic;
+		addr_io    : IN std_logic_vector(7 DOWNTO 0);
+		wr_io      : IN std_logic_vector(15 DOWNTO 0);
+		rd_io      : OUT std_logic_vector(15 DOWNTO 0);
+		wr_out     : IN std_logic;
+		rd_in      : IN std_logic;
 		led_verdes : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-		led_rojos : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-		PS2_CLK   : inout std_logic;
-      PS2_DAT  : inout std_logic;
-		KEY       : in std_logic_vector(3 downto 0);
-		SW        : in std_logic_vector(7 downto 0);
+		led_rojos  : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+		PS2_CLK    : inout std_logic;
+      PS2_DAT    : inout std_logic;
+		KEY        : in std_logic_vector(3 downto 0);
+		SW         : in std_logic_vector(7 downto 0);
 		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
 		HEX1 : OUT std_logic_vector(6 DOWNTO 0);
 		HEX2 : OUT std_logic_vector(6 DOWNTO 0);
