@@ -14,4 +14,9 @@ constant IO_PORT_KB_DATA_READY  : integer := 16;
 constant IO_PORT_CONT_CICLOS    : integer := 20;
 constant IO_PORT_CONT_MILI      : integer := 21;
 
+constant INT_IID_TIMER          : std_logic_vector(7 downto 0) := "00000000";
+constant INT_IID_PULSADORES     : std_logic_vector(7 downto 0) := "00000001";
+constant INT_IID_INTERRUPTORES  : std_logic_vector(7 downto 0) := "00000010";
+constant INT_IID_KEYBOARD       : std_logic_vector(7 downto 0) := "00000011";
+
 END PACKAGE cte_tipos_IO_pkg;
