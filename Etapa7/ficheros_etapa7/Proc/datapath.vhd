@@ -126,7 +126,6 @@ BEGIN
 		pc_in + 2            when PC_INCR,
 		pc_in + 2 + immed_y  when BR_SI,
 		wtod                 when JMP_SI,
-		-- sa                when RETI_SI, TODO
 		pc_in                when PC_BLOQ,
 		pc_in                when others; 
 	

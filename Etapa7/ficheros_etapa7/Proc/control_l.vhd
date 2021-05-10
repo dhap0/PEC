@@ -51,33 +51,35 @@ BEGIN
 	immed_6 <= ir(5  downto 0);
 	immed_8 <= ir(7  downto 0);
 	
-	op <= ALU_MOVHI  when  coop = COOP_MOV  and f1 = F1_MOVHI  else
+	op <= ALU_MOVHI  when  coop = COOP_MOV  and  f1 = F1_MOVHI  else
 	      ALU_X      when  coop = COOP_JMP
-			             or (coop = COOP_INT  and(f5 = F5_RDS  or f5 = F5_WRS)) else
-			ALU_Y      when  coop = COOP_MOV  and f1 = F1_MOVI   else
+			             or (coop = COOP_INT  and (f5 = F5_RDS  
+							                        or f5 = F5_WRS
+															or f5 = F5_RETI)) else
+			ALU_Y      when  coop = COOP_MOV  and  f1 = F1_MOVI   else
 			ALU_ADD    when  coop = COOP_LD   
 			             or  coop = COOP_ST 
 			             or  coop = COOP_LDB  
 					       or  coop = COOP_STB
 							 or  coop = COOP_ADDI 
-							 or (coop = COOP_AL   and f3 = F3_ADD)   else
-			ALU_CMPLT  when  coop = COOP_CMP  and f3 = F3_CMPLT  else
-			ALU_CMPLE  when  coop = COOP_CMP  and f3 = F3_CMPLE  else
-			ALU_CMPLEQ when  coop = COOP_CMP  and f3 = F3_CMPLEQ else
-			ALU_CMPLTU when  coop = COOP_CMP  and f3 = F3_CMPLTU else
-			ALU_CMPLEU when  coop = COOP_CMP  and f3 = F3_CMPLEU else
-			ALU_AND    when  coop = COOP_AL   and f3 = F3_AND    else
-			ALU_OR     when  coop = COOP_AL   and f3 = F3_OR     else
-			ALU_XOR    when  coop = COOP_AL   and f3 = F3_XOR    else
-			ALU_NOT    when  coop = COOP_AL   and f3 = F3_NOT    else
-			ALU_SUB    when  coop = COOP_AL   and f3 = F3_SUB    else
-			ALU_SHA    when  coop = COOP_AL   and f3 = F3_SHA    else
-			ALU_SHL    when  coop = COOP_AL   and f3 = F3_SHL    else
-			ALU_MUL    when  coop = COOP_EA   and f3 = F3_MUL    else
-			ALU_MULH   when  coop = COOP_EA   and f3 = F3_MULH   else
-			ALU_MULHU  when  coop = COOP_EA   and f3 = F3_MULHU  else
-			ALU_DIV    when  coop = COOP_EA   and f3 = F3_DIV    else
-			ALU_DIVU   when  coop = COOP_EA   and f3 = F3_DIVU   else
+							 or (coop = COOP_AL   and  f3 = F3_ADD)   else
+			ALU_CMPLT  when  coop = COOP_CMP  and  f3 = F3_CMPLT  else
+			ALU_CMPLE  when  coop = COOP_CMP  and  f3 = F3_CMPLE  else
+			ALU_CMPLEQ when  coop = COOP_CMP  and  f3 = F3_CMPLEQ else
+			ALU_CMPLTU when  coop = COOP_CMP  and  f3 = F3_CMPLTU else
+			ALU_CMPLEU when  coop = COOP_CMP  and  f3 = F3_CMPLEU else
+			ALU_AND    when  coop = COOP_AL   and  f3 = F3_AND    else
+			ALU_OR     when  coop = COOP_AL   and  f3 = F3_OR     else
+			ALU_XOR    when  coop = COOP_AL   and  f3 = F3_XOR    else
+			ALU_NOT    when  coop = COOP_AL   and  f3 = F3_NOT    else
+			ALU_SUB    when  coop = COOP_AL   and  f3 = F3_SUB    else
+			ALU_SHA    when  coop = COOP_AL   and  f3 = F3_SHA    else
+			ALU_SHL    when  coop = COOP_AL   and  f3 = F3_SHL    else
+			ALU_MUL    when  coop = COOP_EA   and  f3 = F3_MUL    else
+			ALU_MULH   when  coop = COOP_EA   and  f3 = F3_MULH   else
+			ALU_MULHU  when  coop = COOP_EA   and  f3 = F3_MULHU  else
+			ALU_DIV    when  coop = COOP_EA   and  f3 = F3_DIV    else
+			ALU_DIVU   when  coop = COOP_EA   and  f3 = F3_DIVU   else
 			(others => '0');
 	
 	Rb_N <= '0' when coop = COOP_AL
@@ -98,7 +100,7 @@ BEGIN
 	              (coop = COOP_JMP  and f3 = F3_JAL) else 
 	       not PE;
 			 
-	addr_a <= "001" when coop = COOP_INT and f5 = F5_RETI else
+	addr_a <= "001"           when coop = COOP_INT and f5 = F5_RETI else
 	          ir(11 downto 9) when coop = COOP_MOV else
 	          ir(8  downto 6) when coop = COOP_LD
 	                            or coop = COOP_ST
@@ -118,8 +120,6 @@ BEGIN
 	addr_d <= ir(11 downto 9);
 	
 	addr_io <= immed_8;
-	--rd_in  <= not f1 when coop = COOP_IO else '0';
-	--wr_out <= f1 when coop = COOP_IO else '0';
 
 	rd_in  <= '1' when coop = COOP_IO and f1 = F1_IN  else '0';
 	wr_out <= '1' when coop = COOP_IO and f1 = F1_OUT else '0';
@@ -154,14 +154,15 @@ BEGIN
 	                  or (f1 = F1_BZ  and z = '1')  else '0';
 							
 	jmp_si_t <= '1' when (f3 = F3_JNZ and z = '0') 
-                    or (f3 = F3_JZ  and z = '1')
-                    or  f3 = F3_JMP               
-                    or  f3 = F3_JAL               else '0';
+                     or (f3 = F3_JZ  and z = '1')
+                     or  f3 = F3_JMP               
+                     or  f3 = F3_JAL               else '0';
 							
 --	ldpc <= haltSI when ir(15 downto 0) = x"FFFF" else '1';
-	tknbr <= BR_SI    when coop = COOP_BR   and br_si_t  = '1'  else 
-	         JMP_SI   when coop = COOP_JMP  and jmp_si_t = '1'  else
-	         PC_BLOQ  when coop = COOP_INT  and f5 = F5_HALT    else
+	tknbr <= BR_SI    when  coop = COOP_BR   and br_si_t  = '1'      else 
+	         JMP_SI   when (coop = COOP_JMP  and jmp_si_t = '1')     
+				           or (coop = COOP_INT  and f5       = F5_RETI) else
+	         PC_BLOQ  when  coop = COOP_INT  and f5       = F5_HALT  else
 				PC_INCR;
 				
 	a_sys <= '1' when coop = COOP_INT and f5 = F5_RDS else '0';

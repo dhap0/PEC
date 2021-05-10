@@ -57,7 +57,7 @@ constant F3_CMPLEU : campofunct3 := "101";
 
 -- F3_AL
 constant F3_AND : campofunct3 := "000";
-constant F3_OR :  campofunct3 := "001";
+constant F3_OR  : campofunct3 := "001";
 constant F3_XOR : campofunct3 := "010";
 constant F3_NOT : campofunct3 := "011";
 constant F3_ADD : campofunct3 := "100";
@@ -73,13 +73,13 @@ constant F3_DIV   : campofunct3 := "100";
 constant F3_DIVU  : campofunct3 := "101";
 
 -- F5_INT
-constant F5_EI    : campofunct5 := "00000";
-constant F5_DI    : campofunct5 := "00001";
-constant F5_RETI  : campofunct5 := "00100";
-constant F5_GETIID: campofunct5 := "01000";
-constant F5_RDS   : campofunct5 := "01100";
-constant F5_WRS   : campofunct5 := "10000";
-constant F5_HALT  : campofunct5 := "11111";
+constant F5_EI     : campofunct5 := "00000";
+constant F5_DI     : campofunct5 := "00001";
+constant F5_RETI   : campofunct5 := "00100";
+constant F5_GETIID : campofunct5 := "01000";
+constant F5_RDS    : campofunct5 := "01100";
+constant F5_WRS    : campofunct5 := "10000";
+constant F5_HALT   : campofunct5 := "11111";
 
 
 END PACKAGE sisa16_coop_funct_pkg;
