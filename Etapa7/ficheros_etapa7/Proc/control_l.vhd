@@ -26,6 +26,7 @@ ENTITY control_l IS
 	       wr_out    : OUT STD_LOGIC;
 			 a_sys     : OUT STD_LOGIC;
 			 d_sys     : OUT STD_LOGIC;
+			 op_sys:    OUT  STD_LOGIC_VECTOR(1 DOWNTO 0);
     		 word_byte : OUT STD_LOGIC);
 END control_l;
 
@@ -97,7 +98,8 @@ BEGIN
 	              (coop = COOP_JMP  and f3 = F3_JAL) else 
 	       not PE;
 			 
-	addr_a <= ir(11 downto 9) when coop = COOP_MOV else
+	addr_a <= "001" when coop = COOP_INT and f5 = F5_RETI else
+	          ir(11 downto 9) when coop = COOP_MOV else
 	          ir(8  downto 6) when coop = COOP_LD
 	                            or coop = COOP_ST
 	                            or coop = COOP_LDB
@@ -163,6 +165,10 @@ BEGIN
 				PC_INCR;
 				
 	a_sys <= '1' when coop = COOP_INT and f5 = F5_RDS else '0';
-	d_sys <= '1' when coop = COOP_INT and f5 = F5_WRS else '0';
+	d_sys <= '1' when coop = COOP_INT and f5 = F5_WRS  else '0';
+	op_sys <= "01" when coop = COOP_INT and f5 = F5_EI   else
+	          "10" when coop = COOP_INT and f5 = F5_DI   else 
+				 "11" when coop = COOP_INT and f5 = F5_RETI else 
+				 "00" ;
 				
 END Structure;

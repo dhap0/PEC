@@ -26,6 +26,7 @@ ENTITY datapath IS
 		rd_io:     IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		a_sys:     IN STD_LOGIC;
 		d_sys:     IN STD_LOGIC;
+		op_sys:    IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
 		pc_out:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		z:         OUT STD_LOGIC;
 		addr_m:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -50,6 +51,8 @@ ARCHITECTURE Structure OF datapath IS
 	COMPONENT sregfile IS
 		PORT (clk    : IN  STD_LOGIC;
           wrd    : IN  STD_LOGIC;
+			 int    : IN  STD_LOGIC;
+			 op_d   : IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
           d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -85,6 +88,8 @@ BEGIN
 	
 	SBR: sregfile PORT MAP(clk     =>  clk,
 	                       wrd     =>  sbr_wrd,
+								  int     => '0',
+								  op_d    =>  op_sys,
 								  d       =>  reg_d ,
 								  addr_a  =>  addr_a,
 								  addr_d  =>  addr_d,
@@ -121,6 +126,7 @@ BEGIN
 		pc_in + 2            when PC_INCR,
 		pc_in + 2 + immed_y  when BR_SI,
 		wtod                 when JMP_SI,
+		-- sa                when RETI_SI, TODO
 		pc_in                when PC_BLOQ,
 		pc_in                when others; 
 	

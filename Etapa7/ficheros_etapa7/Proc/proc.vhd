@@ -30,35 +30,37 @@ ARCHITECTURE Structure OF proc IS
 		PORT (clk:      IN  STD_LOGIC;			   op:       IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);			   Rb_N:     IN  STD_LOGIC;			   wrd:      IN  STD_LOGIC;			   addr_a:   IN  STD_LOGIC_VECTOR(2 DOWNTO 0);			   addr_b:   IN  STD_LOGIC_VECTOR(2 DOWNTO 0);			   addr_d:   IN  STD_LOGIC_VECTOR(2 DOWNTO 0);			   immed:    IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   immed_x2: IN  STD_LOGIC;			   datard_m: IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   ins_dad:  IN  STD_LOGIC;			   pc_in:    IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   in_d:     IN  STD_LOGIC_VECTOR(1  DOWNTO 0);			   tknbr:    IN  STD_LOGIC_VECTOR(1  DOWNTO 0);
 				rd_io:    IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 				a_sys:    IN STD_LOGIC;
-			   d_sys:    IN STD_LOGIC;			   pc_out:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   addr_m:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			   d_sys:    IN STD_LOGIC;
+				op_sys:   IN  STD_LOGIC_VECTOR(1 DOWNTO 0);			   pc_out:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   addr_m:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				wr_io:     OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   data_wr:  OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   z:        OUT STD_LOGIC); 
 	END COMPONENT;
 	COMPONENT unidad_control IS
-		PORT (boot:      IN  STD_LOGIC;
-		      clk:       IN  STD_LOGIC;
-		      datard_m:  IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
-		      pc_in:     IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
-		      z:         IN  STD_LOGIC;
-		      op:        OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
-		      Rb_N:      OUT STD_LOGIC;
-		      wrd:       OUT STD_LOGIC;
-		      tknbr:     OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
-		      addr_a:    OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-		      addr_b:    OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-		      addr_d:    OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-		      immed:     OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		      pc_out:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		      ins_dad:   OUT STD_LOGIC;
-		      in_d:      OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
-		      immed_x2:  OUT STD_LOGIC;
-		      wr_m:      OUT STD_LOGIC;
-				addr_io: OUT STD_LOGIC_VECTOR(7 downto 0);
-			   rd_in: OUT STD_LOGIC;
-			   wr_out: OUT STD_LOGIC;
-				a_sys     : OUT STD_LOGIC;
-			   d_sys     : OUT STD_LOGIC;
-		      word_byte: OUT STD_LOGIC
-	);
+	PORT (
+		boot:      IN STD_LOGIC;
+		clk :      IN STD_LOGIC;
+		datard_m:  IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		z:         IN STD_LOGIC;
+		pc_in:     IN   STD_LOGIC_VECTOR(15 DOWNTO 0);
+		op:        OUT  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
+		Rb_N:      OUT  STD_LOGIC;
+		tknbr:     OUT  STD_LOGIC_VECTOR(1  DOWNTO 0);
+		wrd:       OUT  STD_LOGIC;
+		addr_a:    OUT  STD_LOGIC_VECTOR(2  DOWNTO 0);
+		addr_b:    OUT  STD_LOGIC_VECTOR(2  DOWNTO 0);
+		addr_d:    OUT  STD_LOGIC_VECTOR(2  DOWNTO 0);
+		immed:     OUT  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		pc_out:    OUT  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		ins_dad:   OUT  STD_LOGIC;
+		in_d:      OUT  STD_LOGIC_VECTOR(1  DOWNTO 0);
+		immed_x2:  OUT  STD_LOGIC;
+		wr_m:      OUT  STD_LOGIC;
+		addr_io:   OUT STD_LOGIC_VECTOR(7 downto 0);
+		rd_in:     OUT STD_LOGIC;
+		wr_out:    OUT STD_LOGIC;
+		a_sys:     OUT STD_LOGIC;
+		d_sys:     OUT STD_LOGIC;
+		op_sys:    OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		word_byte: OUT  STD_LOGIC);
 	END COMPONENT;
 
 
@@ -70,6 +72,7 @@ ARCHITECTURE Structure OF proc IS
 	signal z2z:          STD_LOGIC;
 	signal as2as:        STD_LOGIC;
 	signal ds2ds:        STD_LOGIC;
+	signal ops2ops       STD_LOGIC_VECTOR(1 downto 0);
 	signal o2o:          STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 	signal a2a:          STD_LOGIC_VECTOR(2 DOWNTO 0);
 	signal b2b:          STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -107,6 +110,7 @@ BEGIN
 			                        wr_out     => wr_out,
 											a_sys     => as2as,
 											d_sys     => ds2ds,
+											op_sys    => ops2ops,
 	                              word_byte => word_byte);
 											
 	 e0 : datapath PORT MAP(clk       =>  clk,
@@ -127,6 +131,7 @@ BEGIN
 									wr_io      => wr_io,
 									a_sys     => as2as,
 									d_sys     => ds2ds,
+									op_sys    => ops2ops,
 	                        in_d      =>  ind2ind,
 	                        tknbr     =>  c0_tknbr_out,
 	                        addr_m    =>  addr_m,

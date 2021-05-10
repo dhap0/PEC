@@ -40,6 +40,7 @@ constant ALU_DIVU:    codigo_alu_op := "10011";
 -- MOV
 constant ALU_MOVHI:   codigo_alu_op := "10100";
 
+
 constant PE:  std_logic:= '1';
 
 END PACKAGE cte_tipos_UF_pkg;
