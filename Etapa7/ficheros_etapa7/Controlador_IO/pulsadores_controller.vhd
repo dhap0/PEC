@@ -14,6 +14,9 @@ end pulsadores_controller;
 
 ARCHITECTURE Structure OF pulsadores_controller IS
 
+type state_type is (BLOQ, IDL);
+
+signal state  : state_type := IDL;
 signal keys_d : std_logic_vector(3 downto 0);
 signal keys_q : std_logic_vector(3 downto 0);
 
@@ -22,21 +25,26 @@ BEGIN
 	keys_d   <= keys;
 	read_key <= keys_q;
 	
-	next_state : process (clk, boot)
+	next_state: process (clk, boot)
 	begin
 		
 		if falling_edge(boot) then
 			intr <= '0';
-		elsif rising_edge(clk) then		
-			if inta = '1' then 
-				intr <= '0';
-			end if;
-			if not (keys = keys_q) then
-				intr <= '1';
-				keys_q <= keys_d;
-			end if;
+		elsif rising_edge(clk) then	
+			case state is 
+				when BLOQ =>
+					if inta = '1' then 
+						intr <= '0';
+						state <= IDL;
+					end if;
+				when IDL =>
+					if not (keys = keys_q) then
+						intr <= '1';
+						keys_q <= keys_d;
+					end if;
+			end case;
 		end if;
 	
-	end process;
+end process;
 
 END Structure;			 
