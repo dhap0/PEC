@@ -44,8 +44,8 @@ BEGIN
             if wrd = PE then
               BR(conv_integer(addr_d)) <= d;
             end if;
-          when "01" => BR(7)(1) <= '1'; --EI
-          when "10" => BR(7)(1) <= '0'; --DI
+          when "01" => BR(7)(1) <= '1';   --EI
+          when "10" => BR(7)(1) <= '0';   --DI
           when "11" => BR(7)    <= BR(0); --DI
         end case; 
       end if;

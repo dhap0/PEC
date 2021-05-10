@@ -16,12 +16,12 @@ ENTITY sisa IS
           SW        : in std_logic_vector(9 downto 0);
 			 KEY       : in std_logic_vector(3 downto 0);
 			 PS2_CLK   : inout std_logic;
-          PS2_DAT  : inout std_logic;
+          PS2_DAT   : inout std_logic;
           VGA_R     : out std_logic_vector(3 downto 0); -- vga red pixel value
           VGA_G     : out std_logic_vector(3 downto 0); -- vga green pixel value
           VGA_B     : out std_logic_vector(3 downto 0); -- vga blue pixel value
-          VGA_HS : out std_logic; -- vga control signal
-          VGA_VS  : out std_logic; -- vga control signal
+          VGA_HS    : out std_logic; -- vga control signal
+          VGA_VS    : out std_logic; -- vga control signal
 			 LEDR : OUT std_logic_vector(7 DOWNTO 0);
 			 LEDG : OUT std_logic_vector(7 DOWNTO 0);
 			 HEX0 : OUT std_logic_vector(6 DOWNTO 0);
