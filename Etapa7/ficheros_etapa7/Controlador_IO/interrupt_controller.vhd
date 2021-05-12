@@ -28,7 +28,7 @@ BEGIN
  process (clk, boot) 
  begin
   if boot = '1' then
-    intr        <= '0';
+   -- intr        <= '0';
     key_inta    <= '0';
     ps2_inta    <= '0';
     switch_inta <= '0';

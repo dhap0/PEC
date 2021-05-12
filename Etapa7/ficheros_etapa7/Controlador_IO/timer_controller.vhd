@@ -23,31 +23,42 @@ type state_type is (IDL, BLOQ);
 
 signal state          : state_type := IDL;
 signal clock_20hz_clk : std_logic;
-signal clock_20hz_cnt : std_logic_vector(21 downto 0) := x"2500000";
+signal clock_20hz_cnt : std_logic_vector(25 downto 0) := "11" & x"500000";
+signal tick : std_logic;
 
 BEGIN
 
 	clock_20hz : clock generic map (clock_20hz_cnt'length)
 					 port map (CLOCK_50 => CLOCK_50, contador => clock_20hz_cnt, clk => clock_20hz_clk);
 
-	int_handdler : process (CLOCK_50, clock_20hz_clk, boot)
+	int_handdler : process (CLOCK_50, boot)
 	begin
 		if boot = '1' then
 			intr <= '0';
-		else
-			if rising_edge(CLOCK_50) then	
-				if state = BLOQ then
+		elsif rising_edge(CLOCK_50) then	
+			  case state is 
+			    when BLOQ =>
 					if inta = '1' then
 						intr  <= '0';
 						state <= IDL;
 					end if;
-				end if;
-			end if;
-			if rising_edge(clock_20hz_clk) then
-				intr  <= '1';
-				state <= BLOQ;
-			end if;
+			    when IDL =>
+				   if tick = '1' then 
+				     intr  <= '1';
+				     state <= BLOQ;
+					end if;
+            end case;
 		end if;
+	end process;
+	
+	process (clock_20hz_clk, boot, state)
+	begin
+	 if boot = '1' or state = BLOQ then
+	   tick <= '0';
+	 elsif rising_edge(clock_20hz_clk) then
+	   tick <= '1';
+	 end if;
+	
 	end process;
 						 
 END Structure;
