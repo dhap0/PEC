@@ -27,31 +27,27 @@ signal clock_20hz_cnt : std_logic_vector(21 downto 0) := x"2500000";
 
 BEGIN
 
-	clock_20hz : clock generic map (22)
+	clock_20hz : clock generic map (clock_20hz_cnt'length)
 					 port map (CLOCK_50 => CLOCK_50, contador => clock_20hz_cnt, clk => clock_20hz_clk);
 
-	next_state: process (CLOCK_50, clock_20hz_clk, boot)
+	int_handdler : process (CLOCK_50, clock_20hz_clk, boot)
 	begin
-		
 		if boot = '1' then
 			intr <= '0';
-		elsif rising_edge(CLOCK_50) then	
-			case state is
-				when BLOQ =>
-					if inta = '1' then 
-						if not rising_edge(clock_20hz_clk) then
-							intr <= '0';
-							state <= IDL;
-						end if;
+		else
+			if rising_edge(CLOCK_50) then	
+				if state = BLOQ then
+					if inta = '1' then
+						intr  <= '0';
+						state <= IDL;
 					end if;
-				when IDL =>
-					if rising_edge(clock_20hz_clk) then
-						intr <= '1';
-						state <= BLOQ;
-					end if;
-			end case;
+				end if;
+			end if;
+			if rising_edge(clock_20hz_clk) then
+				intr  <= '1';
+				state <= BLOQ;
+			end if;
 		end if;
-	
-end process;
-					 
+	end process;
+						 
 END Structure;
