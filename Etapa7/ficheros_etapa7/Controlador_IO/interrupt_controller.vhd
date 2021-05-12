@@ -28,31 +28,32 @@ BEGIN
  process (clk, boot) 
  begin
   if boot = '1' then
-    intr = '0';
-    key_inta = '0';
-    ps2_inta = '0';
-    switch_inta = '0';
-    timer_inta = '0';
+    intr        <= '0';
+    key_inta    <= '0';
+    ps2_inta    <= '0';
+    switch_inta <= '0';
+    timer_inta  <= '0';
+	 
   elsif rising_edge(clk) then
     if inta = '1' then
       if timer_intr = '1' then
-        iid = x"00";
-        timer_inta = '1'
-      elsif key_intr ='1' then
-        iid = x"01";
-        key_inta = '1';
+        iid <= x"00";
+        timer_inta <= '1';
+      elsif key_intr = '1' then
+        iid <= x"01";
+        key_inta <= '1';
       elsif switch_intr = '1' then
-        iid = x"02";
-        switch_inta = '1';
+        iid <= x"02";
+        switch_inta <= '1';
       elsif ps2_intr = '1' then 
-        iid = x"03";
-        ps2_inta = '1';
+        iid <= x"03";
+        ps2_inta <= '1';
       end if;
     else
-      timer_inta  = '0';
-      key_inta    = '0';
-      switch_inta = '0';
-      ps2_inta    = '0';
+      timer_inta  <= '0';
+      key_inta    <= '0';
+      switch_inta <= '0';
+      ps2_inta    <= '0';
     end if;
   end if;
  end process;

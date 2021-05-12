@@ -19,6 +19,9 @@ component clock IS
 		   clk      : out std_logic);
 END component;
 
+type state_type is (IDL, BLOQ);
+
+signal state          : state_type := IDL;
 signal clock_20hz_clk : std_logic;
 
 BEGIN

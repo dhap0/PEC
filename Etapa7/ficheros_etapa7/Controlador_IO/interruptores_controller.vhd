@@ -13,8 +13,8 @@ end interruptores_controller;
 
 
 ARCHITECTURE Structure OF interruptores_controller IS
-type state_type is (IDL, BLOQ);
 
+type state_type is (IDL, BLOQ);
 signal state      : state_type := IDL;
 signal switches_d : std_logic_vector(7 downto 0);
 signal switches_q : std_logic_vector(7 downto 0);
