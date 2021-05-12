@@ -13,11 +13,13 @@ ENTITY controladores_IO IS
 		CLOCK_50   : IN std_logic;
 		addr_io    : IN std_logic_vector(7 DOWNTO 0);
 		wr_io      : IN std_logic_vector(15 DOWNTO 0);
+		inta       : IN std_logic;
 		rd_io      : OUT std_logic_vector(15 DOWNTO 0);
 		wr_out     : IN std_logic;
 		rd_in      : IN std_logic;
 		led_verdes : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		led_rojos  : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+		intr       : OUT std_logic;
 		PS2_CLK    : inout std_logic;
       PS2_DAT    : inout std_logic; 
 		KEY        : in std_logic_vector(3 downto 0);
@@ -50,6 +52,44 @@ COMPONENT keyboard_controller IS
           clear_char : in    STD_LOGIC;
 			 data_ready : out   STD_LOGIC);
 END COMPONENT;
+COMPONENT pulsadores_controller IS
+    Port (clk        : in    STD_LOGIC;
+          boot       : in    STD_LOGIC;
+			 inta       : in    STD_LOGIC;
+			 keys       : in    STD_LOGIC_VECTOR(3 DOWNTO 0);
+			 intr       : out   STD_LOGIC;
+			 read_key   : out   STD_LOGIC_VECTOR(3 DOWNTO 0));
+END COMPONENT;
+COMPONENT interruptores_controller IS
+    Port (clk        : in    STD_LOGIC;
+          boot       : in    STD_LOGIC;
+			 inta       : in    STD_LOGIC;
+			 switches   : in    STD_LOGIC_VECTOR(7 DOWNTO 0);
+			 intr       : out   STD_LOGIC;
+			 rd_switch  : out   STD_LOGIC_VECTOR(7 DOWNTO 0));
+END COMPONENT;
+COMPONENT timer_controller IS
+    Port (CLOCK_50   : in    STD_LOGIC;
+          boot       : in    STD_LOGIC;
+			 inta       : in    STD_LOGIC;
+			 intr       : out   STD_LOGIC);
+END COMPONENT;
+COMPONENT interrupt_controller IS
+    Port (clk         : in   STD_LOGIC;
+          boot        : in   STD_LOGIC;
+			 inta        : in   STD_LOGIC;
+			 key_intr    : in   STD_LOGIC;
+			 ps2_intr    : in   STD_LOGIC;
+			 switch_intr : in   STD_LOGIC;
+			 timer_intr  : in   STD_LOGIC;
+			 
+			 intr        : out  STD_LOGIC;
+			 key_inta    : out  STD_LOGIC;
+			 ps2_inta    : out  STD_LOGIC;
+			 switch_inta : out  STD_LOGIC;
+			 timer_inta  : out  STD_LOGIC;
+			 iid         : out  STD_LOGIC_VECTOR(7 DOWNTO 0));
+END COMPONENT;
 
 	type bancRegistres is array (0 to 31) of std_logic_vector(15 downto 0);
 	signal mem            : bancRegistres;
@@ -57,10 +97,25 @@ END COMPONENT;
 	signal hex_num        : std_logic_vector(15 downto 0);
 	signal hex_display_en : std_logic_vector(3 downto 0);
 	
+	signal keys_q : std_logic_vector(3 downto 0);
+	signal switches_q : std_logic_vector(7 downto 0);
+	signal iid : std_logic_vector(7 downto 0);
+	
+	signal key_inta : std_logic;
+	signal switch_inta : std_logic;
+	--signal ps2_inta : std_logic;
+	signal timer_inta : std_logic;
+	
+	signal key_intr : std_logic;
+	signal switch_intr : std_logic;
+	--signal ps2_intr : std_logic;
+	signal timer_intr : std_logic;
+	
 	signal kb_read_char   : std_logic_vector(7 downto 0);
 	signal kb_data_ready  : std_logic;
 	
 	signal clear_char     : std_logic;
+	signal ps2_inta     : std_logic;
 	
 	signal cont_ciclos  : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
 	signal cont_mili    : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
@@ -76,8 +131,8 @@ BEGIN
 			if rising_edge(CLOCK_50) then
 			   clear_char <= '0';
 				
-				mem(IO_PORT_KEY)           <= "000000000000"    & KEY;
-				mem(IO_PORT_SW)            <= "00000000"     	& SW;
+				mem(IO_PORT_KEY)           <= "000000000000"    & keys_q;
+				mem(IO_PORT_SW)            <= "00000000"     	& switches_q;
 				mem(IO_PORT_KB_READ_CHAR)  <= "00000000"        & kb_read_char;
 				mem(IO_PORT_KB_DATA_READY) <= "000000000000000" & kb_data_ready;
 				mem(IO_PORT_CONT_CICLOS)   <= cont_ciclos;
@@ -102,22 +157,7 @@ BEGIN
 		end if;
 	 end process;
 	 
-	 kb : keyboard_controller port map (clk => CLOCK_50,
-          reset      => boot,
-          ps2_clk    => PS2_CLK,
-          ps2_data   => PS2_DAT,
-          read_char  => kb_read_char,
-          clear_char => clear_char,
-			 data_ready => kb_data_ready); 
-			 
-	 hex : driverHex port map    (num  => hex_num,--"00000000"&SW,
-		         display_en => hex_display_en,
-               HEX0 => HEX0,
-					HEX1 => HEX1,
-					HEX2 => HEX2,
-					HEX3 => HEX3);
-
-timer: process(CLOCK_50)
+	 timer: process(CLOCK_50)
 	begin
 		if rising_edge(CLOCK_50) then
 		
@@ -135,5 +175,55 @@ timer: process(CLOCK_50)
 			
 		end if;
 	end process;
+	 
+	 kb : keyboard_controller port map (clk => CLOCK_50,
+          reset      => boot,
+          ps2_clk    => PS2_CLK,
+          ps2_data   => PS2_DAT,
+          read_char  => kb_read_char,
+          clear_char => (clear_char or ps2_inta),
+			 data_ready => kb_data_ready); 
+			 
+	 hex : driverHex port map    (num        => hex_num, 
+											display_en => hex_display_en,
+											HEX0       => HEX0,
+											HEX1       => HEX1,
+											HEX2       => HEX2,
+											HEX3       => HEX3);
+
+    keys_ctr : pulsadores_controller port map (clk      => CLOCK_50,
+	                                            boot     => boot,
+															  inta     => key_inta,
+															  keys     => KEY,
+															  intr     => key_intr,
+															  read_key => keys_q);
+															  
+	 sw_ctr : interruptores_controller port map (clk      => CLOCK_50,
+	                                            boot      => boot,
+															  inta      => switch_inta,
+															  switches  => SW,
+															  intr      => switch_intr,
+															  rd_switch => switches_q);
+															
+															
+    timer_ctr : timer_controller port map (CLOCK_50 => CLOCK_50,
+	                                        boot     => boot,
+														 inta     => timer_inta,
+														 intr     => timer_intr);
+														 
+	 int_ctr : interrupt_controller port map (clk         => CLOCK_50,
+	                                          boot        => boot,
+															inta        => inta,
+															key_intr    => key_intr,
+															ps2_intr    => kb_data_ready,
+															switch_intr => switch_intr,
+															timer_intr  => timer_intr,
+															intr        => intr,
+															key_inta    => key_inta,
+															ps2_inta    => ps2_inta,
+															switch_inta => switch_inta,
+															timer_inta  => timer_inta,
+															iid         => iid);			
+
 
 END Structure;
