@@ -23,11 +23,12 @@ type state_type is (IDL, BLOQ);
 
 signal state          : state_type := IDL;
 signal clock_20hz_clk : std_logic;
+signal clock_20hz_cnt : std_logic_vector(21 downto 0) := x"2500000";
 
 BEGIN
 
-	clock_20hz : clock generic map (2500000)
-					 port map (CLOCK_50 => CLOCK_50, contador => std_logic_vector(to_unsigned(8, 4)), clk => clock_20hz_clk);
+	clock_20hz : clock generic map (22)
+					 port map (CLOCK_50 => CLOCK_50, contador => clock_20hz_cnt, clk => clock_20hz_clk);
 
 	next_state: process (CLOCK_50, clock_20hz_clk, boot)
 	begin
