@@ -27,6 +27,7 @@ ENTITY datapath IS
 		a_sys:     IN STD_LOGIC;
 		d_sys:     IN STD_LOGIC;
 		op_sys:    IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
+		int_en : OUT STD_LOGIC;
 		pc_out:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		z:         OUT STD_LOGIC;
 		addr_m:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -56,6 +57,7 @@ ARCHITECTURE Structure OF datapath IS
           d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+			 int_en : OUT STD_LOGIC;
           a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
 	END COMPONENT;
 	COMPONENT alu IS
@@ -93,6 +95,7 @@ BEGIN
 								  d       =>  reg_d ,
 								  addr_a  =>  addr_a,
 								  addr_d  =>  addr_d,
+								  int_en  => int_en,
 								  a       =>  sa);
 
 	ALUop: alu PORT MAP(x   =>  atox,

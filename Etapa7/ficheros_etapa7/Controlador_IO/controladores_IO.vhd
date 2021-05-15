@@ -17,6 +17,7 @@ ENTITY controladores_IO IS
 		rd_io      : OUT std_logic_vector(15 DOWNTO 0);
 		wr_out     : IN std_logic;
 		rd_in      : IN std_logic;
+		int_en     : IN STD_LOGIC;
 		led_verdes : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		led_rojos  : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		intr       : OUT std_logic;
@@ -103,6 +104,9 @@ END COMPONENT;
 	
 	signal key_inta : std_logic;
 	signal switch_inta : std_logic;
+	signal int_key_inta : std_logic;
+	signal int_switch_inta : std_logic;
+   signal int_ps2_inta     : std_logic;
 	--signal ps2_inta : std_logic;
 	signal timer_inta : std_logic;
 	
@@ -115,13 +119,13 @@ END COMPONENT;
 	signal kb_data_ready  : std_logic;
 	
 	signal clear_char     : std_logic;
-	signal ps2_inta     : std_logic;
 	
 	signal cont_ciclos  : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
 	signal cont_mili    : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
 
 BEGIN
-	 rd_io      <= mem(conv_integer(addr_io(4 downto 0)));
+	 rd_io      <= mem(conv_integer(addr_io(4 downto 0))) when inta = '0' else 
+	               x"00" & iid;
 	 led_rojos  <= mem(IO_PORT_LEDR)(7 downto 0);
 	 led_verdes <= mem(IO_PORT_LEDG)(7 downto 0);
 	 
@@ -143,10 +147,12 @@ BEGIN
 				
 				if wr_out = PE then
 					if    addr_io = IO_PORT_KEY then
+					  key_inta <= not int_en;
 					elsif addr_io = IO_PORT_SW then
+					  switch_inta <= not int_en;
 					elsif addr_io = IO_PORT_KB_READ_CHAR then
 					elsif addr_io = IO_PORT_KB_DATA_READY then
-					  clear_char <= '1';
+					  clear_char <= not int_en;
 					elsif addr_io = IO_PORT_CONT_CICLOS then
 					elsif addr_io = IO_PORT_CONT_MILI then
 					else
@@ -181,7 +187,7 @@ BEGIN
           ps2_clk    => PS2_CLK,
           ps2_data   => PS2_DAT,
           read_char  => kb_read_char,
-          clear_char => (clear_char or ps2_inta),
+          clear_char => (clear_char or int_ps2_inta),
 			 data_ready => kb_data_ready); 
 			 
 	 hex : driverHex port map    (num        => hex_num, 
@@ -193,14 +199,14 @@ BEGIN
 
     keys_ctr : pulsadores_controller port map (clk      => CLOCK_50,
 	                                            boot     => boot,
-															  inta     => key_inta,
+															  inta     => (key_inta or int_key_inta),
 															  keys     => KEY,
 															  intr     => key_intr,
 															  read_key => keys_q);
 															  
 	 sw_ctr : interruptores_controller port map (clk      => CLOCK_50,
 	                                            boot      => boot,
-															  inta      => switch_inta,
+															  inta      => (switch_inta or int_switch_inta),
 															  switches  => SW,
 															  intr      => switch_intr,
 															  rd_switch => switches_q);
@@ -219,9 +225,9 @@ BEGIN
 															switch_intr => switch_intr,
 															timer_intr  => timer_intr,
 															intr        => intr,
-															key_inta    => key_inta,
-															ps2_inta    => ps2_inta,
-															switch_inta => switch_inta,
+															key_inta    => int_key_inta,
+															ps2_inta    => int_ps2_inta,
+															switch_inta => int_switch_inta,
 															timer_inta  => timer_inta,
 															iid         => iid);			
 

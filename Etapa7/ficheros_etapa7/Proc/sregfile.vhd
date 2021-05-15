@@ -14,6 +14,7 @@ ENTITY sregfile IS
           d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+			 int_en : OUT STD_LOGIC;
           a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
 END sregfile;
 
@@ -30,6 +31,7 @@ BEGIN
     -- Os puede ser util usar la funcion "conv_integer" o "to_integer"
     -- Una buena (y limpia) implementacion no deberia ocupar m�s de 7 o 8 lineas
   a <= BR(conv_integer(addr_a));
+  int_en <= BR(7)(1);
   p_write : process(clk,wrd)
   begin
     if rising_edge(clk) then
