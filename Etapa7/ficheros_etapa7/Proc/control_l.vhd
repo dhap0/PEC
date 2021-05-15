@@ -54,8 +54,8 @@ BEGIN
 	op <= ALU_MOVHI  when  coop = COOP_MOV  and  f1 = F1_MOVHI  else
 	      ALU_X      when  coop = COOP_JMP
 			             or (coop = COOP_INT  and (f5 = F5_RDS  
-							                        or f5 = F5_WRS
-															or f5 = F5_RETI)) else
+							                       or  f5 = F5_WRS
+														  or  f5 = F5_RETI)) else
 			ALU_Y      when  coop = COOP_MOV  and  f1 = F1_MOVI   else
 			ALU_ADD    when  coop = COOP_LD   
 			             or  coop = COOP_ST 
@@ -88,7 +88,6 @@ BEGIN
 	              or coop = COOP_BR 
 	              or coop = COOP_JMP else '1';
 					  
-	--  addr_io, rd_in, wr_out y la señal del nuevo multiplexor del datapath.
 	wrd <= PE when coop = COOP_MOV  or
 	               coop = COOP_LD   or
 	               coop = COOP_LDB  or
@@ -96,18 +95,19 @@ BEGIN
 	               coop = COOP_CMP  or
 	               coop = COOP_ADDI or
 	               coop = COOP_EA   or
-					  (coop = COOP_INT  and (f5 = F5_WRS or f5 = F5_RDS)) or
-					  (coop = COOP_IO   and  f1 = F1_IN) or
-	              (coop = COOP_JMP  and f3 = F3_JAL) else 
-	       not PE;
+					  (coop = COOP_INT  and (f5 = F5_WRS
+					                     or  f5 = F5_RDS
+												or  f5 = F5_GETIID)) or
+					  (coop = COOP_IO   and  f1 = F1_IN)      or
+	              (coop = COOP_JMP  and  f3 = F3_JAL)     else not PE;
 			 
-	addr_a <= "001"           when coop = COOP_INT and f5 = F5_RETI else
-	          ir(11 downto 9) when coop = COOP_MOV else
-	          ir(8  downto 6) when coop = COOP_LD
-	                            or coop = COOP_ST
-	                            or coop = COOP_LDB
-	                            or coop = COOP_STB
-	                            or coop = COOP_JMP else ir(8  downto 6);
+	addr_a <= "001"           when  coop = COOP_INT and f5 = F5_RETI    else
+	          ir(11 downto 9) when  coop = COOP_MOV else
+	          ir(8  downto 6) when  coop = COOP_LD
+	                            or  coop = COOP_ST
+	                            or  coop = COOP_LDB
+	                            or  coop = COOP_STB
+	                            or  coop = COOP_JMP else ir(8  downto 6);
 				 
 	addr_b <= ir(11 downto 9) when coop = COOP_ST
 	                            or coop = COOP_STB 
@@ -136,12 +136,13 @@ BEGIN
 
 	wr_m <= PE when coop = COOP_ST  else
 	        PE when coop = COOP_STB else
-			    not PE;
+			  not PE;
 			  
-	in_d <= REGFILE_D_MEM  when coop = COOP_LD 
-	                         or coop = COOP_LDB  else
-			  REGFILE_D_IO   when coop = COOP_IO   else
-			  REGFILE_D_PC   when coop = COOP_JMP  else
+	in_d <= REGFILE_D_MEM  when  coop = COOP_LD 
+	                         or  coop = COOP_LDB                     else
+			  REGFILE_D_IO   when  coop = COOP_IO   
+			                   or (coop = COOP_INT and f5 = F5_GETIID) else
+			  REGFILE_D_PC   when  coop = COOP_JMP                     else
 			  REGFILE_D_ALU;
 			  
 	immed_x2 <= '1' when coop = COOP_LD 
@@ -166,14 +167,15 @@ BEGIN
 	         PC_BLOQ  when  coop = COOP_INT  and f5       = F5_HALT  else
 				PC_INCR;
 				
-	a_sys <= '1' when coop = COOP_INT and (f5 = F5_RDS
-													or f5 = F5_RETI) else '0';
+	a_sys  <= '1'  when coop = COOP_INT and (f5 = F5_RDS
+						  							 or  f5 = F5_RETI)   else '0';
 	
-	d_sys <= '1' when coop = COOP_INT and  f5 = F5_WRS  else '0';
+	d_sys  <= '1'  when coop = COOP_INT and (f5 = F5_WRS
+                                        or  f5 = F5_GETIID) else '0';
 	
-	op_sys <= "01" when coop = COOP_INT and f5 = F5_EI   else
-	          "10" when coop = COOP_INT and f5 = F5_DI   else 
-				 "11" when coop = COOP_INT and f5 = F5_RETI else 
+	op_sys <= "01" when coop = COOP_INT and f5 = F5_EI     else
+	          "10" when coop = COOP_INT and f5 = F5_DI     else 
+				 "11" when coop = COOP_INT and f5 = F5_RETI   else 
 				 "00" ;
 				
 END Structure;
