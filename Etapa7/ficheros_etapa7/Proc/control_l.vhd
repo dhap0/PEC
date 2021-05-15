@@ -170,12 +170,11 @@ BEGIN
 	a_sys  <= '1'  when coop = COOP_INT and (f5 = F5_RDS
 						  							 or  f5 = F5_RETI)   else '0';
 	
-	d_sys  <= '1'  when coop = COOP_INT and (f5 = F5_WRS
-                                        or  f5 = F5_GETIID) else '0';
+	d_sys  <= '1'  when coop = COOP_INT and  f5 = F5_WRS   else '0';
 	
-	op_sys <= "01" when coop = COOP_INT and f5 = F5_EI     else
-	          "10" when coop = COOP_INT and f5 = F5_DI     else 
-				 "11" when coop = COOP_INT and f5 = F5_RETI   else 
+	op_sys <= "01" when coop = COOP_INT and  f5 = F5_EI     else
+	          "10" when coop = COOP_INT and  f5 = F5_DI     else 
+				 "11" when coop = COOP_INT and  f5 = F5_RETI   else 
 				 "00" ;
 				
 END Structure;
