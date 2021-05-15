@@ -11,6 +11,11 @@ entity multi is
          wrd_l     : IN  STD_LOGIC;
          wr_m_l    : IN  STD_LOGIC;
          w_b       : IN  STD_LOGIC;
+			int_en    : IN  STD_LOGIC;
+			intr      : IN  STD_LOGIC;
+			is_getiid : IN  STD_LOGIC;
+			int       : OUT STD_LOGIC;
+			inta      : OUT STD_LOGIC;
          tknbr_out : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
          wrd       : OUT STD_LOGIC;
          wr_m      : OUT STD_LOGIC;
@@ -23,7 +28,7 @@ architecture Structure of multi is
 
     -- Aqui iria la declaracion de las los estados de la maquina de estados
 	 	-- Build an enumerated type for the state machine
-	type state_type is (F, DEMW);
+	type state_type is (F, DEMW, SYSTEM);
 
 	-- Register to hold the current state
 	signal state   : state_type;
@@ -40,9 +45,15 @@ begin
 			state <= F;
 		elsif (rising_edge(clk)) then
 			case state is
-				when F=>				
+				when F =>				
 					state <= DEMW;
-				when DEMW=>
+				when DEMW =>
+					if (intr = '1' and int_en = '1') then
+						state <= SYSTEM;
+					else
+						state <= F;
+					end if;
+				when SYSTEM =>
 					state <= F;
 			end case;
 		end if;
@@ -59,13 +70,31 @@ begin
 				word_byte <= '0';
 				ins_dad   <= '0';
 				ldir      <= '1';
+				inta      <= '0';
+				int       <= '0';
 			when DEMW =>
-				tknbr_out <= tknbr_in;
 				wrd       <= wrd_l;
 				wr_m      <= wr_m_l;
 				word_byte <= w_b;
 				ins_dad   <= '1';
-				ldir      <= '0';
+				inta      <= is_getiid;
+				int       <= '0';
+				if (intr = '1' and int_en = '1') then
+					ldir      <= '1';
+					tknbr_out <= PC_BLOQ;
+				else
+					ldir      <= '0';
+					tknbr_out <= tknbr_in;
+				end if;
+			when SYSTEM =>
+				tknbr_out <= tknbr_in;
+				wrd       <= '0';
+				wr_m      <= '0';
+				word_byte <= '0';
+				ins_dad   <= '0';
+				ldir      <= '1';
+				inta      <= '0';
+				int       <= '1';
 			
 		end case;
 	end process;

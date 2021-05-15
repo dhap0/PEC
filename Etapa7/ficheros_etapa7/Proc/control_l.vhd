@@ -10,6 +10,7 @@ use work.cte_tipos_UF_pkg.all;
 ENTITY control_l IS
  PORT (ir        : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
        z         : IN  STD_LOGIC;
+		 int       : IN  STD_LOGIC;
        tknbr     : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
        op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 DOWNTO 0);
        Rb_N      : OUT STD_LOGIC;
@@ -26,8 +27,9 @@ ENTITY control_l IS
 	    wr_out    : OUT STD_LOGIC;
 		 a_sys     : OUT STD_LOGIC;
 		 d_sys     : OUT STD_LOGIC;
-		 op_sys    : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
-    	 word_byte : OUT STD_LOGIC);
+		 op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+    	 word_byte : OUT STD_LOGIC;
+		 is_getiid : OUT STD_LOGIC);
 END control_l;
 
 
@@ -51,11 +53,12 @@ BEGIN
 	immed_6 <= ir(5  downto 0);
 	immed_8 <= ir(7  downto 0);
 	
-	op <= ALU_MOVHI  when  coop = COOP_MOV  and  f1 = F1_MOVHI  else
-	      ALU_X      when  coop = COOP_JMP
+	op <= ALU_X      when  coop = COOP_JMP
+	                   or  int  = '1'
 			             or (coop = COOP_INT  and (f5 = F5_RDS  
 							                       or  f5 = F5_WRS
 														  or  f5 = F5_RETI)) else
+			ALU_MOVHI  when  coop = COOP_MOV  and  f1 = F1_MOVHI  else
 			ALU_Y      when  coop = COOP_MOV  and  f1 = F1_MOVI   else
 			ALU_ADD    when  coop = COOP_LD   
 			             or  coop = COOP_ST 
@@ -101,7 +104,8 @@ BEGIN
 					  (coop = COOP_IO   and  f1 = F1_IN)      or
 	              (coop = COOP_JMP  and  f3 = F3_JAL)     else not PE;
 			 
-	addr_a <= "001"           when  coop = COOP_INT and f5 = F5_RETI    else
+	addr_a <= "101"           when  int  = '1' else
+	          "001"           when  coop = COOP_INT and  f5 = F5_RETI    else
 	          ir(11 downto 9) when  coop = COOP_MOV else
 	          ir(8  downto 6) when  coop = COOP_LD
 	                            or  coop = COOP_ST
@@ -138,11 +142,11 @@ BEGIN
 	        PE when coop = COOP_STB else
 			  not PE;
 			  
-	in_d <= REGFILE_D_MEM  when  coop = COOP_LD 
+	in_d <= REGFILE_D_PC   when  coop = COOP_JMP or  int = '1'       else -- MUST BE THE FIRST
+			  REGFILE_D_MEM  when  coop = COOP_LD 
 	                         or  coop = COOP_LDB                     else
 			  REGFILE_D_IO   when  coop = COOP_IO   
 			                   or (coop = COOP_INT and f5 = F5_GETIID) else
-			  REGFILE_D_PC   when  coop = COOP_JMP                     else
 			  REGFILE_D_ALU;
 			  
 	immed_x2 <= '1' when coop = COOP_LD 
@@ -161,20 +165,25 @@ BEGIN
                      or  f3 = F3_JAL               else '0';
 							
 --	ldpc <= haltSI when ir(15 downto 0) = x"FFFF" else '1';
-	tknbr <= BR_SI    when  coop = COOP_BR   and br_si_t  = '1'      else 
-	         JMP_SI   when (coop = COOP_JMP  and jmp_si_t = '1')     
+	tknbr <= JMP_SI   when  int  = '1'
+							  or (coop = COOP_JMP  and jmp_si_t = '1')     
 				           or (coop = COOP_INT  and f5       = F5_RETI) else
+				BR_SI    when  coop = COOP_BR   and br_si_t  = '1'      else 
 	         PC_BLOQ  when  coop = COOP_INT  and f5       = F5_HALT  else
 				PC_INCR;
 				
-	a_sys  <= '1'  when coop = COOP_INT and (f5 = F5_RDS
-						  							 or  f5 = F5_RETI)   else '0';
+	a_sys  <= '1'  when  int = '1'
+	                 or (coop = COOP_INT and (f5 = F5_RDS
+						  							  or  f5 = F5_RETI))   else '0';
 	
 	d_sys  <= '1'  when coop = COOP_INT and  f5 = F5_WRS   else '0';
 	
-	op_sys <= "01" when coop = COOP_INT and  f5 = F5_EI     else
-	          "10" when coop = COOP_INT and  f5 = F5_DI     else 
-				 "11" when coop = COOP_INT and  f5 = F5_RETI   else 
-				 "00" ;
+	op_sys <= OP_SYS_INT    when int  = '1'                          else
+				 OP_SYS_EI     when coop = COOP_INT and  f5 = F5_EI     else
+	          OP_SYS_DI     when coop = COOP_INT and  f5 = F5_DI     else 
+				 OP_SYS_RETI   when coop = COOP_INT and  f5 = F5_RETI   else
+				 OP_SYS_NORMAL ;
+				 
+	is_getiid <= '1' when coop = COOP_INT and f5 = F5_GETIID else '0';
 				
 END Structure;

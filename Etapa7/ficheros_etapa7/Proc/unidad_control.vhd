@@ -14,6 +14,8 @@ ENTITY unidad_control IS
 		datard_m  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		z         : IN  STD_LOGIC;
 		pc_in     : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		int_en    : IN  STD_LOGIC;
+		inta      : OUT STD_LOGIC;
 		op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		Rb_N      : OUT STD_LOGIC;
 		tknbr     : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
@@ -32,7 +34,7 @@ ENTITY unidad_control IS
 	   wr_out    : OUT STD_LOGIC;
 		a_sys     : OUT STD_LOGIC;
 		d_sys     : OUT STD_LOGIC;
-		op_sys    : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
+		op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 		word_byte : OUT STD_LOGIC);
 END unidad_control;
 
@@ -43,8 +45,9 @@ ARCHITECTURE Structure OF unidad_control IS
     -- Tambien crearemos los cables/buses (signals) necesarios para unir las entidades
     -- Aqui iria la definicion del program counter
 	 COMPONENT control_l IS
-		PORT (ir        : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		      z         : IN STD_LOGIC;
+		PORT (ir        : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		      z         : IN  STD_LOGIC;
+				int       : IN  STD_LOGIC;
 		      op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		      tknbr     : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
 		      Rb_N      : OUT STD_LOGIC;
@@ -58,11 +61,12 @@ ARCHITECTURE Structure OF unidad_control IS
 		      immed_x2  : OUT STD_LOGIC;
 				addr_io   : OUT STD_LOGIC_VECTOR(7 downto 0);
 			   rd_in     : OUT STD_LOGIC;
-			   wr_out     : OUT STD_LOGIC;
+			   wr_out    : OUT STD_LOGIC;
 				a_sys     : OUT STD_LOGIC;
 			   d_sys     : OUT STD_LOGIC;
-				op_sys:    OUT  STD_LOGIC_VECTOR(1 DOWNTO 0);
-		      word_byte : OUT STD_LOGIC);
+				op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+		      word_byte : OUT STD_LOGIC;
+				is_getiid : OUT STD_LOGIC);
 	END COMPONENT;
 	COMPONENT multi IS
 	    PORT(clk       : IN  STD_LOGIC;
@@ -71,6 +75,10 @@ ARCHITECTURE Structure OF unidad_control IS
 	         wrd_l     : IN  STD_LOGIC;
 	         wr_m_l    : IN  STD_LOGIC;
 	         w_b       : IN  STD_LOGIC;
+				int_en    : IN  STD_LOGIC;
+				is_getiid : IN  STD_LOGIC;
+				int       : OUT STD_LOGIC;
+				inta      : OUT STD_LOGIC;
 	         tknbr_out : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
 	         wrd       : OUT STD_LOGIC;
 	         wr_m      : OUT STD_LOGIC;
@@ -89,34 +97,40 @@ ARCHITECTURE Structure OF unidad_control IS
 	signal wr_m_t     : STD_LOGIC;
 	signal w_b_t      : STD_LOGIC;
 	signal ldir_o     : STD_LOGIC;
-	signal deco_tknbr : std_logic_vector(1 downto 0);
 	signal ldpc_o     : std_logic_vector(1 downto 0);
+	
+	signal deco_tknbr     : std_logic_vector(1 downto 0);
+	signal deco_is_getiid : std_logic;
+	
+	signal m0_int : std_logic;
 
 BEGIN
 
     -- Aqui iria la declaracion del "mapeo" (PORT MAP) de los nombres de las entradas/salidas de los componentes
     -- En los esquemas de la documentacion a la instancia de la logica de control le hemos llamado c0
     -- Aqui iria la definicion del comportamiento de la unidad de control y la gestion del PC
-	 deco : control_l PORT MAP(ir         =>  ir_q,
-	                           op         =>  op,
-	                           tknbr      =>  deco_tknbr,
-	                           Rb_N       =>  Rb_N,
-	                           z          =>  z,
-	                           wrd        =>  wrd_t,
-	                           addr_a     =>  addr_a,
-	                           addr_b     =>  addr_b,
-	                           addr_d     =>  addr_d,
-	                           immed      =>  immed,
-	                           wr_m       =>  wr_m_t,
-	                           in_d       =>  in_d,
-	                           immed_x2   =>  immed_x2,
+	 deco : control_l PORT MAP(ir         => ir_q,
+	                           op         => op,
+										int        => m0_int,
+	                           tknbr      => deco_tknbr,
+	                           Rb_N       => Rb_N,
+	                           z          => z,
+	                           wrd        => wrd_t,
+	                           addr_a     => addr_a,
+	                           addr_b     => addr_b,
+	                           addr_d     => addr_d,
+	                           immed      => immed,
+	                           wr_m       => wr_m_t,
+	                           in_d       => in_d,
+	                           immed_x2   => immed_x2,
 										addr_io    => addr_io, 
 			                     rd_in      => rd_in, 
 			                     wr_out     => wr_out,
 										a_sys      => a_sys,
 			                     d_sys      => d_sys,
 										op_sys     => op_sys,
-	                           word_byte  =>  w_b_t);
+	                           word_byte  =>  w_b_t,
+										is_getiid  => deco_is_getiid);
 										
 	 m0 : multi PORT MAP(clk        =>  clk,
 	                     boot       =>  boot,
@@ -124,6 +138,10 @@ BEGIN
 	                     wrd_l      =>  wrd_t,
 	                     wr_m_l     =>  wr_m_t,
 	                     w_b        =>  w_b_t,
+								int_en     =>  int_en,
+								is_getiid  =>  deco_is_getiid,
+								int        =>  m0_int,
+								inta       =>  inta,
 	                     tknbr_out  =>  tknbr,
 	                     wrd        =>  wrd,
 	                     wr_m       =>  wr_m,

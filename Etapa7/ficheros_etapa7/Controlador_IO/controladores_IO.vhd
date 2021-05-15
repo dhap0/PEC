@@ -13,11 +13,11 @@ ENTITY controladores_IO IS
 		CLOCK_50   : IN std_logic;
 		addr_io    : IN std_logic_vector(7 DOWNTO 0);
 		wr_io      : IN std_logic_vector(15 DOWNTO 0);
-		inta       : IN std_logic;
 		rd_io      : OUT std_logic_vector(15 DOWNTO 0);
 		wr_out     : IN std_logic;
 		rd_in      : IN std_logic;
 		int_en     : IN STD_LOGIC;
+		inta       : IN STD_LOGIC;
 		led_verdes : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		led_rojos  : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		intr       : OUT std_logic;

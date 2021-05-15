@@ -53,6 +53,7 @@ component proc IS
 		boot : IN STD_LOGIC;
 		datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		rd_io:     IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		inta :   OUT STD_LOGIC;
 		addr_m : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		wr_m : OUT STD_LOGIC;
@@ -90,6 +91,7 @@ COMPONENT controladores_IO IS
 		wr_out     : IN std_logic;
 		rd_in      : IN std_logic;
 		int_en     : IN STD_LOGIC;
+		inta       : IN STD_LOGIC;
 		led_verdes : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		led_rojos  : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		PS2_CLK    : inout std_logic;
@@ -130,7 +132,8 @@ signal rd_io_en: std_logic;
 signal vga_we: std_logic;
 signal mem0_we: std_logic;
 signal proc0_wr_m: std_logic;
-signal inten2inten: std_logic;
+signal proc0_inta : std_logic;
+signal proc0_int_en: std_logic;
 
 signal vga_addr_vga: std_logic_vector(15 downto 0);
 BEGIN
@@ -143,12 +146,13 @@ BEGIN
 								  boot => SW(8),
 								  datard_m => proc0_datard_m,
 								  rd_io => rd_io_t,
+								  inta  => proc0_inta,
 								  addr_m => proc0_addr_m,
 								  data_wr => proc0_data_wr,
 								  wr_m => proc0_wr_m,
 								  addr_io => addr_io_t,
 								  rd_in => rd_io_en,
-								  int_en => inten2inten,
+								  int_en => proc0_int_en,
 								  wr_out => wr_io_en,
 								  wr_io => wr_io_t,
 								  word_byte => proc0_word_byte);
@@ -176,7 +180,8 @@ BEGIN
 		rd_io => rd_io_t,
 		wr_out => wr_io_en,
 		rd_in => rd_io_en,
-		int_en => inten2inten,
+		int_en => proc0_int_en,
+		inta   => proc0_inta,
 		led_verdes => LEDG,
 		led_rojos => LEDR,
 		PS2_CLK => PS2_CLK,

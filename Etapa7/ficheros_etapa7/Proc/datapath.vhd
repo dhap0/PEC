@@ -26,8 +26,8 @@ ENTITY datapath IS
 		rd_io:     IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		a_sys:     IN STD_LOGIC;
 		d_sys:     IN STD_LOGIC;
-		op_sys:    IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
-		int_en : OUT STD_LOGIC;
+		op_sys:    IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+		int_en:    OUT STD_LOGIC;
 		pc_out:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		z:         OUT STD_LOGIC;
 		addr_m:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -52,8 +52,7 @@ ARCHITECTURE Structure OF datapath IS
 	COMPONENT sregfile IS
 		PORT (clk    : IN  STD_LOGIC;
           wrd    : IN  STD_LOGIC;
-			 int    : IN  STD_LOGIC;
-			 op_d   : IN  STD_LOGIC_VECTOR(1 DOWNTO 0);
+			 op_d   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -90,7 +89,6 @@ BEGIN
 	
 	SBR: sregfile PORT MAP(clk     =>  clk,
 	                       wrd     =>  sbr_wrd,
-								  int     => '0',
 								  op_d    =>  op_sys,
 								  d       =>  reg_d ,
 								  addr_a  =>  addr_a,
@@ -105,8 +103,8 @@ BEGIN
 	                    z   =>  z);
 							  
 	atox <= sa when a_sys = '1' else a;
-	br_wrd <= wrd and (not d_sys);
-	sbr_wrd <= wrd and d_sys;
+	br_wrd  <= wrd and (not d_sys);
+	sbr_wrd <= wrd and      d_sys;
 	 
 	y_i <= b_o when Rb_N = '0' else immed_y;
 	

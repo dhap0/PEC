@@ -22,4 +22,10 @@ constant REGFILE_D_IO:  std_logic_vector(1 downto 0) := "11";
 
 constant PC_INI: std_logic_vector(15 downto 0) := x"C000";
 
+constant OP_SYS_NORMAL : std_logic_vector(2 downto 0) := "000";
+constant OP_SYS_EI     : std_logic_vector(2 downto 0) := "001";
+constant OP_SYS_DI     : std_logic_vector(2 downto 0) := "010";
+constant OP_SYS_RETI   : std_logic_vector(2 downto 0) := "011";
+constant OP_SYS_INT    : std_logic_vector(2 downto 0) := "100";
+
 END PACKAGE cte_tipos_UC_pkg;
