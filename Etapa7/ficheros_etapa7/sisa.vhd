@@ -58,6 +58,7 @@ component proc IS
 		wr_m : OUT STD_LOGIC;
 		addr_io: OUT STD_LOGIC_VECTOR(7 downto 0);
 		rd_in: OUT STD_LOGIC;
+		int_en : OUT STD_LOGIC;
 	   wr_out: OUT STD_LOGIC;
 		wr_io:     OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		word_byte : OUT STD_LOGIC
@@ -88,6 +89,7 @@ COMPONENT controladores_IO IS
 		rd_io      : OUT std_logic_vector(15 DOWNTO 0);
 		wr_out     : IN std_logic;
 		rd_in      : IN std_logic;
+		int_en     : IN STD_LOGIC;
 		led_verdes : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		led_rojos  : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		PS2_CLK    : inout std_logic;
@@ -128,6 +130,7 @@ signal rd_io_en: std_logic;
 signal vga_we: std_logic;
 signal mem0_we: std_logic;
 signal proc0_wr_m: std_logic;
+signal inten2inten: std_logic;
 
 signal vga_addr_vga: std_logic_vector(15 downto 0);
 BEGIN
@@ -145,6 +148,7 @@ BEGIN
 								  wr_m => proc0_wr_m,
 								  addr_io => addr_io_t,
 								  rd_in => rd_io_en,
+								  int_en => inten2inten,
 								  wr_out => wr_io_en,
 								  wr_io => wr_io_t,
 								  word_byte => proc0_word_byte);
@@ -172,6 +176,7 @@ BEGIN
 		rd_io => rd_io_t,
 		wr_out => wr_io_en,
 		rd_in => rd_io_en,
+		int_en => inten2inten,
 		led_verdes => LEDG,
 		led_rojos => LEDR,
 		PS2_CLK => PS2_CLK,

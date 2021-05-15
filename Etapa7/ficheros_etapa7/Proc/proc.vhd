@@ -15,6 +15,7 @@ ENTITY proc IS
 		word_byte : OUT STD_LOGIC;
 		addr_io   : OUT STD_LOGIC_VECTOR(7 downto 0); 
 		rd_in     : OUT STD_LOGIC; 
+		int_en : OUT STD_LOGIC;
 		wr_io     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		wr_out    : OUT STD_LOGIC
 	);
@@ -31,7 +32,8 @@ ARCHITECTURE Structure OF proc IS
 				rd_io    : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 				a_sys    : IN  STD_LOGIC;
 			   d_sys    : IN  STD_LOGIC;
-				op_sys   : IN  STD_LOGIC_VECTOR(1  DOWNTO 0);			   pc_out   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+				op_sys   : IN  STD_LOGIC_VECTOR(1  DOWNTO 0);
+				int_en   : OUT STD_LOGIC;			   pc_out   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				wr_io    : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   z        : OUT STD_LOGIC); 
 	END COMPONENT;
 	
@@ -133,6 +135,7 @@ BEGIN
 									a_sys     => as2as,
 									d_sys     => ds2ds,
 									op_sys    => ops2ops,
+									int_en    => int_en,
 	                        in_d      => ind2ind,
 	                        tknbr     => c0_tknbr_out,
 	                        addr_m    => addr_m,
