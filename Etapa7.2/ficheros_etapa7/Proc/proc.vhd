@@ -87,6 +87,15 @@ ARCHITECTURE Structure OF proc IS
 		a_sys      : OUT STD_LOGIC;
 		word_byte  : OUT STD_LOGIC);
 	END COMPONENT;
+	COMPONENT exception_controller IS
+   PORT (clk             : in STD_LOGIC;
+         boot            : in STD_LOGIC;
+		   excp_div_cero   : in STD_LOGIC;
+		   excp_mem_align  : in STD_LOGIC;
+		   excp_illegal_ir : in STD_LOGIC;
+		   codigo  : out  STD_LOGIC_VECTOR(3 downto 0);
+			excp    : out  STD_LOGIC);
+	END COMPONENT;
 
 
 	signal w2w          : STD_LOGIC;
@@ -103,11 +112,21 @@ ARCHITECTURE Structure OF proc IS
 	signal d2d          : STD_LOGIC_VECTOR(2  DOWNTO 0);
 	signal i2i          : STD_LOGIC_VECTOR(15 DOWNTO 0);
 	signal e0_pc_out    : STD_LOGIC_VECTOR(15 DOWNTO 0);
+	signal e0_addr_m    : STD_LOGIC_VECTOR(15 DOWNTO 0);
 	signal e0_int_en    : STD_LOGIC;
+	signal e0_excp_div_cero : STD_LOGIC;
+	
+	
 	signal c0_op_sys    : STD_LOGIC_VECTOR(2 DOWNTO 0);
 	signal c0_pc_out    : STD_LOGIC_VECTOR(15 DOWNTO 0);
 	signal c0_tknbr_out : STD_LOGIC_VECTOR(1  DOWNTO 0);
 	signal c0_int       : STD_LOGIC;
+	signal c0_excp_illegal_ir : STD_LOGIC;
+	signal c0_word_byte : STD_LOGIC;
+	
+	signal excp_codigo : STD_LOGIC_VECTOR(3 downto 0);
+	signal excp_mem_align: STD_LOGIC;
+	signal excp : STD_LOGIC;
 	
 
 BEGIN
@@ -130,20 +149,20 @@ BEGIN
 	                              immed     => i2i,
 	                              immed_x2  => ix2ix,
 	                              pc_in     => e0_pc_out,
-																int_en    => e0_int_en,
-                                intr      => intr,
-									          		inta      => inta,
+											int_en    => e0_int_en,
+                                 intr      => intr,
+									      inta      => inta,
 	                              pc_out    => c0_pc_out,
 	                              ins_dad   => insd2insd,
 	                              in_d      => ind2ind,
 	                              wr_m      => wr_m,
-											          addr_io   => addr_io,
-			                          rd_in     => rd_in,
-			                          wr_out    => wr_out,
-							          				a_sys     => as2as,
-									          		d_sys     => ds2ds,
-											          op_sys    => c0_op_sys,
-	                              word_byte => word_byte);
+											addr_io   => addr_io,
+			                        rd_in     => rd_in,
+			                        wr_out    => wr_out,
+							          	a_sys     => as2as,
+									      d_sys     => ds2ds,
+											op_sys    => c0_op_sys,
+	                              word_byte => c0_word_byte);
 											
 	 e0 : datapath PORT MAP(clk       => clk,
 	                        op        => o2o,
@@ -167,7 +186,18 @@ BEGIN
 									int_en    => e0_int_en,
 	                        in_d      => ind2ind,
 	                        tknbr     => c0_tknbr_out,
-	                        addr_m    => addr_m,
+	                        addr_m    => e0_addr_m,
 	                        data_wr   => data_wr);
+		addr_m <= e0_addr_m;
+		word_byte <= c0_word_byte;
+		
+		excp_mem_align <= (e0_addr_m(0) and (not c0_word_byte)); 							
+		excp_ctrl: exception_controller port map (clk => clk,
+                                                boot => boot,
+		                                          excp_div_cero => e0_excp_div_cero,
+		                                          excp_mem_align => excp_mem_align,
+		                                          excp_illegal_ir => c0_excp_illegal_ir,
+		                                          codigo  => excp_codigo,
+			                                       excp => excp);
 
 END Structure;
