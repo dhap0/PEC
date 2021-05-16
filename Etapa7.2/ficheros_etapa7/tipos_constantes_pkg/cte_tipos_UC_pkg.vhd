@@ -28,5 +28,6 @@ constant OP_SYS_EI     : std_logic_vector(2 downto 0) := "001";
 constant OP_SYS_DI     : std_logic_vector(2 downto 0) := "010";
 constant OP_SYS_RETI   : std_logic_vector(2 downto 0) := "011";
 constant OP_SYS_INT    : std_logic_vector(2 downto 0) := "100";
+constant OP_SYS_EXCP   : std_logic_vector(2 downto 0) := "101";
 
 END PACKAGE cte_tipos_UC_pkg;

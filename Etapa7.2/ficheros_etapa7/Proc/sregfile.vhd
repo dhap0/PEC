@@ -8,14 +8,16 @@ use work.cte_tipos_UF_pkg.all;
 use work.cte_tipos_UC_pkg.all;
 
 ENTITY sregfile IS
-    PORT (clk    : IN  STD_LOGIC;
-          wrd    : IN  STD_LOGIC;
-          op_d   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
-          d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
-          addr_a : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
-          addr_d : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
-			 int_en : OUT STD_LOGIC;
-          a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
+    PORT (clk      : IN  STD_LOGIC;
+          wrd      : IN  STD_LOGIC;
+          op_d     : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
+          d        : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+          addr_a   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
+          addr_d   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
+			 excp_id  : IN  STD_LOGIC_VECTOR(3  DOWNTO 0);
+			 excp_dir : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+			 int_en   : OUT STD_LOGIC;
+          a        : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
 END sregfile;
 
 
@@ -45,8 +47,14 @@ BEGIN
 		 when OP_SYS_RETI => BR(7)    <= BR(0); -- RETI
 		 when OP_SYS_INT  =>
 			BR(0)    <= BR(7);
-			BR(1)    <= d; -- TODO in_d com al jal!
+			BR(1)    <= d;
 			BR(2)    <= x"000F";
+			BR(7)(1) <= '0';
+		 when OP_SYS_EXCP =>
+			BR(0)    <= BR(7);
+			BR(1)    <= d;
+			BR(2)    <= x"000" & excp_id;
+			BR(3)    <= excp_dir;
 			BR(7)(1) <= '0';
 		 when others      => 
 		end case; 
