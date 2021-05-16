@@ -167,8 +167,8 @@ BEGIN
 							
 --	ldpc <= haltSI when ir(15 downto 0) = x"FFFF" else '1';
 	tknbr <= JMP_SI   when  int  = '1'
-							  or (coop = COOP_JMP  and jmp_si_t = '1')     
-				           or (coop = COOP_INT  and f5       = F5_RETI) else
+		    		          or (coop = COOP_JMP  and jmp_si_t = '1')     
+				              or (coop = COOP_INT  and f5       = F5_RETI) else
 				   BR_SI    when  coop = COOP_BR   and br_si_t  = '1'      else 
 	         PC_BLOQ  when  coop = COOP_INT  and f5       = F5_HALT  else
 				   PC_INCR;

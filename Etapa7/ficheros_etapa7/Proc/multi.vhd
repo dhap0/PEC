@@ -79,12 +79,11 @@ begin
 				ins_dad   <= '1';
 				inta      <= is_getiid;
 				int       <= '0';
+				tknbr_out <= tknbr_in;
 				if (intr = '1' and int_en = '1') then
 					ldir      <= '1';
-					tknbr_out <= PC_BLOQ;
 				else
 					ldir      <= '0';
-					tknbr_out <= tknbr_in;
 				end if;
 			when SYSTEM =>
 				tknbr_out <= tknbr_in;
