@@ -53,6 +53,7 @@ architecture comportament of test_sisa is
    signal clk           : std_logic := '0';
    signal reset_ram    	: std_logic := '0';
    signal reset_proc    : std_logic := '0';
+   signal key_value    : std_logic_vector(3 downto 0) := "0000";
 
    signal addr_SoC      : std_logic_vector(17 downto 0);
    signal addr_mem      : std_logic_vector(15 downto 0);
@@ -121,13 +122,14 @@ begin
 	  
 
 		addr_mem (15 downto 0) <= addr_SOC (15 downto 0);
-		botones(9) <= reset_proc;
+		botones(8) <= reset_proc;
+		b_KEY <= key_value;
 		
    -- Descripcio del comportament
 	clk <= not clk after 10 ns;
 	reset_ram <= '1' after 15 ns, '0' after 50 ns;    -- reseteamos la RAm en el primer ciclo
 	reset_proc <= '1' after 25 ns, '0' after 320 ns;  -- reseteamos el procesador en el segundo ciclo
-
+	key_value <= "1010" after 5000 ns;
 	
 end comportament;
 

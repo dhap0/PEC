@@ -9,6 +9,7 @@ ENTITY proc IS
 		boot      : IN  STD_LOGIC;
 		rd_io     : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		datard_m  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+		intr      : IN  STD_LOGIC;
 		inta      : OUT STD_LOGIC;
 		addr_m    : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -29,13 +30,30 @@ ARCHITECTURE Structure OF proc IS
     -- Usaremos la palabra reservada COMPONENT ...
     -- Tambien crearemos los cables/buses (signals) necesarios para unir las entidades
 	 COMPONENT datapath IS
-		PORT (clk      : IN  STD_LOGIC;			   op       : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);			   Rb_N     : IN  STD_LOGIC;			   wrd      : IN  STD_LOGIC;			   addr_a   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);			   addr_b   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);			   addr_d   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);			   immed    : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   immed_x2 : IN  STD_LOGIC;			   datard_m : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   ins_dad  : IN  STD_LOGIC;			   pc_in    : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);			   in_d     : IN  STD_LOGIC_VECTOR(1  DOWNTO 0);			   tknbr    : IN  STD_LOGIC_VECTOR(1  DOWNTO 0);
+		PORT (clk      : IN  STD_LOGIC;
+			   op       : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
+			   Rb_N     : IN  STD_LOGIC;
+			   wrd      : IN  STD_LOGIC;
+			   addr_a   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
+			   addr_b   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
+			   addr_d   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
+			   immed    : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+			   immed_x2 : IN  STD_LOGIC;
+			   datard_m : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+			   ins_dad  : IN  STD_LOGIC;
+			   pc_in    : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+			   in_d     : IN  STD_LOGIC_VECTOR(1  DOWNTO 0);
+			   tknbr    : IN  STD_LOGIC_VECTOR(1  DOWNTO 0);
 				rd_io    : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 				a_sys    : IN  STD_LOGIC;
 			   d_sys    : IN  STD_LOGIC;
 				op_sys   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
-				int_en   : OUT STD_LOGIC;			   pc_out   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-				wr_io    : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);			   z        : OUT STD_LOGIC); 
+				int_en   : OUT STD_LOGIC;
+			   pc_out   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			   addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+				wr_io    : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			   data_wr  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			   z        : OUT STD_LOGIC); 
 	END COMPONENT;
 	
 	COMPONENT unidad_control IS
@@ -46,6 +64,7 @@ ARCHITECTURE Structure OF proc IS
 		z          : IN  STD_LOGIC;
 		pc_in      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		int_en     : IN  STD_LOGIC;
+		intr       : IN  STD_LOGIC;
 		inta       : OUT STD_LOGIC;
 		pc_out     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		immed      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -111,18 +130,19 @@ BEGIN
 	                              immed     => i2i,
 	                              immed_x2  => ix2ix,
 	                              pc_in     => e0_pc_out,
-											int_en    => e0_int_en,
-											inta      => inta,
+																int_en    => e0_int_en,
+                                intr      => intr,
+									          		inta      => inta,
 	                              pc_out    => c0_pc_out,
 	                              ins_dad   => insd2insd,
 	                              in_d      => ind2ind,
 	                              wr_m      => wr_m,
-											addr_io   => addr_io, 
-			                        rd_in     => rd_in, 
-			                        wr_out    => wr_out,
-											a_sys     => as2as,
-											d_sys     => ds2ds,
-											op_sys    => c0_op_sys,
+											          addr_io   => addr_io,
+			                          rd_in     => rd_in,
+			                          wr_out    => wr_out,
+							          				a_sys     => as2as,
+									          		d_sys     => ds2ds,
+											          op_sys    => c0_op_sys,
 	                              word_byte => word_byte);
 											
 	 e0 : datapath PORT MAP(clk       => clk,

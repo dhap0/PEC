@@ -53,6 +53,7 @@ component proc IS
 		boot : IN STD_LOGIC;
 		datard_m : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		rd_io:     IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		intr:     IN STD_LOGIC;
 		inta :   OUT STD_LOGIC;
 		addr_m : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		data_wr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -92,10 +93,11 @@ COMPONENT controladores_IO IS
 		rd_in      : IN std_logic;
 		int_en     : IN STD_LOGIC;
 		inta       : IN STD_LOGIC;
+		intr       : OUT STD_LOGIC;
 		led_verdes : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		led_rojos  : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		PS2_CLK    : inout std_logic;
-      PS2_DAT    : inout std_logic;
+    PS2_DAT    : inout std_logic;
 		KEY        : in std_logic_vector(3 downto 0);
 		SW         : in std_logic_vector(7 downto 0);
 		HEX0 : OUT std_logic_vector(6 DOWNTO 0);
@@ -135,6 +137,8 @@ signal proc0_wr_m: std_logic;
 signal proc0_inta : std_logic;
 signal proc0_int_en: std_logic;
 
+signal io0_intr: std_logic;
+
 signal vga_addr_vga: std_logic_vector(15 downto 0);
 BEGIN
 --	rel0  : Reloj GENERIC MAP ( factor => 8) PORT MAP (CLOCK_50 => CLOCK_50, reloj => rellotge);
@@ -146,6 +150,7 @@ BEGIN
 								  boot => SW(8),
 								  datard_m => proc0_datard_m,
 								  rd_io => rd_io_t,
+                  intr => io0_intr,
 								  inta  => proc0_inta,
 								  addr_m => proc0_addr_m,
 								  data_wr => proc0_data_wr,
@@ -180,6 +185,7 @@ BEGIN
 		rd_io => rd_io_t,
 		wr_out => wr_io_en,
 		rd_in => rd_io_en,
+    intr  => io0_intr,
 		int_en => proc0_int_en,
 		inta   => proc0_inta,
 		led_verdes => LEDG,
@@ -194,19 +200,19 @@ BEGIN
 		HEX3 => HEX3
 	);
 	--blank_out, csync_out, horiz_sync_out, vert_sync_out, red_out, green_out y blue_out s
-	vga: vga_controller  port map(clk_50mhz  => CLOCK_50, -- system clock signal
-         reset         => SW(8), -- system reset
-         red_out(3 downto 0)   => VGA_R, -- vga red pixel value
-         green_out(3 downto 0) =>  VGA_G, -- vga green pixel value
-         blue_out(3 downto 0)  => VGA_B, -- vga blue pixel value
-         horiz_sync_out => VGA_HS, -- vga control signal
-         vert_sync_out  => VGA_VS, -- vga control signal
-         --
-         addr_vga       => vga_addr_vga(12 downto 0),
-         we             => vga_we,
-         wr_data        => proc0_data_wr,
-         rd_data        => vga_rd_data,
-         byte_m         => proc0_word_byte);  
+--	vga: vga_controller  port map(clk_50mhz  => CLOCK_50, -- system clock signal
+--         reset         => SW(8), -- system reset
+--         red_out(3 downto 0)   => VGA_R, -- vga red pixel value
+--         green_out(3 downto 0) =>  VGA_G, -- vga green pixel value
+--         blue_out(3 downto 0)  => VGA_B, -- vga blue pixel value
+--         horiz_sync_out => VGA_HS, -- vga control signal
+--         vert_sync_out  => VGA_VS, -- vga control signal
+--         --
+--         addr_vga       => vga_addr_vga(12 downto 0),
+--         we             => vga_we,
+--         wr_data        => proc0_data_wr,
+--         rd_data        => vga_rd_data,
+--         byte_m         => proc0_word_byte);  
 		
 
 	 vga_addr_vga <= proc0_addr_m - x"A000";

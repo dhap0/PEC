@@ -123,6 +123,10 @@ END COMPONENT;
 	signal cont_ciclos  : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
 	signal cont_mili    : STD_LOGIC_VECTOR(15 downto 0):=x"0000";
 
+	signal inta_pulsa  : std_logic;
+	signal inta_sw  : std_logic;
+	signal inta_ps2  : std_logic;
+
 BEGIN
 	 rd_io      <= mem(conv_integer(addr_io(4 downto 0))) when inta = '0' else 
 	               x"00" & iid;
@@ -131,9 +135,11 @@ BEGIN
 	 
 	 process(CLOCK_50,wr_out)
 	 begin
-		if boot = '0' then
-			if rising_edge(CLOCK_50) then
-			   clear_char <= '0';
+		if boot = '1' then
+		elsif rising_edge(CLOCK_50) then
+			  clear_char  <= '0';
+				key_inta    <= '0';
+			  switch_inta <= '0';
 				
 				mem(IO_PORT_KEY)           <= "000000000000"    & keys_q;
 				mem(IO_PORT_SW)            <= "00000000"     	& switches_q;
@@ -159,7 +165,6 @@ BEGIN
 					  mem(conv_integer(addr_io(4 downto 0))) <= wr_io;
 					end if;
 				end if;
-			end if;
 		end if;
 	 end process;
 	 
@@ -181,13 +186,13 @@ BEGIN
 			
 		end if;
 	end process;
-	 
+	 inta_ps2 <=clear_char or int_ps2_inta;
 	 kb : keyboard_controller port map (clk => CLOCK_50,
           reset      => boot,
           ps2_clk    => PS2_CLK,
           ps2_data   => PS2_DAT,
           read_char  => kb_read_char,
-          clear_char => (clear_char or int_ps2_inta),
+          clear_char => inta_ps2,
 			 data_ready => kb_data_ready); 
 			 
 	 hex : driverHex port map    (num        => hex_num, 
@@ -197,16 +202,17 @@ BEGIN
 											HEX2       => HEX2,
 											HEX3       => HEX3);
 
+		inta_pulsa <= key_inta or int_key_inta;
     keys_ctr : pulsadores_controller port map (clk      => CLOCK_50,
 	                                            boot     => boot,
-															  inta     => (key_inta or int_key_inta),
+															  inta     => inta_pulsa,
 															  keys     => KEY,
 															  intr     => key_intr,
 															  read_key => keys_q);
-															  
+	 inta_sw <= switch_inta or int_switch_inta; 
 	 sw_ctr : interruptores_controller port map (clk      => CLOCK_50,
 	                                            boot      => boot,
-															  inta      => (switch_inta or int_switch_inta),
+															  inta      => inta_sw,
 															  switches  => SW,
 															  intr      => switch_intr,
 															  rd_switch => switches_q);

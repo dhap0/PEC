@@ -15,6 +15,7 @@ ENTITY unidad_control IS
 		z         : IN  STD_LOGIC;
 		pc_in     : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		int_en    : IN  STD_LOGIC;
+		intr      : IN  STD_LOGIC;
 		inta      : OUT STD_LOGIC;
 		op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		Rb_N      : OUT STD_LOGIC;
@@ -75,10 +76,11 @@ ARCHITECTURE Structure OF unidad_control IS
 	         wrd_l     : IN  STD_LOGIC;
 	         wr_m_l    : IN  STD_LOGIC;
 	         w_b       : IN  STD_LOGIC;
-				int_en    : IN  STD_LOGIC;
-				is_getiid : IN  STD_LOGIC;
-				int       : OUT STD_LOGIC;
-				inta      : OUT STD_LOGIC;
+				   int_en    : IN  STD_LOGIC;
+				   is_getiid : IN  STD_LOGIC;
+				   intr      : IN  STD_LOGIC;
+				   int       : OUT STD_LOGIC;
+				   inta      : OUT STD_LOGIC;
 	         tknbr_out : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
 	         wrd       : OUT STD_LOGIC;
 	         wr_m      : OUT STD_LOGIC;
@@ -138,10 +140,11 @@ BEGIN
 	                     wrd_l      =>  wrd_t,
 	                     wr_m_l     =>  wr_m_t,
 	                     w_b        =>  w_b_t,
-								int_en     =>  int_en,
-								is_getiid  =>  deco_is_getiid,
-								int        =>  m0_int,
-								inta       =>  inta,
+								       int_en     =>  int_en,
+								       intr       =>  intr,
+								       is_getiid  =>  deco_is_getiid,
+								       int        =>  m0_int,
+					             inta       =>  inta,
 	                     tknbr_out  =>  tknbr,
 	                     wrd        =>  wrd,
 	                     wr_m       =>  wr_m,

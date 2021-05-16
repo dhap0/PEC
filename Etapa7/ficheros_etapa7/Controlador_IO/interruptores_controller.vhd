@@ -30,6 +30,7 @@ BEGIN
 		
 		if boot = '1' then
 			intr <= '0';
+			state <= IDL;
 		elsif rising_edge(clk) then	
 			case state is 
 				when BLOQ =>
