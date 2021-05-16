@@ -20,7 +20,7 @@ ENTITY control_l IS
     	 addr_d    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
     	 immed     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
     	 wr_m      : OUT STD_LOGIC;
-    	 in_d      : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
+    	 in_d      : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
     	 immed_x2  : OUT STD_LOGIC;
 		 addr_io   : OUT STD_LOGIC_VECTOR(7 downto 0);
 		 rd_in     : OUT STD_LOGIC;
@@ -142,9 +142,10 @@ BEGIN
 	        PE when coop = COOP_STB else
 			  not PE;
 			  
-	in_d <= REGFILE_D_PC   when  coop = COOP_JMP or  int = '1'       else -- MUST BE THE FIRST
+	in_d <= REGFILE_D_PC_NEXT   when int = '1'       else -- MUST BE THE FIRST
+        REGFILE_D_PC_2   when  coop = COOP_JMP      else 
 			  REGFILE_D_MEM  when  coop = COOP_LD 
-	                         or  coop = COOP_LDB                     else
+	                         or  coop = COOP_LDB     else
 			  REGFILE_D_IO   when  coop = COOP_IO   
 			                   or (coop = COOP_INT and f5 = F5_GETIID) else
 			  REGFILE_D_ALU;
@@ -168,9 +169,9 @@ BEGIN
 	tknbr <= JMP_SI   when  int  = '1'
 							  or (coop = COOP_JMP  and jmp_si_t = '1')     
 				           or (coop = COOP_INT  and f5       = F5_RETI) else
-				BR_SI    when  coop = COOP_BR   and br_si_t  = '1'      else 
+				   BR_SI    when  coop = COOP_BR   and br_si_t  = '1'      else 
 	         PC_BLOQ  when  coop = COOP_INT  and f5       = F5_HALT  else
-				PC_INCR;
+				   PC_INCR;
 				
 	a_sys  <= '1'  when  int = '1'
 	                 or (coop = COOP_INT and (f5 = F5_RDS

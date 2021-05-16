@@ -27,7 +27,7 @@ ENTITY unidad_control IS
 		immed     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		pc_out    : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		ins_dad   : OUT STD_LOGIC;
-		in_d      : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
+		in_d      : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
 		immed_x2  : OUT STD_LOGIC;
 		wr_m      : OUT STD_LOGIC;
 		addr_io   : OUT STD_LOGIC_VECTOR(7 downto 0);
@@ -58,7 +58,7 @@ ARCHITECTURE Structure OF unidad_control IS
 		      addr_d    : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
 		      immed     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		      wr_m      : OUT STD_LOGIC;
-		      in_d      : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
+		      in_d      : OUT STD_LOGIC_VECTOR(2  DOWNTO 0);
 		      immed_x2  : OUT STD_LOGIC;
 				addr_io   : OUT STD_LOGIC_VECTOR(7 downto 0);
 			   rd_in     : OUT STD_LOGIC;

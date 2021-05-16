@@ -20,7 +20,7 @@ ENTITY datapath IS
 		datard_m:  IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		ins_dad:   IN  STD_LOGIC;
 		pc_in:     IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
-		in_d:      IN  STD_LOGIC_VECTOR(1  DOWNTO 0);
+		in_d:      IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
 		Rb_N:      IN  STD_LOGIC;
 		tknbr:     IN  STD_LOGIC_VECTOR(1  DOWNTO 0);
 		rd_io:     IN STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -114,9 +114,10 @@ BEGIN
 		
 	with in_d select reg_d <=
 		datard_m        when  REGFILE_D_MEM,
-		pc_in + 2       when  REGFILE_D_PC,
+		pc_in + 2       when  REGFILE_D_PC_2,
 		wtod            when  REGFILE_D_ALU,
 		rd_io           when  REGFILE_D_IO,
+		pc_in           when  REGFILE_D_PC_NEXT,
 		(others => '0') when others;
 		
 	with ins_dad select addr_m <= 
