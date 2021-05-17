@@ -23,7 +23,7 @@ type state_type is (IDL, BLOQ);
 
 signal state          : state_type := IDL;
 signal clock_20hz_clk : std_logic;
-signal clock_20hz_cnt : std_logic_vector(25 downto 0) := "10" & x"500000";
+signal clock_20hz_cnt : std_logic_vector(23 downto 0) := x"2625a0";
 signal tick : std_logic;
 
 BEGIN

@@ -11,7 +11,7 @@ ENTITY alu IS
           op            : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
           w             : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 			 z             : OUT STD_LOGIC;
-			 excp_div_zero : OUT STD_LOGIC;);
+			 excp_div_zero : OUT STD_LOGIC);
 END alu;
 
 

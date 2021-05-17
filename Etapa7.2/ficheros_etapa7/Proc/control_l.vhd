@@ -11,6 +11,7 @@ ENTITY control_l IS
  PORT (ir        : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
        z         : IN  STD_LOGIC;
 		 int       : IN  STD_LOGIC;
+		 int_excp  : IN  STD_LOGIC;
        tknbr     : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
        op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 DOWNTO 0);
        Rb_N      : OUT STD_LOGIC;
@@ -29,7 +30,7 @@ ENTITY control_l IS
 		 d_sys     : OUT STD_LOGIC;
 		 op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
     	 word_byte : OUT STD_LOGIC;
-		 excp_illegal_ir : OUT STD_LOGIC);
+		 excp_illegal_ir : OUT STD_LOGIC;
 		 is_acc_m  : OUT STD_LOGIC;
 		 is_getiid : OUT STD_LOGIC);
 END control_l;
@@ -55,7 +56,7 @@ BEGIN
 	           ir(5  downto 3);
    f5      <= ir(4  downto 0);
 	immed_6 <= ir(5  downto 0);
-	immed_8 <= ir(7  downto 0);q
+	immed_8 <= ir(7  downto 0);
 	
 	excp_illegal_ir <= '0' when coop = COOP_AL    or
 										 coop = COOP_CMP   or
@@ -198,7 +199,8 @@ BEGIN
 	
 	d_sys  <= '1'  when coop = COOP_INT and  f5 = F5_WRS   else '0';
 	
-	op_sys <= OP_SYS_INT    when int  = '1'                          else
+	op_sys <= OP_SYS_EXCP   when int  = '1'      and  int_excp = '1' else
+				 OP_SYS_INT    when int  = '1'                          else
 				 OP_SYS_EI     when coop = COOP_INT and  f5 = F5_EI     else
 	          OP_SYS_DI     when coop = COOP_INT and  f5 = F5_DI     else 
 				 OP_SYS_RETI   when coop = COOP_INT and  f5 = F5_RETI   else

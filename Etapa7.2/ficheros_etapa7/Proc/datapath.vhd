@@ -27,12 +27,14 @@ ENTITY datapath IS
 		a_sys:     IN STD_LOGIC;
 		d_sys:     IN STD_LOGIC;
 		op_sys:    IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+		excp_codigo : IN STD_LOGIC_VECTOR(3  DOWNTO 0);
 		int_en:    OUT STD_LOGIC;
 		pc_out:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		z:         OUT STD_LOGIC;
 		addr_m:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		wr_io:     OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		data_wr:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0)); 
+		data_wr:   OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+		excp_div_zero : OUT STD_LOGIC); 
 END datapath;
 ARCHITECTURE Structure OF datapath IS
 
@@ -56,6 +58,8 @@ ARCHITECTURE Structure OF datapath IS
           d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
           addr_a : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           addr_d : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
+			 excp_codigo : IN STD_LOGIC_VECTOR(3  DOWNTO 0);
+			 excp_dir : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 			 int_en : OUT STD_LOGIC;
           a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
 	END COMPONENT;
@@ -64,8 +68,10 @@ ARCHITECTURE Structure OF datapath IS
 		      y  : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
 		      op : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		      w  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-		      z  : OUT STD_LOGIC);
+		      z  : OUT STD_LOGIC;
+				excp_div_zero : OUT STD_LOGIC);
 	END COMPONENT;
+
 signal atox, wtod, immed_y, reg_d: STD_LOGIC_VECTOR(15 DOWNTO 0);
 signal y_i : std_logic_vector(15 downto 0);
 signal b_o : std_logic_vector(15 downto 0);
@@ -74,6 +80,8 @@ signal br_wrd: std_logic;
 signal sbr_wrd: std_logic;
 signal a : std_logic_vector(15 downto 0);
 signal sa : std_logic_vector(15 downto 0);
+signal excp_addr : std_logic_vector(15 downto 0);
+
 BEGIN
 
 	data_wr <= b_o;
@@ -87,20 +95,25 @@ BEGIN
 								a       =>  a,
 								b       =>  b_o );
 	
+	excp_addr <= pc_in when pc_in(0) = '1' else wtod;
+	
 	SBR: sregfile PORT MAP(clk     =>  clk,
 	                       wrd     =>  sbr_wrd,
 								  op_d    =>  op_sys,
 								  d       =>  reg_d ,
 								  addr_a  =>  addr_a,
 								  addr_d  =>  addr_d,
+								  excp_codigo => excp_codigo,
 								  int_en  => int_en,
+								  excp_dir => excp_addr,
 								  a       =>  sa);
 
 	ALUop: alu PORT MAP(x   =>  atox,
 	                    y   =>  y_i,
 	                    op  =>  op,
 	                    w   =>  wtod,
-	                    z   =>  z);
+	                    z   =>  z,
+							  excp_div_zero => excp_div_zero);
 							  
 	atox <= sa when a_sys = '1' else a;
 	br_wrd  <= wrd and (not d_sys);
@@ -110,7 +123,7 @@ BEGIN
 	
 	with immed_x2 select immed_y <= 
 	   immed(14 downto 0) & '0' when  '1',
-		immed                     when  others;
+		immed                    when  others;
 		
 	with in_d select reg_d <=
 		datard_m        when  REGFILE_D_MEM,

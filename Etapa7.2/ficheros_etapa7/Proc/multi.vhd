@@ -14,7 +14,9 @@ entity multi is
 			int_en    : IN  STD_LOGIC;
 			intr      : IN  STD_LOGIC;
 			is_getiid : IN  STD_LOGIC;
+			excp      : IN  STD_LOGIC;
 			int       : OUT STD_LOGIC;
+			int_excp  : OUT STD_LOGIC;
 			inta      : OUT STD_LOGIC;
          tknbr_out : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
          wrd       : OUT STD_LOGIC;
@@ -33,6 +35,8 @@ architecture Structure of multi is
 	-- Register to hold the current state
 	signal state   : state_type;
 
+	signal int_excp_q : std_logic;
+	
 begin
 
     -- Aqui iria la m�quina de estados del modelos de Moore que gestiona el multiciclo
@@ -48,7 +52,7 @@ begin
 				when F =>				
 					state <= DEMW;
 				when DEMW =>
-					if (intr = '1' and int_en = '1') then
+					if (intr = '1' and int_en = '1') or excp = '1' then
 						state <= SYSTEM;
 					else
 						state <= F;
@@ -64,14 +68,16 @@ begin
 	begin
 		case state is
 			when F =>
-				tknbr_out <= PC_BLOQ;
-				wrd       <= '0';
-				wr_m      <= '0';
-				word_byte <= '0';
-				ins_dad   <= '0';
-				ldir      <= '1';
-				inta      <= '0';
-				int       <= '0';
+				tknbr_out  <= PC_BLOQ;
+				wrd        <= '0';
+				wr_m       <= '0';
+				word_byte  <= '0';
+				ins_dad    <= '0';
+				ldir       <= '1';
+				inta       <= '0';
+				int        <= '0';
+				int_excp_q <= '0';
+				int_excp   <= '0';
 			when DEMW =>
 				wrd       <= wrd_l;
 				wr_m      <= wr_m_l;
@@ -80,8 +86,12 @@ begin
 				inta      <= is_getiid;
 				int       <= '0';
 				tknbr_out <= tknbr_in;
+				int_excp  <= '0';
 				if (intr = '1' and int_en = '1') then
 					ldir      <= '1';
+				elsif excp = '1' then
+					ldir       <= '1';
+					int_excp_q <= '1';
 				else
 					ldir      <= '0';
 				end if;
@@ -94,6 +104,7 @@ begin
 				ldir      <= '1';
 				inta      <= '0';
 				int       <= '1';
+				int_excp  <= int_excp_q;
 			
 		end case;
 	end process;

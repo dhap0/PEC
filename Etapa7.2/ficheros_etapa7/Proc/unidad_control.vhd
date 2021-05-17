@@ -16,6 +16,7 @@ ENTITY unidad_control IS
 		pc_in     : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		int_en    : IN  STD_LOGIC;
 		intr      : IN  STD_LOGIC;
+		excp       : IN  STD_LOGIC;
 		inta      : OUT STD_LOGIC;
 		op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		Rb_N      : OUT STD_LOGIC;
@@ -37,7 +38,8 @@ ENTITY unidad_control IS
 		d_sys     : OUT STD_LOGIC;
 		op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 		is_acc_m  : OUT STD_LOGIC;
-		word_byte : OUT STD_LOGIC);
+		word_byte : OUT STD_LOGIC;
+		excp_illegal_ir : OUT STD_LOGIC);
 END unidad_control;
 
 ARCHITECTURE Structure OF unidad_control IS
@@ -50,6 +52,7 @@ ARCHITECTURE Structure OF unidad_control IS
 		PORT (ir        : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 		      z         : IN  STD_LOGIC;
 				int       : IN  STD_LOGIC;
+				int_excp  : IN  STD_LOGIC;
 		      op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		      tknbr     : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
 		      Rb_N      : OUT STD_LOGIC;
@@ -69,7 +72,8 @@ ARCHITECTURE Structure OF unidad_control IS
 				op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 		      word_byte : OUT STD_LOGIC;
 				is_acc_m  : OUT STD_LOGIC;
-				is_getiid : OUT STD_LOGIC);
+				is_getiid : OUT STD_LOGIC;
+				excp_illegal_ir : OUT STD_LOGIC);
 	END COMPONENT;
 	COMPONENT multi IS
 	    PORT(clk       : IN  STD_LOGIC;
@@ -78,11 +82,13 @@ ARCHITECTURE Structure OF unidad_control IS
 	         wrd_l     : IN  STD_LOGIC;
 	         wr_m_l    : IN  STD_LOGIC;
 	         w_b       : IN  STD_LOGIC;
-				   int_en    : IN  STD_LOGIC;
-				   is_getiid : IN  STD_LOGIC;
-				   intr      : IN  STD_LOGIC;
-				   int       : OUT STD_LOGIC;
-				   inta      : OUT STD_LOGIC;
+				int_en    : IN  STD_LOGIC;
+				is_getiid : IN  STD_LOGIC;
+				intr      : IN  STD_LOGIC;
+				excp      : IN  STD_LOGIC;
+				int_excp  : OUT STD_LOGIC;
+				int       : OUT STD_LOGIC;
+				inta      : OUT STD_LOGIC;
 	         tknbr_out : OUT STD_LOGIC_VECTOR(1 DOWNTO 0);
 	         wrd       : OUT STD_LOGIC;
 	         wr_m      : OUT STD_LOGIC;
@@ -106,8 +112,9 @@ ARCHITECTURE Structure OF unidad_control IS
 	signal deco_tknbr     : std_logic_vector(1 downto 0);
 	signal deco_is_getiid : std_logic;
 	
-	signal m0_int : std_logic;
-
+	signal m0_int      : std_logic;
+	signal m0_int_excp : std_logic;
+	
 BEGIN
 
     -- Aqui iria la declaracion del "mapeo" (PORT MAP) de los nombres de las entradas/salidas de los componentes
@@ -116,6 +123,7 @@ BEGIN
 	 deco : control_l PORT MAP(ir         => ir_q,
 	                           op         => op,
 										int        => m0_int,
+										int_excp   => m0_int_excp,
 	                           tknbr      => deco_tknbr,
 	                           Rb_N       => Rb_N,
 	                           z          => z,
@@ -135,7 +143,8 @@ BEGIN
 										op_sys     => op_sys,
 	                           word_byte  => w_b_t,
 										is_acc_m   => is_acc_m,
-										is_getiid  => deco_is_getiid);
+										is_getiid  => deco_is_getiid,
+										excp_illegal_ir => excp_illegal_ir);
 										
 	 m0 : multi PORT MAP(clk        =>  clk,
 	                     boot       =>  boot,
@@ -145,6 +154,8 @@ BEGIN
 	                     w_b        =>  w_b_t,
 								int_en     =>  int_en,
 								intr       =>  intr,
+								excp       =>  excp,
+								int_excp   =>  m0_int_excp,
 								is_getiid  =>  deco_is_getiid,
 								int        =>  m0_int,
 					         inta       =>  inta,
