@@ -51,9 +51,11 @@ begin
 			case state is
 				when F =>				
 					state <= DEMW;
+					int_excp_q <= '0';
 				when DEMW =>
 					if (intr = '1' and int_en = '1') or excp = '1' then
 						state <= SYSTEM;
+						int_excp_q <= '1';
 					else
 						state <= F;
 					end if;
@@ -76,7 +78,6 @@ begin
 				ldir       <= '1';
 				inta       <= '0';
 				int        <= '0';
-				int_excp_q <= '0';
 				int_excp   <= '0';
 			when DEMW =>
 				wrd       <= wrd_l;
@@ -87,11 +88,8 @@ begin
 				int       <= '0';
 				tknbr_out <= tknbr_in;
 				int_excp  <= '0';
-				if (intr = '1' and int_en = '1') then
+				if (intr = '1' and int_en = '1') or excp = '1' then
 					ldir      <= '1';
-				elsif excp = '1' then
-					ldir       <= '1';
-					int_excp_q <= '1';
 				else
 					ldir      <= '0';
 				end if;
