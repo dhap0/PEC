@@ -85,6 +85,7 @@ ARCHITECTURE Structure OF proc IS
 		addr_io    : OUT STD_LOGIC_VECTOR(7   DOWNTO 0);
 		op_sys     : OUT STD_LOGIC_VECTOR(2   DOWNTO 0);
 		a_sys      : OUT STD_LOGIC;
+		is_acc_m  : OUT STD_LOGIC;
 		word_byte  : OUT STD_LOGIC);
 	END COMPONENT;
 	COMPONENT exception_controller IS
@@ -123,6 +124,7 @@ ARCHITECTURE Structure OF proc IS
 	signal c0_int       : STD_LOGIC;
 	signal c0_excp_illegal_ir : STD_LOGIC;
 	signal c0_word_byte : STD_LOGIC;
+	signal c0_is_acc_m  : STD_LOGIC;
 	
 	signal excp_codigo : STD_LOGIC_VECTOR(3 downto 0);
 	signal excp_mem_align: STD_LOGIC;
@@ -162,6 +164,7 @@ BEGIN
 							          	a_sys     => as2as,
 									      d_sys     => ds2ds,
 											op_sys    => c0_op_sys,
+											is_acc_m  => c0_is_acc_m,
 	                              word_byte => c0_word_byte);
 											
 	 e0 : datapath PORT MAP(clk       => clk,
@@ -191,7 +194,8 @@ BEGIN
 		addr_m <= e0_addr_m;
 		word_byte <= c0_word_byte;
 		
-		excp_mem_align <= (e0_addr_m(0) and (not c0_word_byte)); 							
+		--excp_mem_align <= (e0_addr_m(0) and (not c0_word_byte)); 			
+      excp_mem_align <= c0_pc_out(0) or (e0_addr_m(0) and (not c0_word_byte) and c0_is_acc_m); 			
 		excp_ctrl: exception_controller port map (clk => clk,
                                                 boot => boot,
 		                                          excp_div_cero => e0_excp_div_cero,

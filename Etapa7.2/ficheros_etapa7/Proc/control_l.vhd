@@ -29,6 +29,7 @@ ENTITY control_l IS
 		 d_sys     : OUT STD_LOGIC;
 		 op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
     	 word_byte : OUT STD_LOGIC;
+		 is_acc_m  : OUT STD_LOGIC;
 		 is_getiid : OUT STD_LOGIC);
 END control_l;
 
@@ -186,5 +187,10 @@ BEGIN
 				 OP_SYS_NORMAL ;
 				 
 	is_getiid <= '1' when coop = COOP_INT and f5 = F5_GETIID else '0';
+	is_acc_m <= '1' when coop = COOP_ST  or 
+	                     coop = COOP_LD  or 
+								coop = COOP_LDB or
+								coop = COOP_STB else
+				   '0';
 				
 END Structure;

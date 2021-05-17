@@ -36,6 +36,7 @@ ENTITY unidad_control IS
 		a_sys     : OUT STD_LOGIC;
 		d_sys     : OUT STD_LOGIC;
 		op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
+		is_acc_m  : OUT STD_LOGIC;
 		word_byte : OUT STD_LOGIC);
 END unidad_control;
 
@@ -67,6 +68,7 @@ ARCHITECTURE Structure OF unidad_control IS
 			   d_sys     : OUT STD_LOGIC;
 				op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 		      word_byte : OUT STD_LOGIC;
+				is_acc_m  : OUT STD_LOGIC;
 				is_getiid : OUT STD_LOGIC);
 	END COMPONENT;
 	COMPONENT multi IS
@@ -131,7 +133,8 @@ BEGIN
 										a_sys      => a_sys,
 			                     d_sys      => d_sys,
 										op_sys     => op_sys,
-	                           word_byte  =>  w_b_t,
+	                           word_byte  => w_b_t,
+										is_acc_m   => is_acc_m,
 										is_getiid  => deco_is_getiid);
 										
 	 m0 : multi PORT MAP(clk        =>  clk,
@@ -140,11 +143,11 @@ BEGIN
 	                     wrd_l      =>  wrd_t,
 	                     wr_m_l     =>  wr_m_t,
 	                     w_b        =>  w_b_t,
-								       int_en     =>  int_en,
-								       intr       =>  intr,
-								       is_getiid  =>  deco_is_getiid,
-								       int        =>  m0_int,
-					             inta       =>  inta,
+								int_en     =>  int_en,
+								intr       =>  intr,
+								is_getiid  =>  deco_is_getiid,
+								int        =>  m0_int,
+					         inta       =>  inta,
 	                     tknbr_out  =>  tknbr,
 	                     wrd        =>  wrd,
 	                     wr_m       =>  wr_m,
