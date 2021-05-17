@@ -29,21 +29,24 @@ ENTITY control_l IS
 		 d_sys     : OUT STD_LOGIC;
 		 op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
     	 word_byte : OUT STD_LOGIC;
+		 excp_illegal_ir : OUT STD_LOGIC);
 		 is_acc_m  : OUT STD_LOGIC;
 		 is_getiid : OUT STD_LOGIC);
 END control_l;
 
 
 ARCHITECTURE Structure OF control_l IS
-	signal coop: codigooper;
-	signal f1:   campofunct1;
-	signal f3:   campofunct3;
-	signal f5:   campofunct5;
-	signal immed_6:   std_logic_vector(5 downto 0);
-	signal immed_8:   std_logic_vector(7 downto 0);
+	signal coop : codigooper;
 	
-	signal br_si_t:  std_logic;
-	signal jmp_si_t: std_logic;
+	signal f1 :   campofunct1;
+	signal f3 :   campofunct3;
+	signal f5 :   campofunct5;
+	
+	signal immed_6 :   std_logic_vector(5 downto 0);
+	signal immed_8 :   std_logic_vector(7 downto 0);
+	
+	signal br_si_t  : std_logic;
+	signal jmp_si_t : std_logic;
 BEGIN
 	
 	coop    <= ir(15 downto 16-tamcoop);
@@ -52,7 +55,22 @@ BEGIN
 	           ir(5  downto 3);
    f5      <= ir(4  downto 0);
 	immed_6 <= ir(5  downto 0);
-	immed_8 <= ir(7  downto 0);
+	immed_8 <= ir(7  downto 0);q
+	
+	excp_illegal_ir <= '0' when coop = COOP_AL    or
+										 coop = COOP_CMP   or
+										 coop = COOP_ADDI  or
+										 coop = COOP_LD    or
+										 coop = COOP_ST    or
+										 coop = COOP_MOV   or
+										 coop = COOP_BR    or
+										 coop = COOP_IO    or
+										 coop = COOP_EA    or
+										 coop = COOP_JMP   or
+										 coop = COOP_LDB   or
+										 coop = COOP_STB   or
+										 coop = COOP_INT   else '1';
+
 	
 	op <= ALU_X      when  coop = COOP_JMP
 	                   or  int  = '1'
@@ -143,12 +161,12 @@ BEGIN
 	        PE when coop = COOP_STB else
 			  not PE;
 			  
-	in_d <= REGFILE_D_PC_NEXT   when int = '1'       else -- MUST BE THE FIRST
-        REGFILE_D_PC_2   when  coop = COOP_JMP      else 
-			  REGFILE_D_MEM  when  coop = COOP_LD 
-	                         or  coop = COOP_LDB     else
-			  REGFILE_D_IO   when  coop = COOP_IO   
-			                   or (coop = COOP_INT and f5 = F5_GETIID) else
+	in_d <= REGFILE_D_PC_NEXT when int = '1'        else -- MUST BE THE FIRST
+           REGFILE_D_PC_2    when  coop = COOP_JMP else 
+			  REGFILE_D_MEM     when  coop = COOP_LD 
+	                            or  coop = COOP_LDB else
+			  REGFILE_D_IO      when  coop = COOP_IO   
+			                      or (coop = COOP_INT and f5 = F5_GETIID) else
 			  REGFILE_D_ALU;
 			  
 	immed_x2 <= '1' when coop = COOP_LD 
@@ -168,11 +186,11 @@ BEGIN
 							
 --	ldpc <= haltSI when ir(15 downto 0) = x"FFFF" else '1';
 	tknbr <= JMP_SI   when  int  = '1'
-		    		          or (coop = COOP_JMP  and jmp_si_t = '1')     
-				              or (coop = COOP_INT  and f5       = F5_RETI) else
-				   BR_SI    when  coop = COOP_BR   and br_si_t  = '1'      else 
+		    	           or (coop = COOP_JMP  and jmp_si_t = '1')     
+				           or (coop = COOP_INT  and f5       = F5_RETI) else
+				BR_SI    when  coop = COOP_BR   and br_si_t  = '1'      else 
 	         PC_BLOQ  when  coop = COOP_INT  and f5       = F5_HALT  else
-				   PC_INCR;
+				PC_INCR;
 				
 	a_sys  <= '1'  when  int = '1'
 	                 or (coop = COOP_INT and (f5 = F5_RDS

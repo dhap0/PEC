@@ -6,11 +6,12 @@ LIBRARY work;
 USE work.cte_tipos_UF_pkg.all;
 
 ENTITY alu IS
-    PORT (x  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
-          y  : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
-          op : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
-          w  : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
-			 z  : OUT STD_LOGIC);
+    PORT (x             : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+          y             : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
+          op            : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
+          w             : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
+			 z             : OUT STD_LOGIC;
+			 excp_div_zero : OUT STD_LOGIC;);
 END alu;
 
 
@@ -30,6 +31,7 @@ signal shift_y: integer;
 BEGIN
 	w <= w_t;
 	z <= '1' when y = x"0" else '0';
+	excp_div_zero <= '1' when y = x"0" and (op = ALU_DIV or op = ALU_DIVU) else '0';
 	
 	resta <= x - y;
 	
@@ -38,9 +40,10 @@ BEGIN
 	cmpltu <= '1' when unsigned(x) < unsigned(y) else '0';
 	
 	shift_y <= to_integer(signed(y(4 downto 0)));
-	sha <= shift_right(signed(x), -shift_y)   when y(4) = '1' else
-			 shift_left(signed(x),   shift_y);
-	shl <= shift_right(unsigned(x), -shift_y) when y(4) = '1' else
+	
+	sha <= shift_right(signed(x),   -shift_y)  when y(4) = '1' else
+			 shift_left(signed(x),     shift_y);
+	shl <= shift_right(unsigned(x), -shift_y)  when y(4) = '1' else
 			 shift_left(unsigned(x),   shift_y);
 			 
 			 
