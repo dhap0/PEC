@@ -21,7 +21,7 @@ END regfile;
 ARCHITECTURE Structure OF regfile IS
     -- Aqui iria la definicion de los registros
 	type bancRegistres is array (0 to 7) of std_logic_vector(15 downto 0);
-	signal BR: bancRegistres;
+	signal BR: bancRegistres := (others=>(others=>'0'));
 
 	
 BEGIN

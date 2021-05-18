@@ -93,7 +93,7 @@ COMPONENT interrupt_controller IS
 END COMPONENT;
 
 	type bancRegistres is array (0 to 31) of std_logic_vector(15 downto 0);
-	signal mem            : bancRegistres;
+	signal mem            : bancRegistres := (others=>(others=>'0'));
 	
 	signal hex_num        : std_logic_vector(15 downto 0);
 	signal hex_display_en : std_logic_vector(3 downto 0);
