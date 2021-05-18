@@ -55,7 +55,7 @@ begin
 				when DEMW =>
 					if (intr = '1' and int_en = '1') or excp = '1' then
 						state <= SYSTEM;
-						int_excp_q <= '1';
+						int_excp_q <= excp;
 					else
 						state <= F;
 					end if;
@@ -88,18 +88,14 @@ begin
 				int       <= '0';
 				tknbr_out <= tknbr_in;
 				int_excp  <= '0';
-				if (intr = '1' and int_en = '1') or excp = '1' then
-					ldir      <= '1';
-				else
-					ldir      <= '0';
-				end if;
+				ldir      <= '0';
 			when SYSTEM =>
 				tknbr_out <= tknbr_in;
 				wrd       <= '0';
 				wr_m      <= '0';
 				word_byte <= '0';
 				ins_dad   <= '0';
-				ldir      <= '1';
+				ldir      <= '0';
 				inta      <= '0';
 				int       <= '1';
 				int_excp  <= int_excp_q;
