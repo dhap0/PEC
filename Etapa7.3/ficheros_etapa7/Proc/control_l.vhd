@@ -82,7 +82,7 @@ BEGIN
 										 
 	excp_ir_protect_t <= '1' when  coop = COOP_INT and 
 							 			  f5 /= F5_HALT   and
-							 	        mode_sys = '1'  else '0';
+							 	        mode_sys = '0'  else '0';
 																	  	
 	op <= ALU_X      when  coop = COOP_JMP
 	                   or  int  = '1'
