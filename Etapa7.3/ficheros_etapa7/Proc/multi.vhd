@@ -69,7 +69,7 @@ begin
 	end process;
 
 	-- Output depends solely on the current state
-	outputs: process (state, tknbr_in, wrd_l, wr_m_l, w_b)
+	outputs: process (state, tknbr_in, wrd_l, wr_m_l, w_b, excp, excp_calls, is_getiid)
 	begin
 		case state is
 			when F =>
@@ -84,7 +84,7 @@ begin
 				int        <= '0';
 				int_excp   <= '0';
 			when DEMW =>
-				wrd        <= wrd_l  and (not excp or excp_calls);
+				wrd        <= wrd_l  and ((not excp) or excp_calls);
 				wr_m       <= wr_m_l and (not excp);
 				word_byte  <= w_b;
 				wr_out_out <= wr_out_in and (not excp);
