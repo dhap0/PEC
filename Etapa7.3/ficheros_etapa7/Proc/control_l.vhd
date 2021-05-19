@@ -136,7 +136,8 @@ BEGIN
 												or  f5 = F5_GETIID
 												or  f5 = F5_CALLS))  or
 					  (coop = COOP_IO   and  f1 = F1_IN)      or
-	              (coop = COOP_JMP  and  f3 = F3_JAL)     else not PE;
+	              (coop = COOP_JMP  and (f3 = F3_JAL
+												or  f5 = F5_CALLS))     else not PE;
 			 
 	addr_a <= "101"           when  int  = '1' else
 	          "001"           when  coop = COOP_INT and  f5 = F5_RETI else
