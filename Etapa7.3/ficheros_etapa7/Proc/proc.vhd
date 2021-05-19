@@ -69,6 +69,8 @@ ARCHITECTURE Structure OF proc IS
 		int_en     : IN  STD_LOGIC;
 		intr       : IN  STD_LOGIC;
 		excp       : IN  STD_LOGIC;
+		mode_sys    : IN  STD_LOGIC;
+		excp_mem_protect : IN STD_LOGIC;
 		inta       : OUT STD_LOGIC;
 		pc_out     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		immed      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -91,8 +93,11 @@ ARCHITECTURE Structure OF proc IS
 		a_sys      : OUT STD_LOGIC;
 		is_acc_m  : OUT STD_LOGIC;
 		excp_illegal_ir : OUT STD_LOGIC;
-		word_byte  : OUT STD_LOGIC);
+		word_byte  : OUT STD_LOGIC;
+		excp_ir_protect : OUT STD_LOGIC;
+		excp_calls      : OUT STD_LOGIC);
 	END COMPONENT;
+	
 	COMPONENT exception_controller IS
    PORT (clk             : in STD_LOGIC;
          boot            : in STD_LOGIC;
@@ -135,8 +140,7 @@ ARCHITECTURE Structure OF proc IS
 	signal c0_excp_ir_protect : STD_LOGIC;
 	signal c0_excp_calls : STD_LOGIC;
 	signal c0_word_byte : STD_LOGIC;
-	signal c0_is_acc_m  : STD_LOGIC;
-	
+	signal c0_is_acc_m  : STD_LOGIC;	
 	
 	signal excp_codigo : STD_LOGIC_VECTOR(3 downto 0);
 	signal excp_mem_align: STD_LOGIC;
@@ -167,6 +171,8 @@ BEGIN
 											int_en    => e0_int_en,
                                  intr      => intr,
 											excp      => excp,
+											mode_sys   => e0_mode_sys,
+											excp_mem_protect => excp_mem_protect,
 									      inta      => inta,
 	                              pc_out    => c0_pc_out,
 	                              ins_dad   => insd2insd,
@@ -180,7 +186,9 @@ BEGIN
 											op_sys    => c0_op_sys,
 											is_acc_m  => c0_is_acc_m,
 	                              word_byte => c0_word_byte,
-											excp_illegal_ir => c0_excp_illegal_ir);
+											excp_illegal_ir => c0_excp_illegal_ir,
+											excp_ir_protect => c0_excp_ir_protect,
+											excp_calls => c0_excp_calls);
 											
 	 e0 : datapath PORT MAP(clk       => clk,
 	                        op        => o2o,

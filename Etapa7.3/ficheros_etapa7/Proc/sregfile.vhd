@@ -4,6 +4,7 @@ USE ieee.numeric_std.all;        --Esta libreria sera necesaria si usais convers
 USE ieee.std_logic_unsigned.all; --Esta libreria sera necesaria si usais conversiones CONV_INTEGER
 
 library work;
+use work.sisa16_coop_funct_pkg.all;
 use work.cte_tipos_UF_pkg.all;
 use work.cte_tipos_UC_pkg.all;
 
@@ -51,14 +52,16 @@ BEGIN
 			BR(0)    <= BR(7);
 			BR(1)    <= d;
 			BR(2)    <= x"000F";
-			BR(7)(1) <= '0';
+			BR(7)(1 downto 0) <= "01";
 		 when OP_SYS_EXCP =>
 			BR(0)    <= BR(7);
 			BR(1)    <= d;
 			BR(2)    <= x"000" & excp_codigo;
-			BR(3)    <= excp_dir;
-			BR(7)(1) <= '0';
-		 when others      => 
+			if excp_codigo = EXCP_ID_MEM_ALIGN then
+				BR(3) <= excp_dir;
+			end if;
+			BR(7)(1 downto 0) <= "01";
+		 when others => 
 		end case; 
     end if;
   end process;

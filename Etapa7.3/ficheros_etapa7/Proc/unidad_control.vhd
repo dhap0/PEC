@@ -17,6 +17,8 @@ ENTITY unidad_control IS
 		int_en    : IN  STD_LOGIC;
 		intr      : IN  STD_LOGIC;
 		excp       : IN  STD_LOGIC;
+		mode_sys    : IN  STD_LOGIC;
+		excp_mem_protect : IN STD_LOGIC;
 		inta      : OUT STD_LOGIC;
 		op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		Rb_N      : OUT STD_LOGIC;
@@ -39,7 +41,9 @@ ENTITY unidad_control IS
 		op_sys    : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
 		is_acc_m  : OUT STD_LOGIC;
 		word_byte : OUT STD_LOGIC;
-		excp_illegal_ir : OUT STD_LOGIC);
+		excp_illegal_ir : OUT STD_LOGIC;
+		excp_ir_protect : OUT STD_LOGIC;
+		excp_calls      : OUT STD_LOGIC);
 END unidad_control;
 
 ARCHITECTURE Structure OF unidad_control IS
@@ -53,6 +57,7 @@ ARCHITECTURE Structure OF unidad_control IS
 		      z         : IN  STD_LOGIC;
 				int       : IN  STD_LOGIC;
 				int_excp  : IN  STD_LOGIC;
+				mode_sys   : IN  STD_LOGIC;
 		      op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		      tknbr     : OUT STD_LOGIC_VECTOR(1  DOWNTO 0);
 		      Rb_N      : OUT STD_LOGIC;
@@ -73,7 +78,9 @@ ARCHITECTURE Structure OF unidad_control IS
 		      word_byte : OUT STD_LOGIC;
 				is_acc_m  : OUT STD_LOGIC;
 				is_getiid : OUT STD_LOGIC;
-				excp_illegal_ir : OUT STD_LOGIC);
+				excp_illegal_ir : OUT STD_LOGIC;
+				excp_ir_protect : OUT STD_LOGIC;
+				excp_calls      : OUT STD_LOGIC);
 	END COMPONENT;
 	COMPONENT multi IS
 	    PORT(clk       : IN  STD_LOGIC;
@@ -86,6 +93,9 @@ ARCHITECTURE Structure OF unidad_control IS
 				is_getiid : IN  STD_LOGIC;
 				intr      : IN  STD_LOGIC;
 				excp      : IN  STD_LOGIC;
+				wr_out_in : IN  STD_LOGIC;
+				excp_mem_protect : IN STD_LOGIC;
+				wr_out_out: OUT STD_LOGIC;
 				int_excp  : OUT STD_LOGIC;
 				int       : OUT STD_LOGIC;
 				inta      : OUT STD_LOGIC;
@@ -111,6 +121,7 @@ ARCHITECTURE Structure OF unidad_control IS
 	
 	signal deco_tknbr     : std_logic_vector(1 downto 0);
 	signal deco_is_getiid : std_logic;
+	signal deco_wr_out    : std_logic;
 	
 	signal m0_int      : std_logic;
 	signal m0_int_excp : std_logic;
@@ -124,6 +135,7 @@ BEGIN
 	                           op         => op,
 										int        => m0_int,
 										int_excp   => m0_int_excp,
+										mode_sys    => mode_sys,
 	                           tknbr      => deco_tknbr,
 	                           Rb_N       => Rb_N,
 	                           z          => z,
@@ -137,14 +149,16 @@ BEGIN
 	                           immed_x2   => immed_x2,
 										addr_io    => addr_io, 
 			                     rd_in      => rd_in, 
-			                     wr_out     => wr_out,
+			                     wr_out     => deco_wr_out,
 										a_sys      => a_sys,
 			                     d_sys      => d_sys,
 										op_sys     => op_sys,
 	                           word_byte  => w_b_t,
 										is_acc_m   => is_acc_m,
 										is_getiid  => deco_is_getiid,
-										excp_illegal_ir => excp_illegal_ir);
+										excp_illegal_ir => excp_illegal_ir,
+										excp_ir_protect => excp_ir_protect,
+										excp_calls => excp_calls);
 										
 	 m0 : multi PORT MAP(clk        =>  clk,
 	                     boot       =>  boot,
@@ -155,6 +169,9 @@ BEGIN
 								int_en     =>  int_en,
 								intr       =>  intr,
 								excp       =>  excp,
+								wr_out_in  =>  deco_wr_out,
+								excp_mem_protect => excp_mem_protect,
+								wr_out_out =>  wr_out,
 								int_excp   =>  m0_int_excp,
 								is_getiid  =>  deco_is_getiid,
 								int        =>  m0_int,

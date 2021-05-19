@@ -15,6 +15,9 @@ entity multi is
 			intr      : IN  STD_LOGIC;
 			is_getiid : IN  STD_LOGIC;
 			excp      : IN  STD_LOGIC;
+			wr_out_in : IN  STD_LOGIC;
+			excp_mem_protect : IN STD_LOGIC;
+			wr_out_out: OUT STD_LOGIC;
 			int       : OUT STD_LOGIC;
 			int_excp  : OUT STD_LOGIC;
 			inta      : OUT STD_LOGIC;
@@ -73,6 +76,7 @@ begin
 				tknbr_out  <= PC_BLOQ;
 				wrd        <= '0';
 				wr_m       <= '0';
+				wr_out_out <= '0';
 				word_byte  <= '0';
 				ins_dad    <= '0';
 				ldir       <= '1';
@@ -80,25 +84,27 @@ begin
 				int        <= '0';
 				int_excp   <= '0';
 			when DEMW =>
-				wrd       <= wrd_l;
-				wr_m      <= wr_m_l;
-				word_byte <= w_b;
-				ins_dad   <= '1';
-				inta      <= is_getiid;
-				int       <= '0';
-				tknbr_out <= tknbr_in;
-				int_excp  <= '0';
-				ldir      <= '0';
+				wrd        <= wrd_l  and (not excp_mem_protect);
+				wr_m       <= wr_m_l and (not excp_mem_protect);
+				word_byte  <= w_b;
+				wr_out_out <= wr_out_in and (not excp_mem_protect);
+				ins_dad    <= '1';
+				inta       <= is_getiid;
+				int        <= '0';
+				tknbr_out  <= tknbr_in;
+				int_excp   <= '0';
+				ldir       <= '0';
 			when SYSTEM =>
-				tknbr_out <= tknbr_in;
-				wrd       <= '0';
-				wr_m      <= '0';
-				word_byte <= '0';
-				ins_dad   <= '0';
-				ldir      <= '0';
-				inta      <= '0';
-				int       <= '1';
-				int_excp  <= int_excp_q;
+				tknbr_out  <= tknbr_in;
+				wrd        <= '0';
+				wr_m       <= '0';
+				wr_out_out <= '0';
+				word_byte  <= '0';
+				ins_dad    <= '0';
+				ldir       <= '0';
+				inta       <= '0';
+				int        <= '1';
+				int_excp   <= int_excp_q;
 			
 		end case;
 	end process;

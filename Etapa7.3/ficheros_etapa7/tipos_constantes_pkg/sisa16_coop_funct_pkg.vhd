@@ -75,6 +75,7 @@ constant F3_DIVU  : campofunct3 := "101";
 -- F5_INT
 constant F5_EI     : campofunct5 := "00000";
 constant F5_DI     : campofunct5 := "00001";
+constant F5_CALLS  : campofunct5 := "00111";
 constant F5_RETI   : campofunct5 := "00100";
 constant F5_GETIID : campofunct5 := "01000";
 constant F5_RDS    : campofunct5 := "01100";
