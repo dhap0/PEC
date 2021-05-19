@@ -26,7 +26,10 @@ BEGIN
 
  excp <= excp_div_cero   or 
          excp_mem_align  or 
-			excp_illegal_ir;
+         excp_calls      or 
+         excp_ir_protect or 
+         excp_mem_protect  or 
+			  excp_illegal_ir;
 			
  process (clk, boot) 
  begin
