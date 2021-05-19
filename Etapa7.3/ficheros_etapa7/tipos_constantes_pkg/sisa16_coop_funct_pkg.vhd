@@ -81,5 +81,12 @@ constant F5_RDS    : campofunct5 := "01100";
 constant F5_WRS    : campofunct5 := "10000";
 constant F5_HALT   : campofunct5 := "11111";
 
+constant EXCP_ID_ILLEGAL_IR  : std_logic_vector(3 downto 0) := x"0";
+constant EXCP_ID_MEM_ALIGN   : std_logic_vector(3 downto 0) := x"1";
+constant EXCP_ID_DIV_ZERO    : std_logic_vector(3 downto 0) := x"4";
+constant EXCP_ID_MEM_PROTECT : std_logic_vector(3 downto 0) := x"B";
+constant EXCP_ID_IR_PROTECT  : std_logic_vector(3 downto 0) := x"D";
+constant EXCP_ID_CALLS       : std_logic_vector(3 downto 0) := x"E";
+
 
 END PACKAGE sisa16_coop_funct_pkg;
