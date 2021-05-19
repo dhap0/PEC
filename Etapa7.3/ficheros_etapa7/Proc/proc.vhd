@@ -70,7 +70,6 @@ ARCHITECTURE Structure OF proc IS
 		intr       : IN  STD_LOGIC;
 		excp       : IN  STD_LOGIC;
 		mode_sys    : IN  STD_LOGIC;
-		excp_mem_protect : IN STD_LOGIC;
 		inta       : OUT STD_LOGIC;
 		pc_out     : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		immed      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -172,7 +171,6 @@ BEGIN
                                  intr      => intr,
 											excp      => excp,
 											mode_sys   => e0_mode_sys,
-											excp_mem_protect => excp_mem_protect,
 									      inta      => inta,
 	                              pc_out    => c0_pc_out,
 	                              ins_dad   => insd2insd,

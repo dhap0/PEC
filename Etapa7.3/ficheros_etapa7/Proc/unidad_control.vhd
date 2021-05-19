@@ -18,7 +18,6 @@ ENTITY unidad_control IS
 		intr      : IN  STD_LOGIC;
 		excp       : IN  STD_LOGIC;
 		mode_sys    : IN  STD_LOGIC;
-		excp_mem_protect : IN STD_LOGIC;
 		inta      : OUT STD_LOGIC;
 		op        : OUT STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		Rb_N      : OUT STD_LOGIC;
@@ -94,7 +93,7 @@ ARCHITECTURE Structure OF unidad_control IS
 				intr      : IN  STD_LOGIC;
 				excp      : IN  STD_LOGIC;
 				wr_out_in : IN  STD_LOGIC;
-				excp_mem_protect : IN STD_LOGIC;
+				excp_calls: IN STD_LOGIC;
 				wr_out_out: OUT STD_LOGIC;
 				int_excp  : OUT STD_LOGIC;
 				int       : OUT STD_LOGIC;
@@ -122,6 +121,7 @@ ARCHITECTURE Structure OF unidad_control IS
 	signal deco_tknbr     : std_logic_vector(1 downto 0);
 	signal deco_is_getiid : std_logic;
 	signal deco_wr_out    : std_logic;
+	signal deco_excp_calls: std_logic;
 	
 	signal m0_int      : std_logic;
 	signal m0_int_excp : std_logic;
@@ -131,6 +131,8 @@ BEGIN
     -- Aqui iria la declaracion del "mapeo" (PORT MAP) de los nombres de las entradas/salidas de los componentes
     -- En los esquemas de la documentacion a la instancia de la logica de control le hemos llamado c0
     -- Aqui iria la definicion del comportamiento de la unidad de control y la gestion del PC
+	 excp_calls <= deco_excp_calls;
+	 
 	 deco : control_l PORT MAP(ir         => ir_q,
 	                           op         => op,
 										int        => m0_int,
@@ -158,7 +160,7 @@ BEGIN
 										is_getiid  => deco_is_getiid,
 										excp_illegal_ir => excp_illegal_ir,
 										excp_ir_protect => excp_ir_protect,
-										excp_calls => excp_calls);
+										excp_calls => deco_excp_calls);
 										
 	 m0 : multi PORT MAP(clk        =>  clk,
 	                     boot       =>  boot,
@@ -170,7 +172,7 @@ BEGIN
 								intr       =>  intr,
 								excp       =>  excp,
 								wr_out_in  =>  deco_wr_out,
-								excp_mem_protect => excp_mem_protect,
+								excp_calls =>  deco_excp_calls,
 								wr_out_out =>  wr_out,
 								int_excp   =>  m0_int_excp,
 								is_getiid  =>  deco_is_getiid,

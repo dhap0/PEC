@@ -16,7 +16,7 @@ entity multi is
 			is_getiid : IN  STD_LOGIC;
 			excp      : IN  STD_LOGIC;
 			wr_out_in : IN  STD_LOGIC;
-			excp_mem_protect : IN STD_LOGIC;
+			excp_calls: IN STD_LOGIC;
 			wr_out_out: OUT STD_LOGIC;
 			int       : OUT STD_LOGIC;
 			int_excp  : OUT STD_LOGIC;
@@ -84,10 +84,10 @@ begin
 				int        <= '0';
 				int_excp   <= '0';
 			when DEMW =>
-				wrd        <= wrd_l  and (not excp_mem_protect);
-				wr_m       <= wr_m_l and (not excp_mem_protect);
+				wrd        <= wrd_l  and (not excp or excp_calls);
+				wr_m       <= wr_m_l and (not excp);
 				word_byte  <= w_b;
-				wr_out_out <= wr_out_in and (not excp_mem_protect);
+				wr_out_out <= wr_out_in and (not excp);
 				ins_dad    <= '1';
 				inta       <= is_getiid;
 				int        <= '0';
