@@ -17,6 +17,7 @@ ENTITY sregfile IS
 			 excp_codigo  : IN  STD_LOGIC_VECTOR(3  DOWNTO 0);
 			 excp_dir : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 			 int_en   : OUT STD_LOGIC;
+			 mode_sys : OUT STD_LOGIC;
           a        : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
 END sregfile;
 
@@ -24,7 +25,7 @@ END sregfile;
 ARCHITECTURE Structure OF sregfile IS
     -- Aqui iria la definicion de los registros
 	type bancRegistres is array (0 to 7) of std_logic_vector(15 downto 0);
-	signal BR: bancRegistres := (others=>(others=>'0'));
+	signal BR: bancRegistres := (others=>x"0001");
 
 	
 BEGIN
@@ -34,6 +35,7 @@ BEGIN
     -- Una buena (y limpia) implementacion no deberia ocupar m�s de 7 o 8 lineas
   a <= BR(conv_integer(addr_a));
   int_en <= BR(7)(1);
+  mode_sys <= BR(7)(0);
   p_write : process(clk,wrd)
   begin
     if rising_edge(clk) then

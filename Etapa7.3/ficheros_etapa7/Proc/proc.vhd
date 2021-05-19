@@ -50,6 +50,7 @@ ARCHITECTURE Structure OF proc IS
 				op_sys   : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
 				excp_codigo : IN STD_LOGIC_VECTOR(3  DOWNTO 0);
 				int_en   : OUT STD_LOGIC;
+				mode_sys : OUT STD_LOGIC;
 			   pc_out   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 			   addr_m   : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 				wr_io    : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -98,6 +99,9 @@ ARCHITECTURE Structure OF proc IS
 		   excp_div_cero   : in STD_LOGIC;
 		   excp_mem_align  : in STD_LOGIC;
 		   excp_illegal_ir : in STD_LOGIC;
+			excp_ir_protect : in STD_LOGIC;
+			excp_mem_protect: in STD_LOGIC;
+			excp_calls      : in STD_LOGIC;
 		   codigo  : out  STD_LOGIC_VECTOR(3 downto 0);
 			excp    : out  STD_LOGIC);
 	END COMPONENT;
@@ -119,6 +123,7 @@ ARCHITECTURE Structure OF proc IS
 	signal e0_pc_out    : STD_LOGIC_VECTOR(15 DOWNTO 0);
 	signal e0_addr_m    : STD_LOGIC_VECTOR(15 DOWNTO 0);
 	signal e0_int_en    : STD_LOGIC;
+	signal e0_mode_sys    : STD_LOGIC;
 	signal e0_excp_div_zero : STD_LOGIC;
 	
 	
@@ -127,11 +132,15 @@ ARCHITECTURE Structure OF proc IS
 	signal c0_tknbr_out : STD_LOGIC_VECTOR(1  DOWNTO 0);
 	signal c0_int       : STD_LOGIC;
 	signal c0_excp_illegal_ir : STD_LOGIC;
+	signal c0_excp_ir_protect : STD_LOGIC;
+	signal c0_excp_calls : STD_LOGIC;
 	signal c0_word_byte : STD_LOGIC;
 	signal c0_is_acc_m  : STD_LOGIC;
 	
+	
 	signal excp_codigo : STD_LOGIC_VECTOR(3 downto 0);
 	signal excp_mem_align: STD_LOGIC;
+	signal excp_mem_protect: STD_LOGIC;
 	signal excp : STD_LOGIC;
 	
 
@@ -194,6 +203,7 @@ BEGIN
 									op_sys    => c0_op_sys,
 									excp_codigo => excp_codigo,
 									int_en    => e0_int_en,
+									mode_sys  => e0_mode_sys,
 	                        in_d      => ind2ind,
 	                        tknbr     => c0_tknbr_out,
 	                        addr_m    => e0_addr_m,
@@ -204,13 +214,19 @@ BEGIN
 		word_byte <= c0_word_byte;
 		
 		--excp_mem_align <= (e0_addr_m(0) and (not c0_word_byte)); 			
-      excp_mem_align <= c0_pc_out(0) or (e0_addr_m(0) and (not c0_word_byte) and c0_is_acc_m); 			
-		excp_ctrl: exception_controller port map (clk => clk,
-                                                boot => boot,
-		                                          excp_div_cero => e0_excp_div_zero,
-		                                          excp_mem_align => excp_mem_align,
-		                                          excp_illegal_ir => c0_excp_illegal_ir,
-		                                          codigo  => excp_codigo,
-			                                       excp => excp);
+      excp_mem_align <= c0_pc_out(0) or (e0_addr_m(0) and (not c0_word_byte) and c0_is_acc_m); 
+      excp_mem_protect <= not e0_mode_sys when c0_pc_out >= x"8000" or 
+		                                      (c0_is_acc_m	= '1'	and e0_addr_m >= x"8000") else
+								  '0';
+		excp_ctrl: exception_controller port map (clk              => clk,
+                                                boot             => boot,
+		                                          excp_div_cero    => e0_excp_div_zero,
+		                                          excp_mem_align   => excp_mem_align,
+		                                          excp_illegal_ir  => c0_excp_illegal_ir,
+																excp_mem_protect => excp_mem_protect,
+																excp_ir_protect  => c0_excp_ir_protect,
+																excp_calls       => c0_excp_calls,
+		                                          codigo           => excp_codigo,
+			                                       excp             => excp);
 
 END Structure;

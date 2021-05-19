@@ -29,6 +29,7 @@ ENTITY datapath IS
 		op_sys:    IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
 		excp_codigo : IN STD_LOGIC_VECTOR(3  DOWNTO 0);
 		int_en:    OUT STD_LOGIC;
+		mode_sys : OUT STD_LOGIC;
 		pc_out:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		z:         OUT STD_LOGIC;
 		addr_m:    OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -61,6 +62,7 @@ ARCHITECTURE Structure OF datapath IS
 			 excp_codigo : IN STD_LOGIC_VECTOR(3  DOWNTO 0);
 			 excp_dir : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
 			 int_en : OUT STD_LOGIC;
+			 mode_sys : OUT STD_LOGIC;
           a      : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
 	END COMPONENT;
 	COMPONENT alu IS
@@ -97,16 +99,17 @@ BEGIN
 	
 	excp_addr <= pc_in when pc_in(0) = '1' else wtod;
 	
-	SBR: sregfile PORT MAP(clk     =>  clk,
-	                       wrd     =>  sbr_wrd,
-								  op_d    =>  op_sys,
-								  d       =>  reg_d ,
-								  addr_a  =>  addr_a,
-								  addr_d  =>  addr_d,
+	SBR: sregfile PORT MAP(clk         =>  clk,
+	                       wrd         =>  sbr_wrd,
+								  op_d        =>  op_sys,
+								  d           =>  reg_d ,
+								  addr_a      =>  addr_a,
+								  addr_d      =>  addr_d,
 								  excp_codigo => excp_codigo,
-								  int_en  => int_en,
-								  excp_dir => excp_addr,
-								  a       =>  sa);
+								  int_en      => int_en,
+								  mode_sys    => mode_sys,
+								  excp_dir    => excp_addr,
+								  a           =>  sa);
 
 	ALUop: alu PORT MAP(x   =>  atox,
 	                    y   =>  y_i,
