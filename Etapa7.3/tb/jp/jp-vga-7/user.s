@@ -32,24 +32,26 @@
 ; seccion de datos
 .data
         ; dades globals
-        frase0a:          .asciz "Ticks Timer: "
-        frase0b:          .asciz "Hora: "
-        frase1:           .asciz "Oulsadores: "
-        frase2:           .asciz "Interruptores: "
-        frase3a:          .asciz "Codigo ASCII tecla: "
-        frase3b:          .asciz "Numero repeticiones: "
+        frase0:           .asciz "__Etapa 7.1_____________________________________________________________________"        
+        frase1a:          .asciz "Ticks Timer: "
+        frase1b:          .asciz "Hora: "
+        frase2:           .asciz "Oulsadores: "
+        frase3:           .asciz "Interruptores: "
+        frase4a:          .asciz "Codigo ASCII tecla: "
+        frase4b:          .asciz "Numero repeticiones: "
         ;separator
-        frase4:           .asciz "--------------------------------------------------------------------------------"        
+        frase5:           .asciz "__Etapa 7.2_____________________________________________________________________"        
 				; extes excepcio
-        frase5:          .asciz "Codigo: "
-        frase6:          .asciz "Div zero: "
-        frase7:          .asciz "Illegal ir: "
-        frase8a:         .asciz "Mem align: "
-        frase8b:         .asciz "Mem align addr: "
-        frase9a:         .asciz "Calls: "
-        frase9b:         .asciz "Syscall: "
-        frase10:         .asciz "Protected ir: "
-        frase11:         .asciz "Protected mem: "
+        frase6:          .asciz "Codigo: "
+        frase7:          .asciz "Div zero: "
+        frase8:          .asciz "Illegal ir: "
+        frase9a:         .asciz "Mem align: "
+        frase9b:         .asciz "Mem align addr: "
+        frase10:           .asciz "__Etapa 7.3_____________________________________________________________________"        
+        frase11a:         .asciz "Calls: "
+        frase11b:         .asciz "Syscall: "
+        frase12:         .asciz "Protected ir: "
+        frase13:         .asciz "Protected mem: "
         
 
         cadena_aux:       .fill  10, 1, 0      ;10 elementos de tamaño byte inicializados a 0
@@ -133,129 +135,149 @@ inici:
         st  0(r4), r0
         $MOVEI r4, d_mem_align_addr
         st  0(r4), r0
+        $MOVEI r4, d_clicks_tecla
+        st  0(r4), r0
+        $MOVEI r4, d_tecla
+        st  0(r4), r0
+        $MOVEI r4, d_calls
+        st  0(r4), r0
+        $MOVEI r4, d_syscall
+        st  0(r4), r0
+        $MOVEI r4, d_protected_ir
+        st  0(r4), r0
+        $MOVEI r4, d_protected_mem
+        st  0(r4), r0
         $CALL  r6, __clear_screen  ;borra la pantalla (en R6 se almacena la direccion de retorno de la subrutina)
 
 binf:   
         $MOVEI r1, 0xA000          ;fila 0; columna 0
-        $MOVEI r2, frase0a         ;frase 0a
+        $MOVEI r2, frase0         ;frase 0
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA01A          ;fila 0; columna 13
+
+        $MOVEI r1, 0xA0A0          ;fila 1; columna 0
+        $MOVEI r2, frase1a         ;frase 1a
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA0BA          ;fila 1; columna 13
         $MOVEI r2, d_ticks         ;carga la direccion de memoria donde esta el dato sobre el # de ticks de reloj que han llegado
         ld     r2, 0(r2)           ;carga el numero de ticks
         $CALL  r6, __write_valor
 
-        $MOVEI r1, 0xA032          ;fila 0; columna 25
-        $MOVEI r2, frase0b         ;frase 0b
+        $MOVEI r1, 0xA0D2          ;fila 1; columna 25
+        $MOVEI r2, frase1b         ;frase 1b
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA03E          ;fila 0; columna 31
+        $MOVEI r1, 0xA0DE          ;fila 1; columna 31
         $CALL  r6, __mostrar_reloj
-
-        $MOVEI r1, 0xA0A0          ;fila 1; columna 0
-        $MOVEI r2, frase1          ;frase 1
-        $CALL  r6, __write_line
-        $MOVEI r1, 0xA0B8          ;fila 1; columna 12
-        $MOVEI r2, d_pulsadores    ;carga la direccion de memoria donde esta el dato sobre el estado de los pulsadores
-        ld     r2, 0(r2)          
-        $CALL  r6, __write_valor
 
         $MOVEI r1, 0xA140          ;fila 2; columna 0
         $MOVEI r2, frase2          ;frase 2
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA15E          ;fila 2; columna 15
+        $MOVEI r1, 0xA158          ;fila 2; columna 12
+        $MOVEI r2, d_pulsadores    ;carga la direccion de memoria donde esta el dato sobre el estado de los pulsadores
+        ld     r2, 0(r2)          
+        $CALL  r6, __write_valor
+
+        $MOVEI r1, 0xA1e0          ;fila 3; columna 0
+        $MOVEI r2, frase3          ;frase 3
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA1FE          ;fila 3; columna 15
         $MOVEI r2, d_interruptores ;carga la direccion de memoria donde esta el dato sobre el estado de los interruptores
         ld     r2, 0(r2)
         $CALL  r6, __write_valor
 
-        $MOVEI r1, 0xA1E0          ;fila 3; columna 0
-        $MOVEI r2, frase3a         ;frase 3a
+        $MOVEI r1, 0xA280          ;fila 4; columna 0
+        $MOVEI r2, frase4a         ;frase 4a
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA208          ;fila 3; columna 20
+        $MOVEI r1, 0xA2A8          ;fila 4; columna 20
         $MOVEI r2, d_tecla         ;carga la direccion de memoria donde esta el dato sobre la ultima tecla pulsada
         ld     r2, 0(r2)           ;carga la ultima tecla pulsada
         $CALL  r6, __write_valor
 
-        $MOVEI r1, 0xA212          ;fila 3; columna 25
-        $MOVEI r2, frase3b         ;frase 3b
+        $MOVEI r1, 0xA2B2          ;fila 4; columna 25
+        $MOVEI r2, frase4b         ;frase 4b
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA23C          ;fila 3; columna 21
+        $MOVEI r1, 0xA2DC          ;fila 4; columna 21
         $MOVEI r2, d_clicks_tecla  ;carga la direccion de memoria donde esta el dato sobre el numero de veces que se ha pulsado la ultima tecla
         ld     r2, 0(r2)           ;carga el numero de veces consecutivas que se ha pulsado la tecla
         $CALL  r6, __write_valor
 
 				; extes excepcio
-        $MOVEI r1, 0xA280          ;fila 4; columna 0
-        $MOVEI r2, frase4         ;frase 4
-        $CALL  r6, __write_line
-
         $MOVEI r1, 0xA320          ;fila 5; columna 0
         $MOVEI r2, frase5         ;frase 5
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA330          ;fila 5; columna 8
+
+        $MOVEI r1, 0xA3C0          ;fila 6; columna 0
+        $MOVEI r2, frase6         ;frase 6
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA3D0          ;fila 6; columna 8
         $MOVEI r2, d_codigo  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
 
-        $MOVEI r1, 0xA3c0          ;fila 6; columna 0
-        $MOVEI r2, frase6         ;frase 6
+        $MOVEI r1, 0xA460          ;fila 7; columna 0
+        $MOVEI r2, frase7         ;frase 7
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA3d4          ;fila 6; columna 10
+        $MOVEI r1, 0xA474          ;fila 7; columna 10
         $MOVEI r2, d_div_zero  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
-        $MOVEI r1, 0xA460          ;fila 7; columna 0
-        $MOVEI r2, frase7         ;frase 
-        $CALL  r6, __write_line
-        $MOVEI r1, 0xA478          ;fila 7; columna 12
-        $MOVEI r2, d_illegal_ir  
-        ld     r2, 0(r2)           
-        $CALL  r6, __write_valor
-
         $MOVEI r1, 0xA500          ;fila 8; columna 0
-        $MOVEI r2, frase8a         ;frase 8a
+        $MOVEI r2, frase8         ;frase 
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA516          ;fila 8; columna 11
-        $MOVEI r2, d_mem_align  
-        ld     r2, 0(r2)           
-        $CALL  r6, __write_valor
-
-        $MOVEI r1, 0xA532          ;fila 8; columna 25
-        $MOVEI r2, frase8b         ;frase 8b
-        $CALL  r6, __write_line
-        $MOVEI r1, 0xA552          ;fila 8; columna 41
-        $MOVEI r2, d_mem_align_addr  
+        $MOVEI r1, 0xA518          ;fila 8; columna 12
+        $MOVEI r2, d_illegal_ir  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
         $MOVEI r1, 0xA5A0          ;fila 9; columna 0
         $MOVEI r2, frase9a         ;frase 9a
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA5AE          ;fila 9; columna 7
-        $MOVEI r2, d_calls  
+        $MOVEI r1, 0xA5B6          ;fila 9; columna 11
+        $MOVEI r2, d_mem_align  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
         $MOVEI r1, 0xA5D2          ;fila 9; columna 25
         $MOVEI r2, frase9b         ;frase 9b
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA5E4          ;fila 9; columna 41
-        $MOVEI r2, d_syscall
+        $MOVEI r1, 0xA5F2          ;fila 9; columna 41
+        $MOVEI r2, d_mem_align_addr  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
         $MOVEI r1, 0xA640          ;fila 10; columna 0
-        $MOVEI r2, frase10         ;frase 
+        $MOVEI r2, frase10         ;frase 10
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA65C          ;fila 10; columna 14
+
+        $MOVEI r1, 0xA6E0          ;fila 11; columna 0
+        $MOVEI r2, frase11a         ;frase 11a
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA6EE          ;fila 11; columna 7
+        $MOVEI r2, d_calls  
+        ld     r2, 0(r2)           
+        $CALL  r6, __write_valor
+
+        $MOVEI r1, 0xA712          ;fila 11; columna 25
+        $MOVEI r2, frase11b         ;frase 11b
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA732          ;fila 11; columna 41
+        $MOVEI r2, d_syscall
+        ld     r2, 0(r2)           
+        $CALL  r6, __write_valor
+
+        $MOVEI r1, 0xA780          ;fila 12; columna 0
+        $MOVEI r2, frase12         ;frase 
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA790          ;fila 12; columna 14
         $MOVEI r2, d_protected_ir  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
-        $MOVEI r1, 0xA6E0          ;fila 11; columna 0
-        $MOVEI r2, frase11         ;frase 
+        $MOVEI r1, 0xA820          ;fila 13; columna 0
+        $MOVEI r2, frase13         ;frase 
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA6FE          ;fila 11; columna 15
+        $MOVEI r1, 0xA83E          ;fila 13; columna 15
         $MOVEI r2, d_protected_mem  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
