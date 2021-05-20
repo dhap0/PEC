@@ -221,9 +221,11 @@ BEGIN
 		
 		--excp_mem_align <= (e0_addr_m(0) and (not c0_word_byte)); 			
       excp_mem_align <= c0_pc_out(0) or (e0_addr_m(0) and (not c0_word_byte) and c0_is_acc_m); 
-      excp_mem_protect <= not e0_mode_sys when c0_pc_out >= x"8000" or 
-		                                      (c0_is_acc_m	= '1'	and e0_addr_m >= x"8000") else
-								  '0';
+      excp_mem_protect <= 
+			not e0_mode_sys when c0_pc_out  >= x"8000" or            
+		                       (c0_is_acc_m	= '1'	and ((e0_addr_m >= x"8000" and e0_addr_m < x"A000") or
+																	   e0_addr_m >=  x"B2C0")) else '0';
+																	  
 		excp_ctrl: exception_controller port map (clk              => clk,
                                                 boot             => boot,
 		                                          excp_div_cero    => e0_excp_div_zero,
