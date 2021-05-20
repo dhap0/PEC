@@ -57,10 +57,10 @@
         .balign 2       ;garantiza que los siguientes datos de tipo word esten alineados en posiciones pares
 
         triger_vector:
+          .word __triger_calls 
           .word __triger_div_zero 
           .word __triger_illegar_ir 
           .word __triger_mem_align 
-          .word __triger_calls 
           .word __triger_ir_protect 
           .word __triger_mem_protect_j 
           .word __triger_mem_protect_m
