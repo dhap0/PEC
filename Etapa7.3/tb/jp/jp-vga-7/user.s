@@ -5,27 +5,6 @@
 .set CHAR_CLEAR_SCREEN, 0x152E  ;borramos la pantalla con un punto gris oscuro
 ;.set CHAR_CLEAR_SCREEN, 0x0020  ;borramos la pantalla con un espacio negro
         
-
-; seccion de datos
-.data
-        ; dades globals
-        frase0a:          .asciz "Ticks Timer: "
-        frase0b:          .asciz "Hora: "
-        frase1:           .asciz "Pulsadores: "
-        frase2:           .asciz "Interruptores: "
-        frase3a:          .asciz "Codigo ASCII tecla: "
-        frase3b:          .asciz "Numero repeticiones: "
-				; extes excepcio
-        frase4:          .asciz "Codigo: "
-        frase5:          .asciz "Div zero: "
-        frase6:          .asciz "Illegal ir: "
-        frase7a:         .asciz "Mem align: "
-        frase7b:         .asciz "Mem align addr: "
-
-        cadena_aux:       .fill  10, 1, 0      ;10 elementos de tamaño byte inicializados a 0
-
-        .balign 2       ;garantiza que los siguientes datos de tipo word esten alineados en posiciones pares
-
 .global  inici
 .global __fin_binf
 
@@ -44,12 +23,57 @@
 .global  d_segundos
 .global  d_minutos
 .global  d_horas
+
+; excepcions mode sistema
+.global    codi_crida
+.global    flag_dades
+.global    flag_inst
+.global    flag_int
+
+; seccion de datos
+.data
+        ; dades globals
+        frase0a:          .asciz "Ticks Timer: "
+        frase0b:          .asciz "Hora: "
+        frase1:           .asciz "Oulsadores: "
+        frase2:           .asciz "Interruptores: "
+        frase3a:          .asciz "Codigo ASCII tecla: "
+        frase3b:          .asciz "Numero repeticiones: "
+				; extes excepcio
+        frase4:          .asciz "Codigo: "
+        frase5:          .asciz "Div zero: "
+        frase6:          .asciz "Illegal ir: "
+        frase7a:         .asciz "Mem align: "
+        frase7b:         .asciz "Mem align addr: "
+
+        cadena_aux:       .fill  10, 1, 0      ;10 elementos de tamaño byte inicializados a 0
+
+        .balign 2       ;garantiza que los siguientes datos de tipo word esten alineados en posiciones pares
+
+        triger_vector:
+          .word __triger_illegar_ir 
+          .word __triger_mem_align 
+          .word __triger_div_zero 
+          .word __triger_nothing
+          .word __triger_illegar_ir 
+          .word __triger_mem_align 
+          .word __triger_div_zero 
+          .word __triger_nothing
+          .word __triger_illegar_ir 
+          .word __triger_mem_align 
+          .word __triger_div_zero 
+          .word __triger_nothing
+          .word __triger_illegar_ir 
+          .word __triger_mem_align 
+          .word __triger_div_zero 
+          .word __triger_nothing
 				
         d_ticks:          .word 0
         d_pulsadores:     .word 0
         d_interruptores:  .word 0
         d_tecla:          .word 0
         d_clicks_tecla:   .word 0
+
 				; extes except datos
 				d_codigo:         .word 0
 				d_div_zero:       .word 0
@@ -57,11 +81,18 @@
 				d_fake_ir:        .word 0
 				d_mem_align:      .word 0
 				d_mem_align_addr: .word 0
+
         ;datos para mostrar un reloj por pantalla
         d_ticks_seg:      .word 0
         d_segundos:       .word 0
         d_minutos:        .word 0
         d_horas:          .word 0
+
+        ; excecions mode sistema
+        codi_crida: .word 0 ; codi de la crida a sistema que sha fet
+        flag_dades: .word 0 ; senyalem quan excepcio dades protegides
+        flag_inst:  .word 0 ; senyalem quan excepcio instruccio protegida
+        flag_int:   .word 0 ; senyalem quan interrupcio
 
 
 ; seccion de codigo
@@ -188,42 +219,42 @@ binf:
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
-;         ; triger excepcions
-;         $MOVEI r2, d_ticks         ;carga la direccion de memoria donde esta el dato sobre el # de ticks de reloj que han llegado
-;         ;$MOVEI r6, 0       
-;         ldb     r6, 0(r2)           ;carga el numero de ticks
-;         movhi   r6, 0
-;         $MOVEI r2, 0x50 
-;         cmplt r1, r6, r2
-;         bnz r1, __triger_illegar_ir 
-;         $MOVEI r2, 0xA0 
-;         cmplt r1, r6, r2
-;         bnz r1, __triger_mem_align 
-;         $MOVEI r2, 0xF0 
-;         cmplt r1, r6, r2
-;         bnz r1, __triger_div_zero 
+        ; triger excepcions
+        $MOVEI r2, d_ticks         ;carga la direccion de memoria donde esta el dato sobre el # de ticks de reloj que han llegado
+        ;$MOVEI r6, 0       
+        ldb     r6, 0(r2)           ;carga el numero de ticks
+        movhi   r6, 0
+        movi    r2, -4
+        shl     r6, r6, r2
 
-        $MOVEI r6, __fin_binf
-        jmp    r6
-        ; triger excepcio div zero
+        add r6, r6, r6
+        $MOVEI r2, triger_vector
+        add r2, r2, r6
+        ld r2, (r2)
+        jmp r2  ; saltant a la pos r1 de RSI_vector
+
+; triger excepcio div zero
 __triger_div_zero:
         $MOVEI r1, 0
         movi r2, 2
         div r2, r2, r1
         $MOVEI r6, __fin_binf
         jmp    r6
-        ; triger mem not align 
+; triger mem not align 
 __triger_mem_align:
         $MOVEI r1, 0x03
         st 0(r1), r2
         $MOVEI r6, __fin_binf
         jmp    r6
-        ; triger illegar ir
+; triger illegar ir
 __triger_illegar_ir:
         $MOVEI r1, d_fake_ir
         $MOVEI r2, 0x9999
         st 0(r1), r2
         jmp r1
+; triger nothing
+__triger_nothing:
+
 __fin_binf:
 				; fin extes
 

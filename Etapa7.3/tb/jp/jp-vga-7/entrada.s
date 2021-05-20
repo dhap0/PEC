@@ -6,24 +6,20 @@
 
 .data
 
-    codi_crida: .word 0 ; codi de la crida a sistema que sha fet
-    flag_dades: .word 0 ; senyalem quan excepcio dades protegides
-    flag_inst:  .word 0 ; senyalem quan excepcio instruccio protegida
-    flag_int:   .word 0 ; senyalem quan interrupcio
 
     .balign 2
     interrupts_vector:
-        .word RSI_default_resume ; timer
-        .word RSI_default_resume ; pulsadors
-        .word RSI_default_resume ; switches
-        .word RSI_default_resume ; Teclat
+        .word RSI_interrupt_timer    ; timer
+        .word RSI_interrupt_key      ; pulsadors
+        .word RSI_interrupt_switch   ; switches
+        .word RSI_interrupt_keyboard ; Teclat
 
     exceptions_vector:
-        .word RSE_default_halt   ; Inst ilegal
-        .word RSE_default_halt   ; acces no alineat
+        .word RSE_illegal_ir     ; Inst ilegal
+        .word RSE_mem_align      ; acces no alineat
         .word RSE_default_resume ; 2 overflow FP
         .word RSE_default_resume ; divisio 0 FP
-        .word RSE_default_halt   ; divisio 0
+        .word RSE_div_zero       ; divisio 0
         .word RSE_default_halt   ;  no definit
         .word RSE_excepcio_TLB   ; miss TLB instruccions
         .word RSE_excepcio_TLB   ; miss TLB dades
@@ -33,6 +29,7 @@
         .word RSE_mem_protegida  ; 11 pag protegida TLB dades
         .word RSE_default_halt   ; pag readonly
         .word RSE_inst_protegida ; 13 Excepcio instruccio protegida
+
 
     call_sys_vector:
         .word syscall_default
@@ -179,40 +176,38 @@ RSG:    wrs   s6, r7
         $MOVEI r7, PILA_SISTEMA
         $PUSH r0, r1, r2, r3, r4, r5, r6 ;salvamos el estado en la pila
 				$MOVEI r3, 15
-        rds r1, s2
+        rds r1, s2           ; llegim codigo INT/EXCP
         $MOVEI r4, d_codigo
-        st     0(r4), r1
+        st     0(r4), r1     ; guardem codigo INT/EXCP a mem
 				cmpeq r3, r3, r1
         bz r3, __excepcions
+__interrupcions:
         getiid r1          
-        movi   r3, 0                     ;comprueba si es una interrupcion del interval timer
-        cmpeq  r2, r1, r3
-        bnz    r2, __interrup_timer
-        movi   r3, 1                     ;comprueba si es una interrupcion del controlador de los pulsadores
-        cmpeq  r2, r1, r3 
-        bnz    r2, __interrup_key
-        movi   r3, 2                     ;comprueba si es una interrupcion del controlador de los interruptores
-        cmpeq  r2, r1, r3
-        bnz    r2, __interrup_switch
-        movi   r3, 3                     ;comprueba si es una interrupcion del controlador del teclado
-        cmpeq  r2, r1, r3
-        bnz    r2, __interrup_keyboard
-        $MOVEI r6, end_int         ;direccion del fin del servicio de interrupcion
-        jmp    r6
+        add r1, r1, r1
+        $MOVEI r2, interrupts_vector
+        add r2, r2, r1
+        ld r2, (r2)
+        jmp r2  ; saltant a la pos r1 de RSI_vector
+
 __excepcions:
-        movi   r3, 0                     ;comprueba si es una excepcio de illegal_ir
-        cmpeq  r2, r1, r3
-        bnz    r2, __excp_illegal_ir
-        ;$MOVEI r6, __excp_illegal_ir
-        ;jmp    r6
-        movi   r3, 1                     ;comprueba si es una excepcio de mem not align
-        cmpeq  r2, r1, r3 
-        bnz    r2, __excp_mem_align
-        ;$MOVEI r6, __excp_mem_align
-        ;jmp    r6
-        movi   r3, 4                     ;comprueba si es una excepcio de div zero
-        cmpeq  r2, r1, r3
-        bnz    r2, __excp_div_zero
+     $movei r2, exceptions_vector
+     add r1, r1, r1 ; utilitzarem el num dexcepcio com a index, per tant multipliquem per2
+     add r2, r2, r1
+     ld r2, (r2)
+     jmp r2 ; saltem a la gestio de la excepcio corresponent
+;        movi   r3, 0                     ;comprueba si es una excepcio de illegal_ir
+;        cmpeq  r2, r1, r3
+;        bnz    r2, __excp_illegal_ir
+;        ;$MOVEI r6, __excp_illegal_ir
+;        ;jmp    r6
+;        movi   r3, 1                     ;comprueba si es una excepcio de mem not align
+;        cmpeq  r2, r1, r3 
+;        bnz    r2, __excp_mem_align
+;        ;$MOVEI r6, __excp_mem_align
+;        ;jmp    r6
+;        movi   r3, 4                     ;comprueba si es una excepcio de div zero
+;        cmpeq  r2, r1, r3
+;        bnz    r2, __excp_div_zero
         ;$MOVEI r6, __excp_div_zero
         ;jmp    r6
 				
@@ -225,7 +220,7 @@ end_int:
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
         ; Rutina interrupcion reloj
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-__interrup_timer:
+RSI_interrupt_timer:
         $MOVEI r4, d_ticks         ;carga la direccion de memoria donde esta el dato sobre el # de ticks de reloj que han llegado
         ld     r3, 0(r4)           ;carga el numero de ticks
         addi   r3, r3, 1           ;lo incrementa en una unidad
@@ -272,7 +267,7 @@ __interrup_timer:
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
         ; Rutina interrupcion pulsadores
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-__interrup_key:
+RSI_interrupt_key:
         in     r3, 7               ;leemos el valor de los pulsadores
         not    r3,r3               ;los pulsadores son activos a '0'
         movi   r4,0x0F
@@ -282,12 +277,10 @@ __interrup_key:
         st     0(r4), r3           ;actualiza la variable sobre el estado de los pulsadores
         $MOVEI r6, end_int         ;direccion del fin del servicio de interrupcion
         jmp    r6
-
-
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
         ; Rutina interrupcion interruptores
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-__interrup_switch:
+RSI_interrupt_switch:
         in     r3, 8               ;leemos el valor de los interruptores
         out     6, r3              ;activa los leds rojos con el valor de los interruptores
         $MOVEI r4, d_interruptores ;carga la direccion de memoria donde esta el dato sobre el estado de los interruptores
@@ -299,7 +292,7 @@ __interrup_switch:
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
         ; Rutina interrupcion teclado PS/2
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-__interrup_keyboard:
+RSI_interrupt_keyboard:
         in     r3, 15              ;leemos el valor correspondiente al caracter ASCII de la tecla pulsada
         $MOVEI r4, d_tecla         ;carga la direccion de memoria donde esta el dato sobre la ultima tecla pulsada
         ld     r5, 0(r4)           ;carga la ultima tecla pulsada
@@ -323,7 +316,8 @@ __fin_keyboard:
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
         ; Rutina excp illegal ir
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-__excp_illegal_ir:
+
+RSE_illegal_ir:
         $MOVEI r4, d_illegal_ir 
         ld     r3 ,0(r4)       
         addi   r3, r3, 1
@@ -336,7 +330,7 @@ __excp_illegal_ir:
         ; Rutina excp mem align
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 
-__excp_mem_align:
+RSE_mem_align:
         $MOVEI r4, d_mem_align 
         ld     r3 ,0(r4)           
         addi   r3, r3, 1
@@ -348,9 +342,9 @@ __excp_mem_align:
         jmp    r6
 
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-        ; Rutina excp illegal ir
+        ; Rutina excp division por zero
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-__excp_div_zero:
+RSE_div_zero:
         $MOVEI r4, d_div_zero
         ld     r3 ,0(r4)       
         addi   r3, r3, 1
