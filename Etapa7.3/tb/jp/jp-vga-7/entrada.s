@@ -15,20 +15,21 @@
         .word RSI_interrupt_keyboard ; Teclat
 
     exceptions_vector:
-        .word RSE_illegal_ir     ; Inst ilegal
-        .word RSE_mem_align      ; acces no alineat
-        .word RSE_default_resume ; 2 overflow FP
-        .word RSE_default_resume ; divisio 0 FP
-        .word RSE_div_zero       ; divisio 0
-        .word RSE_default_halt   ;  no definit
-        .word RSE_excepcio_TLB   ; miss TLB instruccions
-        .word RSE_excepcio_TLB   ; miss TLB dades
-        .word RSE_excepcio_TLB   ; pag invalid TLB inst
-        .word RSE_excepcio_TLB   ; pag invalid TLB dades
-        .word RSE_default_halt   ; pag protegida TLB inst
-        .word RSE_mem_protegida  ; 11 pag protegida TLB dades
-        .word RSE_default_halt   ; pag readonly
-        .word RSE_inst_protegida ; 13 Excepcio instruccio protegida
+        .word RSE_illegal_ir     ; Inst ilegal - 0
+        .word RSE_mem_align      ; acces no alineat - 1
+        .word RSE_default_resume ; overflow FP - 2
+        .word RSE_default_resume ; divisio 0 FP - 3
+        .word RSE_div_zero       ; divisio 0 - 4
+        .word RSE_default_resume ;  no definit - 5
+        .word RSE_default_resume ; miss TLB instruccions - 6
+        .word RSE_default_resume ; miss TLB dades - 7
+        .word RSE_default_resume ; pag invalid TLB inst - 8
+        .word RSE_default_resume ; pag invalid TLB dades - 9
+        .word RSE_default_resume ; pag protegida TLB inst - 10
+        .word RSE_mem_protegida  ; pag protegida TLB dades - 11
+        .word RSE_default_resume ; pag readonly - 12
+        .word RSE_inst_protegida ; Excepcio instruccio protegida - 13
+        .word RSE_calls ; Excepcio instruccio protegida - 14
 
 
     call_sys_vector:
@@ -80,40 +81,6 @@
 ; --------
 
 
-RSI_default_resume:
-    $movei r2, flag_int
-    movi   r1, 1
-    st     (r2), r1
-    jmp r6
-
-RSE_default_resume:
-    jmp r6
-
-RSE_default_halt:
-    halt
-
-RSE_excepcio_TLB:
-    halt
-
-syscall_default:
-    ; Aqui podem fer coses per comprovar que les crides a sistema funcionen be.
-    ; Per exemple escriure a posicions de memoria del sistema.
-    $movei r1, codi_crida
-    st (r1), r4 ; guardem el codi de la crida
-    jmp r6
-    
-RSE_mem_protegida: ; posem el flag per comprovar
-    $movei r1, flag_dades
-    movi   r2, 1
-    st     (r1), r2
-    jmp    r6
-
-RSE_inst_protegida:
-    $movei r1, flag_inst
-    movi   r2, 1
-    st     (r1), r2
-    jmp    r6
- 
 __exit:
  ; Parem la CPU
  halt
@@ -349,5 +316,43 @@ RSE_div_zero:
         ld     r3 ,0(r4)       
         addi   r3, r3, 1
         st     0(r4), r3      
-        $MOVEI r6, end_int         ;direccion del fin del servicio de interrupcion
+        $MOVEI r6, end_int     ;direccion del fin del servicio de interrupcion
         jmp    r6
+
+RSE_default_resume:
+    $MOVEI r6, end_int
+    jmp r6
+
+    
+RSE_mem_protegida: ; posem el flag per comprovar
+    $MOVEI r4, d_protected_mem
+    ld     r3 ,0(r4)       
+    addi   r3, r3, 1
+    st     0(r4), r3      
+    $MOVEI r6, end_int
+    jmp r6
+
+RSE_inst_protegida:
+    $MOVEI r4, d_protected_ir
+    ld     r3 ,0(r4)       
+    addi   r3, r3, 1
+    st     0(r4), r3      
+    $MOVEI r6, end_int
+    jmp r6
+ 
+RSE_calls:
+    $MOVEI r4, d_calls
+    ld     r3 ,0(r4)           
+    addi   r3, r3, 1
+    st     0(r4), r3          
+    $MOVEI r3, call_sys_vector
+    rds r4, s3
+    add r6, r4,r4
+    add r6, r6, r3
+    jmp r6
+
+syscall_default:
+    $MOVEI r1, d_syscall
+    st (r1), r4 ; guardem el codi de la crida
+    $MOVEI r6, end_int
+    jmp r6

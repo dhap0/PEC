@@ -23,12 +23,11 @@
 .global  d_segundos
 .global  d_minutos
 .global  d_horas
+.global  d_calls
+.global  d_syscall
+.global  d_protected_ir
+.global  d_protected_mem
 
-; excepcions mode sistema
-.global    codi_crida
-.global    flag_dades
-.global    flag_inst
-.global    flag_int
 
 ; seccion de datos
 .data
@@ -39,12 +38,19 @@
         frase2:           .asciz "Interruptores: "
         frase3a:          .asciz "Codigo ASCII tecla: "
         frase3b:          .asciz "Numero repeticiones: "
+        ;separator
+        frase4:           .asciz "---------------------------------------------------------------------------------------------------------------------------------------------------------------"        
 				; extes excepcio
-        frase4:          .asciz "Codigo: "
-        frase5:          .asciz "Div zero: "
-        frase6:          .asciz "Illegal ir: "
-        frase7a:         .asciz "Mem align: "
-        frase7b:         .asciz "Mem align addr: "
+        frase5:          .asciz "Codigo: "
+        frase6:          .asciz "Div zero: "
+        frase7:          .asciz "Illegal ir: "
+        frase8a:         .asciz "Mem align: "
+        frase8b:         .asciz "Mem align addr: "
+        frase9a:         .asciz "Calls: "
+        frase9b:         .asciz "Syscall: "
+        frase10:         .asciz "Protected ir: "
+        frase11:         .asciz "Protected mem: "
+        
 
         cadena_aux:       .fill  10, 1, 0      ;10 elementos de tamaño byte inicializados a 0
 
@@ -81,18 +87,16 @@
 				d_fake_ir:        .word 0
 				d_mem_align:      .word 0
 				d_mem_align_addr: .word 0
+				d_calls:         .word 0
+				d_syscall:       .word 0
+				d_protected_ir:         .word 0
+				d_protected_mem:         .word 0
 
         ;datos para mostrar un reloj por pantalla
         d_ticks_seg:      .word 0
         d_segundos:       .word 0
         d_minutos:        .word 0
         d_horas:          .word 0
-
-        ; excecions mode sistema
-        codi_crida: .word 0 ; codi de la crida a sistema que sha fet
-        flag_dades: .word 0 ; senyalem quan excepcio dades protegides
-        flag_inst:  .word 0 ; senyalem quan excepcio instruccio protegida
-        flag_int:   .word 0 ; senyalem quan interrupcio
 
 
 ; seccion de codigo
@@ -181,41 +185,77 @@ binf:
         $MOVEI r1, 0xA280          ;fila 4; columna 0
         $MOVEI r2, frase4         ;frase 4
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA290          ;fila 4; columna 8
+
+        $MOVEI r1, 0xA320          ;fila 5; columna 0
+        $MOVEI r2, frase5         ;frase 5
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA330          ;fila 5; columna 8
         $MOVEI r2, d_codigo  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
 
-        $MOVEI r1, 0xA320          ;fila 5; columna 0
-        $MOVEI r2, frase5         ;frase 5
+        $MOVEI r1, 0xA3c0          ;fila 6; columna 0
+        $MOVEI r2, frase6         ;frase 6
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA334          ;fila 5; columna 10
+        $MOVEI r1, 0xA3d4          ;fila 6; columna 10
         $MOVEI r2, d_div_zero  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
-        $MOVEI r1, 0xA3C0          ;fila 6; columna 0
-        $MOVEI r2, frase6         ;frase 
+        $MOVEI r1, 0xA460          ;fila 7; columna 0
+        $MOVEI r2, frase7         ;frase 
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA3D8          ;fila 6; columna 12
+        $MOVEI r1, 0xA478          ;fila 7; columna 12
         $MOVEI r2, d_illegal_ir  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
-        $MOVEI r1, 0xA460          ;fila 7; columna 0
-        $MOVEI r2, frase7a         ;frase 7a
+        $MOVEI r1, 0xA500          ;fila 8; columna 0
+        $MOVEI r2, frase8a         ;frase 8a
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA476          ;fila 7; columna 11
+        $MOVEI r1, 0xA516          ;fila 8; columna 11
         $MOVEI r2, d_mem_align  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
-        $MOVEI r1, 0xA492          ;fila 7; columna 25
-        $MOVEI r2, frase7b         ;frase 7b
+        $MOVEI r1, 0xA532          ;fila 8; columna 25
+        $MOVEI r2, frase8b         ;frase 8b
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA4B2          ;fila 7; columna 41
+        $MOVEI r1, 0xA552          ;fila 8; columna 41
         $MOVEI r2, d_mem_align_addr  
+        ld     r2, 0(r2)           
+        $CALL  r6, __write_valor
+
+        $MOVEI r1, 0xA5A0          ;fila 9; columna 0
+        $MOVEI r2, frase9a         ;frase 9a
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA5AE          ;fila 9; columna 7
+        $MOVEI r2, d_calls  
+        ld     r2, 0(r2)           
+        $CALL  r6, __write_valor
+
+        $MOVEI r1, 0xA5D2          ;fila 9; columna 25
+        $MOVEI r2, frase9b         ;frase 9b
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA5E4          ;fila 9; columna 41
+        $MOVEI r2, d_syscall
+        ld     r2, 0(r2)           
+        $CALL  r6, __write_valor
+
+        $MOVEI r1, 0xA640          ;fila 10; columna 0
+        $MOVEI r2, frase10         ;frase 
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA65C          ;fila 10; columna 14
+        $MOVEI r2, d_protected_ir  
+        ld     r2, 0(r2)           
+        $CALL  r6, __write_valor
+
+        $MOVEI r1, 0xA6E0          ;fila 11; columna 0
+        $MOVEI r2, frase11         ;frase 
+        $CALL  r6, __write_line
+        $MOVEI r1, 0xA6FE          ;fila 11; columna 15
+        $MOVEI r2, d_protected_mem  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
 
