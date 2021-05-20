@@ -162,7 +162,7 @@ BEGIN
 	        PE when coop = COOP_STB else
 			  not PE;
 			  
-	in_d <= REGFILE_D_PC_NEXT when int = '1'        else -- MUST BE THE FIRST
+	in_d <= REGFILE_D_PC_NEXT when   int = '1'      else -- MUST BE THE FIRST
            REGFILE_D_PC_2    when  coop = COOP_JMP else 
 			  REGFILE_D_MEM     when  coop = COOP_LD 
 	                            or  coop = COOP_LDB else
