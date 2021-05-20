@@ -1,6 +1,7 @@
 #!/bin/bash
 
-
+ROOT=$(git rev-parse --show-cdup)
+PATH=$PATH:${ROOT}eines-sisa/bin
 echo "Ensamblando ..."
 #compila el ensamblador
 sisa-as entrada.s -o entrada.o

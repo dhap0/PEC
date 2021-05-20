@@ -305,21 +305,6 @@ add wave -noupdate -group io -group timer_ctrl -radix hexadecimal /test_sisa/SoC
 add wave -noupdate -group io -group timer_ctrl -radix hexadecimal /test_sisa/SoC/io0/timer_ctr/tick
 add wave -noupdate -group io -group timer_ctrl -radix hexadecimal /test_sisa/SoC/io0/timer_ctr/clock_20hz/contador
 add wave -noupdate -group io -group timer_ctrl -radix hexadecimal /test_sisa/SoC/io0/timer_ctr/clock_20hz/half_count
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/clk
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/boot
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/inta
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/key_intr
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/ps2_intr
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/switch_intr
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/timer_intr
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/intr
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/key_inta
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/ps2_inta
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/switch_inta
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/timer_inta
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/iid
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/clk
-add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/boot
 add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/inta
 add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/key_intr
 add wave -noupdate -group io -group interrupt_controller /test_sisa/SoC/io0/int_ctr/ps2_intr
@@ -356,18 +341,19 @@ add wave -noupdate -group io -radix hexadecimal /test_sisa/SoC/io0/HEX0
 add wave -noupdate -group io -radix hexadecimal /test_sisa/SoC/io0/HEX1
 add wave -noupdate -group io -radix hexadecimal /test_sisa/SoC/io0/HEX2
 add wave -noupdate -group io -radix hexadecimal /test_sisa/SoC/io0/HEX3
+add wave -noupdate -expand -group core_state /test_sisa/SoC/proc0/boot
 add wave -noupdate -expand -group core_state /test_sisa/SoC/proc0/c0/clk
 add wave -noupdate -expand -group core_state /test_sisa/SoC/proc0/c0/m0/state
+add wave -noupdate -expand -group core_state /test_sisa/SoC/proc0/e0/SBR/mode_sys
 add wave -noupdate -expand -group core_state -radix hexadecimal /test_sisa/SoC/proc0/c0/pc_out
 add wave -noupdate -expand -group core_state -radix hexadecimal /test_sisa/SoC/proc0/c0/ir_q
 add wave -noupdate -expand -group core_state -radix hexadecimal /test_sisa/SoC/proc0/c0/int_en
 add wave -noupdate -expand -group core_state -radix hexadecimal /test_sisa/SoC/proc0/c0/intr
 add wave -noupdate -expand -group core_state -radix hexadecimal /test_sisa/SoC/proc0/c0/excp
-add wave -noupdate -expand -group core_state -radix hexadecimal /test_sisa/SoC/proc0/e0/BR/BR
+add wave -noupdate -expand -group core_state -radix hexadecimal -childformat {{/test_sisa/SoC/proc0/e0/BR/BR(0) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/BR/BR(1) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/BR/BR(2) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/BR/BR(3) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/BR/BR(4) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/BR/BR(5) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/BR/BR(6) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/BR/BR(7) -radix hexadecimal}} -subitemconfig {/test_sisa/SoC/proc0/e0/BR/BR(0) {-radix hexadecimal} /test_sisa/SoC/proc0/e0/BR/BR(1) {-radix hexadecimal} /test_sisa/SoC/proc0/e0/BR/BR(2) {-radix hexadecimal} /test_sisa/SoC/proc0/e0/BR/BR(3) {-radix hexadecimal} /test_sisa/SoC/proc0/e0/BR/BR(4) {-radix hexadecimal} /test_sisa/SoC/proc0/e0/BR/BR(5) {-radix hexadecimal} /test_sisa/SoC/proc0/e0/BR/BR(6) {-radix hexadecimal} /test_sisa/SoC/proc0/e0/BR/BR(7) {-radix hexadecimal}} /test_sisa/SoC/proc0/e0/BR/BR
 add wave -noupdate -expand -group core_state -radix hexadecimal -childformat {{/test_sisa/SoC/proc0/e0/SBR/BR(0) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/SBR/BR(1) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/SBR/BR(2) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/SBR/BR(3) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/SBR/BR(4) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/SBR/BR(5) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/SBR/BR(6) -radix hexadecimal} {/test_sisa/SoC/proc0/e0/SBR/BR(7) -radix hexadecimal}} -subitemconfig {/test_sisa/SoC/proc0/e0/SBR/BR(0) {-height 16 -radix hexadecimal} /test_sisa/SoC/proc0/e0/SBR/BR(1) {-height 16 -radix hexadecimal} /test_sisa/SoC/proc0/e0/SBR/BR(2) {-height 16 -radix hexadecimal} /test_sisa/SoC/proc0/e0/SBR/BR(3) {-height 16 -radix hexadecimal} /test_sisa/SoC/proc0/e0/SBR/BR(4) {-height 16 -radix hexadecimal} /test_sisa/SoC/proc0/e0/SBR/BR(5) {-height 16 -radix hexadecimal} /test_sisa/SoC/proc0/e0/SBR/BR(6) {-height 16 -radix hexadecimal} /test_sisa/SoC/proc0/e0/SBR/BR(7) {-height 16 -radix hexadecimal}} /test_sisa/SoC/proc0/e0/SBR/BR
-add wave -noupdate -expand -group core_state /test_sisa/SoC/proc0/e0/SBR/mode_sys
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1289599 ps} 1} {{Cursor 2} {1290000 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1289599 ps} 1} {{Cursor 2} {23478792 ps} 0}
 quietly wave cursor active 2
 configure wave -namecolwidth 357
 configure wave -valuecolwidth 132
@@ -383,4 +369,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {2736661 ps}
+WaveRestoreZoom {22845207 ps} {26500301 ps}
