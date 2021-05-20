@@ -96,7 +96,7 @@ begin
 				ldir       <= '0';
 			when SYSTEM =>
 				tknbr_out  <= tknbr_in;
-				wrd        <= '0';
+				wrd        <= '1';
 				wr_m       <= '0';
 				wr_out_out <= '0';
 				word_byte  <= '0';

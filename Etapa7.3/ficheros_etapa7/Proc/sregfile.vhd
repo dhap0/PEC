@@ -40,29 +40,29 @@ BEGIN
   p_write : process(clk,wrd)
   begin
     if rising_edge(clk) then
-	  case op_d is
-		 when OP_SYS_NORMAL =>
 			if wrd = PE then
-			  BR(conv_integer(addr_d)) <= d;
+	      case op_d is
+         when OP_SYS_NORMAL =>
+            BR(conv_integer(addr_d)) <= d;
+         when OP_SYS_EI   => BR(7)(1) <= '1';   -- EI
+         when OP_SYS_DI   => BR(7)(1) <= '0';   -- DI
+         when OP_SYS_RETI => BR(7)    <= BR(0); -- RETI
+         when OP_SYS_INT  =>
+          BR(0)    <= BR(7);
+          BR(1)    <= d;
+          BR(2)    <= x"000F";
+          BR(7)(1 downto 0) <= "01";
+         when OP_SYS_EXCP =>
+          BR(0)    <= BR(7);
+          BR(1)    <= d;
+          BR(2)    <= x"000" & excp_codigo;
+          if excp_codigo = EXCP_ID_MEM_ALIGN then
+            BR(3) <= excp_dir;
+          end if;
+          BR(7)(1 downto 0) <= "01";
+         when others => 
+		    end case; 
 			end if;
-		 when OP_SYS_EI   => BR(7)(1) <= '1';   -- EI
-		 when OP_SYS_DI   => BR(7)(1) <= '0';   -- DI
-		 when OP_SYS_RETI => BR(7)    <= BR(0); -- RETI
-		 when OP_SYS_INT  =>
-			BR(0)    <= BR(7);
-			BR(1)    <= d;
-			BR(2)    <= x"000F";
-			BR(7)(1 downto 0) <= "01";
-		 when OP_SYS_EXCP =>
-			BR(0)    <= BR(7);
-			BR(1)    <= d;
-			BR(2)    <= x"000" & excp_codigo;
-			if excp_codigo = EXCP_ID_MEM_ALIGN then
-				BR(3) <= excp_dir;
-			end if;
-			BR(7)(1 downto 0) <= "01";
-		 when others => 
-		end case; 
     end if;
   end process;
 

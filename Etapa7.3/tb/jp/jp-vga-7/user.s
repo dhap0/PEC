@@ -144,7 +144,6 @@ inici:
         $MOVEI r4, d_mem_align_addr
         st  0(r4), r0
         $CALL  r6, __clear_screen  ;borra la pantalla (en R6 se almacena la direccion de retorno de la subrutina)
-        ei                         ;activa las interrupciones
 
 binf:   
         $MOVEI r1, 0xA000          ;fila 0; columna 0

@@ -133,6 +133,7 @@ BEGIN
 	               coop = COOP_EA   or
 					  (coop = COOP_INT  and (f5 = F5_WRS
 					                     or  f5 = F5_RDS
+                               or  f5 = F5_RETI
 												or  f5 = F5_GETIID
 												or  f5 = F5_CALLS))  or
 					  (coop = COOP_IO   and  f1 = F1_IN)      or
@@ -214,8 +215,9 @@ BEGIN
 	                 or (coop = COOP_INT and (f5 = F5_RDS
 						  							  or  f5 = F5_RETI))   else '0';
 	
-	d_sys  <= '1'  when (coop = COOP_INT and  f5 = F5_WRS)
-						  or (coop = COOP_JMP and  f5 = F5_CALLS)   else '0';
+	d_sys  <= '1'  when (coop = COOP_INT and  (f5 = F5_WRS
+                               or  f5 = F5_RETI))
+						  or (coop = COOP_JMP and  f5 = F5_CALLS)   else int;
 	
 	op_sys <= OP_SYS_EXCP   when int  = '1'      and  int_excp = '1' else
 				 OP_SYS_INT    when int  = '1'                          else
