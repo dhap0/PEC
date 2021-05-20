@@ -41,6 +41,14 @@
         .word syscall_default
         .word syscall_default
         .word syscall_default
+        .word syscall_default
+        .word syscall_default
+        .word syscall_default
+        .word syscall_default
+        .word syscall_default
+        .word syscall_default
+        .word syscall_default
+        .word syscall_default
 
 
 .text

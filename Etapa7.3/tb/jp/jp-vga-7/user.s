@@ -35,7 +35,7 @@
         frase0:           .asciz "__Etapa 7.1_____________________________________________________________________"        
         frase1a:          .asciz "Ticks Timer: "
         frase1b:          .asciz "Hora: "
-        frase2:           .asciz "Oulsadores: "
+        frase2:           .asciz "Pulsadores: "
         frase3:           .asciz "Interruptores: "
         frase4a:          .asciz "Codigo ASCII tecla: "
         frase4b:          .asciz "Numero repeticiones: "
@@ -305,8 +305,9 @@ __triger_div_zero:
         jmp    r6
 ; triger mem not align 
 __triger_mem_align:
-        $MOVEI r1, 0x03
-        st 0(r1), r2
+        $MOVEI r1, d_interruptores
+        ld r1, 0(r1)
+        ld r2, 0(r1)
         $MOVEI r6, __fin_binf
         jmp    r6
 ; triger illegar ir
@@ -316,7 +317,8 @@ __triger_illegar_ir:
         st 0(r1), r2
         jmp r1
 __triger_calls:
-        $MOVEI r1, 0x02
+        $MOVEI r1, d_pulsadores
+        ld r1, 0(r1)
         calls r1
         $MOVEI r6, __fin_binf
         jmp    r6
