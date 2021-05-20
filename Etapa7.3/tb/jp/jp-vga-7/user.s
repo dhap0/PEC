@@ -269,7 +269,7 @@ binf:
         $MOVEI r1, 0xA780          ;fila 12; columna 0
         $MOVEI r2, frase12         ;frase 
         $CALL  r6, __write_line
-        $MOVEI r1, 0xA790          ;fila 12; columna 14
+        $MOVEI r1, 0xA79C          ;fila 12; columna 14
         $MOVEI r2, d_protected_ir  
         ld     r2, 0(r2)           
         $CALL  r6, __write_valor
