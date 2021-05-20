@@ -24,11 +24,11 @@ ARCHITECTURE Structure OF exception_controller IS
 
 BEGIN
 
- excp <= excp_div_cero   or 
-         excp_mem_align  or 
-         excp_calls      or 
-         excp_ir_protect or 
-         excp_mem_protect  or 
+ excp <= excp_div_cero    or 
+         excp_mem_align   or 
+         excp_calls       or 
+         excp_ir_protect  or 
+         excp_mem_protect or 
 			  excp_illegal_ir;
 			
  process (clk, boot) 

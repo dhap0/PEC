@@ -43,7 +43,7 @@ BEGIN
 	 if boot = '1' then
 		BR(7)(1 downto 0) <= "01";
     elsif rising_edge(clk) then
-			if wrd = PE then
+		if wrd = PE then
 	      case op_d is
          when OP_SYS_NORMAL =>
             BR(conv_integer(addr_d)) <= d;
@@ -65,7 +65,7 @@ BEGIN
           BR(7)(1 downto 0) <= "01";
          when others => 
 		    end case; 
-			end if;
+		end if;
     end if;
   end process;
 

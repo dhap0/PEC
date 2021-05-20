@@ -81,8 +81,8 @@ BEGIN
 	excp_ir_protect <= excp_ir_protect_t;
 										 
 	excp_ir_protect_t <= '1' when  coop = COOP_INT and 
-							 			  f5 /= F5_HALT   and
-							 	        mode_sys = '0'  else '0';
+							 			    f5 /= F5_HALT   and
+							 	          mode_sys = '0'  else '0';
 																	  	
 	op <= ALU_X      when  coop = COOP_JMP
 	                   or  int  = '1'
@@ -131,14 +131,10 @@ BEGIN
 	               coop = COOP_CMP  or
 	               coop = COOP_ADDI or
 	               coop = COOP_EA   or
-					  (coop = COOP_INT  and (f5 = F5_WRS
-					                     or  f5 = F5_RDS
-                               or  f5 = F5_RETI
-												or  f5 = F5_GETIID
-												or  f5 = F5_CALLS))  or
-					  (coop = COOP_IO   and  f1 = F1_IN)      or
-	              (coop = COOP_JMP  and (f3 = F3_JAL
-												or  f5 = F5_CALLS))     else not PE;
+					  (coop = COOP_INT  and  f5 /= F5_HALT)  or
+					  (coop = COOP_IO   and  f1  = F1_IN)      or
+	              (coop = COOP_JMP  and (f3  = F3_JAL
+												or  f5  = F5_CALLS))     else not PE;
 			 
 	addr_a <= "101"           when  int  = '1' else
 	          "001"           when  coop = COOP_INT and  f5 = F5_RETI else
@@ -216,8 +212,10 @@ BEGIN
 						  							  or  f5 = F5_RETI))   else '0';
 	
 	d_sys  <= '1'  when (coop = COOP_INT and  (f5 = F5_WRS
-                               or  f5 = F5_RETI))
-						  or (coop = COOP_JMP and  f5 = F5_CALLS)   else int;
+													  or   f5 = F5_RETI
+													  or   f5 = F5_DI
+													  or   f5 = F5_EI))
+						  or (coop = COOP_JMP and   f5 = F5_CALLS)   else int;
 	
 	op_sys <= OP_SYS_EXCP   when int  = '1'      and  int_excp = '1' else
 				 OP_SYS_INT    when int  = '1'                          else
