@@ -49,20 +49,7 @@
 ; Inicialitzacio
 ; ---------------
 
- di ; inicialitzacio amb les interrupcions desactivades
-
- ;movi  r7, 0x00 ; Pila de sist: decreix en
- ;movhi r7, 0x82 ;  RAM: 0x81fe, 0x81fc, ...
-; $movei r7, PILA_SISTEMA
-;  wrs   s6, r7   ; a s6: la pila de sistema
-; 
-;  $movei r6, RSG
-;  wrs s5, r6  ; Direccio de la RSG
-; 
-;  ; El retorn de la rutina principal
-;  movi  r5, lo( __exit )
-;  movhi r5, hi( __exit )
-
+  di ; inicialitzacio amb les interrupcions desactivades
   $MOVEI r1, RSG
   wrs    s5, r1      ;inicializamos en S5 la direccion de la rutina de antencion a la interrupcion
   $MOVEI r7, PILA_USUARI    ;inicializamos R7 como puntero a la pila
@@ -70,11 +57,9 @@
   wrs s1, r6
 
  ; Posem paraula d'estat futura (amb mode usuari)
- ;movi r6, 0x01 ; mode usuari, interrupcions activades, overflow fp ens es igual
- movi r6, 0x02 ; mode usuari, interrupcions activades, overflow fp ens es igual
- wrs s0, r6
- 
- reti ; Simulem una crida a sistema i retornem a codi d'usuari
+  movi r6, 0x02 ; mode usuari, interrupcions activades, overflow fp ens es igual
+  wrs s0, r6
+  reti ; Simulem una crida a sistema i retornem a codi d'usuari
 
 ; --------
 ; Rutines gestio
@@ -85,59 +70,6 @@ __exit:
  ; Parem la CPU
  halt
 
-
-; RSG:
-;     rds r7, s6
-;     ;salvem nomes r2, r3 i r6 per utilitzarlos de forma segura
-;     st (r7), r2
-;     addi r7, r7, -2
-;     st (r7), r3
-;     addi r7, r7, -2
-;     st (r7), r6
-;     addi r7, r7, -2
-; 
-; 
-;     ; Comencem rutina segons tipus 
-;     rds r1, s2
-;     movi r2, 14
-;     cmpeq r3, r2, r1 ; comprovem si es syscall
-;     bnz r3, __call_sistema
-;     movi r2, 15
-;     cmpeq r3, r2, r1
-;     bnz r3, __interrupcion
-; __excepcion:
-;     $movei r2, exceptions_vector
-;     add r1, r1, r1 ; utilitzarem el num dexcepcio com a index, per tant multipliquem per2
-;     add r2, r2, r1
-;     ld r2, (r2)
-;     jal r6, r2 ; saltem a la gestio de la excepcio corresponent
-;     bz  r3, __finrsg 
-; __call_sistema:
-;     rds r1, s3
-;     rds r4, s3
-;     movi r2, 7
-;     and r1, r1, r2 ; mascara 3 bits (8 elements)
-;     add r1, r1, r1 ; num com a index, mult per 2
-;     $movei r2, call_sys_vector
-;     add r2, r2, r1
-;     ld r2, (r2)
-;     jal r6, r2
-;     bnz r3, __finrsg
-; __interrupcion:
-;     getiid r1
-;     add r1, r1, r1
-;     $movei r2, interrupts_vector
-;     add r2, r2, r1
-;     ld r2, (r2)
-;     jal r6, r2
-; 
-; __finrsg:
-;     ; Restaurem els 3 registres abans de tornar
-;     $ppt r7, r6
-;     $ppt r7, r3
-;     $ppt r7, r2
-;     wrs s6, r7
-;     reti
 
 RSG:    wrs   s6, r7
         $MOVEI r7, PILA_SISTEMA
@@ -162,21 +94,6 @@ __excepcions:
      add r2, r2, r1
      ld r2, (r2)
      jmp r2 ; saltem a la gestio de la excepcio corresponent
-;        movi   r3, 0                     ;comprueba si es una excepcio de illegal_ir
-;        cmpeq  r2, r1, r3
-;        bnz    r2, __excp_illegal_ir
-;        ;$MOVEI r6, __excp_illegal_ir
-;        ;jmp    r6
-;        movi   r3, 1                     ;comprueba si es una excepcio de mem not align
-;        cmpeq  r2, r1, r3 
-;        bnz    r2, __excp_mem_align
-;        ;$MOVEI r6, __excp_mem_align
-;        ;jmp    r6
-;        movi   r3, 4                     ;comprueba si es una excepcio de div zero
-;        cmpeq  r2, r1, r3
-;        bnz    r2, __excp_div_zero
-        ;$MOVEI r6, __excp_div_zero
-        ;jmp    r6
 				
 end_int:
         $POP r6, r5, r4, r3, r2, r1, r0  ;restauramos el estado desde la pila (ojo orden inverso)

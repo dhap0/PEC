@@ -39,7 +39,7 @@
         frase3a:          .asciz "Codigo ASCII tecla: "
         frase3b:          .asciz "Numero repeticiones: "
         ;separator
-        frase4:           .asciz "---------------------------------------------------------------------------------------------------------------------------------------------------------------"        
+        frase4:           .asciz "--------------------------------------------------------------------------------"        
 				; extes excepcio
         frase5:          .asciz "Codigo: "
         frase6:          .asciz "Div zero: "
@@ -130,6 +130,18 @@ inici:
         $MOVEI r0, 0
         st  0(r4), r0
         $MOVEI r4, d_ticks_seg
+        st  0(r4), r0
+        $MOVEI r4, d_minutos
+        st  0(r4), r0
+        $MOVEI r4, d_horas
+        st  0(r4), r0
+        $MOVEI r4, d_div_zero
+        st  0(r4), r0
+        $MOVEI r4, d_illegal_ir
+        st  0(r4), r0
+        $MOVEI r4, d_mem_align
+        st  0(r4), r0
+        $MOVEI r4, d_mem_align_addr
         st  0(r4), r0
         $CALL  r6, __clear_screen  ;borra la pantalla (en R6 se almacena la direccion de retorno de la subrutina)
         ei                         ;activa las interrupciones
