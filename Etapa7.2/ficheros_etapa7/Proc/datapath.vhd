@@ -81,6 +81,7 @@ signal sbr_wrd: std_logic;
 signal a : std_logic_vector(15 downto 0);
 signal sa : std_logic_vector(15 downto 0);
 signal excp_addr : std_logic_vector(15 downto 0);
+signal wtod_old : std_logic_vector(15 downto 0);
 
 BEGIN
 
@@ -95,7 +96,7 @@ BEGIN
 								a       =>  a,
 								b       =>  b_o );
 	
-	excp_addr <= pc_in when pc_in(0) = '1' else wtod;
+	excp_addr <= pc_in when pc_in(0) = '1' else wtod_old;
 	
 	SBR: sregfile PORT MAP(clk     =>  clk,
 	                       wrd     =>  sbr_wrd,
@@ -146,5 +147,10 @@ BEGIN
 	
 	pc_out <= pc_next;
 	wr_io <= b_o;
-
+	
+	process(clk) begin
+		if rising_edge(clk) then
+			wtod_old <= wtod;
+		end if;
+	end process;
 END Structure;
