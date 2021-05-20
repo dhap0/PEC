@@ -128,7 +128,7 @@ begin
    -- Descripcio del comportament
 	clk <= not clk after 10 ns;
 	reset_ram <= '1' after 15 ns, '0' after 50 ns;    -- reseteamos la RAm en el primer ciclo
-	reset_proc <= '1' after 25 ns, '0' after 320 ns;  -- reseteamos el procesador en el segundo ciclo
+	reset_proc <= '1' after 25 ns, '0' after 320 ns, '1' after 300000 ns, '0' after 300295 ns ;  -- reseteamos el procesador en el segundo ciclo
 	key_value <= "1010" after 5200 ns;
 	
 end comportament;

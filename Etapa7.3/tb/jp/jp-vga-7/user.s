@@ -57,21 +57,21 @@
         .balign 2       ;garantiza que los siguientes datos de tipo word esten alineados en posiciones pares
 
         triger_vector:
+          .word __triger_div_zero 
           .word __triger_illegar_ir 
           .word __triger_mem_align 
-          .word __triger_div_zero 
+          .word __triger_calls 
+          .word __triger_ir_protect 
+          .word __triger_mem_protect_j 
+          .word __triger_mem_protect_m
           .word __triger_nothing
+          .word __triger_div_zero 
           .word __triger_illegar_ir 
           .word __triger_mem_align 
-          .word __triger_div_zero 
-          .word __triger_nothing
-          .word __triger_illegar_ir 
-          .word __triger_mem_align 
-          .word __triger_div_zero 
-          .word __triger_nothing
-          .word __triger_illegar_ir 
-          .word __triger_mem_align 
-          .word __triger_div_zero 
+          .word __triger_calls 
+          .word __triger_ir_protect 
+          .word __triger_mem_protect_j 
+          .word __triger_mem_protect_m
           .word __triger_nothing
 				
         d_ticks:          .word 0
@@ -101,16 +101,6 @@
 
 ; seccion de codigo
 .text
-        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-        ; Inicializacion
-        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
-;         $MOVEI r1, RSG
-;         wrs    s5, r1      ;inicializamos en S5 la direccion de la rutina de antencion a la interrupcion
-;         $MOVEI r7, PILA    ;inicializamos R7 como puntero a la pila
-;         $MOVEI r6, inici   ;direccion de la rutina principal
-;         jmp    r6
-
-
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
         ; Rutina de servicio de interrupcion
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
@@ -303,6 +293,29 @@ __triger_illegar_ir:
         $MOVEI r2, 0x9999
         st 0(r1), r2
         jmp r1
+__triger_calls:
+        $MOVEI r1, 0x02
+        calls r1
+        $MOVEI r6, __fin_binf
+        jmp    r6
+__triger_mem_protect_j:
+        $MOVEI r1, 0xc000
+        jmp r1
+        $MOVEI r6, __fin_binf
+        jmp    r6
+__triger_mem_protect_m:
+        $MOVEI r6, __halt
+        $MOVEI r1, 0xc000
+        st 0(r1), r6
+        $MOVEI r6, __fin_binf
+        jmp    r6
+__triger_ir_protect:
+        $MOVEI r1, __halt
+        wrs s5, r1
+        $MOVEI r6, __fin_binf
+        jmp    r6
+__halt:
+    halt
 ; triger nothing
 __triger_nothing:
 
