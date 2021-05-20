@@ -10,6 +10,7 @@ USE work.cte_tipos_UC_pkg.all;
 ENTITY datapath IS
 	PORT (
 		clk:       IN  STD_LOGIC;
+		boot:      IN  STD_LOGIC;
 		op:        IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 		wrd:       IN  STD_LOGIC;
 		addr_a:    IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -54,6 +55,7 @@ ARCHITECTURE Structure OF datapath IS
 	END COMPONENT;
 	COMPONENT sregfile IS
 		PORT (clk    : IN  STD_LOGIC;
+			 boot   : IN  STD_LOGIC;
           wrd    : IN  STD_LOGIC;
 			 op_d   : IN  STD_LOGIC_VECTOR(2 DOWNTO 0);
           d      : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -101,6 +103,7 @@ BEGIN
 	excp_addr <= pc_in when pc_in(0) = '1' else wtod_old;
 	
 	SBR: sregfile PORT MAP(clk         =>  clk,
+								  boot        =>  boot,
 	                       wrd         =>  sbr_wrd,
 								  op_d        =>  op_sys,
 								  d           =>  reg_d ,

@@ -31,6 +31,7 @@ ARCHITECTURE Structure OF proc IS
     -- Tambien crearemos los cables/buses (signals) necesarios para unir las entidades
 	 COMPONENT datapath IS
 		PORT (clk      : IN  STD_LOGIC;
+				boot     : IN  STD_LOGIC;
 			   op       : IN  STD_LOGIC_VECTOR(tam_codigo_alu_op-1 downto 0);
 			   Rb_N     : IN  STD_LOGIC;
 			   wrd      : IN  STD_LOGIC;
@@ -189,6 +190,7 @@ BEGIN
 											excp_calls => c0_excp_calls);
 											
 	 e0 : datapath PORT MAP(clk       => clk,
+									boot      => boot,
 	                        op        => o2o,
 	                        Rb_N      => rb2rb,
 	                        z         => z2z,

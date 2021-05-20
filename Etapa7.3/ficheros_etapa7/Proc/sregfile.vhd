@@ -10,6 +10,7 @@ use work.cte_tipos_UC_pkg.all;
 
 ENTITY sregfile IS
     PORT (clk      : IN  STD_LOGIC;
+			 boot     : IN  STD_LOGIC;
           wrd      : IN  STD_LOGIC;
           op_d     : IN  STD_LOGIC_VECTOR(2  DOWNTO 0);
           d        : IN  STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -26,7 +27,7 @@ END sregfile;
 ARCHITECTURE Structure OF sregfile IS
     -- Aqui iria la definicion de los registros
 	type bancRegistres is array (0 to 7) of std_logic_vector(15 downto 0);
-	signal BR: bancRegistres := (others=>x"0001");
+	signal BR: bancRegistres := (others=>x"0000");
 
 	
 BEGIN
@@ -39,7 +40,9 @@ BEGIN
   mode_sys <= BR(7)(0);
   p_write : process(clk,wrd)
   begin
-    if rising_edge(clk) then
+	 if boot = '1' then
+		BR(7)(1 downto 0) <= "01";
+    elsif rising_edge(clk) then
 			if wrd = PE then
 	      case op_d is
          when OP_SYS_NORMAL =>
