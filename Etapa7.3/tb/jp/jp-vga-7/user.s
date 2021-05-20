@@ -151,7 +151,7 @@ inici:
 
 binf:   
         $MOVEI r1, 0xA000          ;fila 0; columna 0
-        $MOVEI r2, frase0         ;frase 0
+        $MOVEI r2, frase0          ;frase 0
         $CALL  r6, __write_line
 
         $MOVEI r1, 0xA0A0          ;fila 1; columna 0
@@ -200,13 +200,12 @@ binf:
         ld     r2, 0(r2)           ;carga el numero de veces consecutivas que se ha pulsado la tecla
         $CALL  r6, __write_valor
 
-				; extes excepcio
         $MOVEI r1, 0xA320          ;fila 5; columna 0
-        $MOVEI r2, frase5         ;frase 5
+        $MOVEI r2, frase5          ;frase 5
         $CALL  r6, __write_line
 
         $MOVEI r1, 0xA3C0          ;fila 6; columna 0
-        $MOVEI r2, frase6         ;frase 6
+        $MOVEI r2, frase6          ;frase 6
         $CALL  r6, __write_line
         $MOVEI r1, 0xA3D0          ;fila 6; columna 8
         $MOVEI r2, d_codigo  
@@ -215,7 +214,7 @@ binf:
 
 
         $MOVEI r1, 0xA460          ;fila 7; columna 0
-        $MOVEI r2, frase7         ;frase 7
+        $MOVEI r2, frase7          ;frase 7
         $CALL  r6, __write_line
         $MOVEI r1, 0xA474          ;fila 7; columna 10
         $MOVEI r2, d_div_zero  
@@ -223,7 +222,7 @@ binf:
         $CALL  r6, __write_valor
 
         $MOVEI r1, 0xA500          ;fila 8; columna 0
-        $MOVEI r2, frase8         ;frase 
+        $MOVEI r2, frase8          ;frase 
         $CALL  r6, __write_line
         $MOVEI r1, 0xA518          ;fila 8; columna 12
         $MOVEI r2, d_illegal_ir  
@@ -251,7 +250,7 @@ binf:
         $CALL  r6, __write_line
 
         $MOVEI r1, 0xA6E0          ;fila 11; columna 0
-        $MOVEI r2, frase11a         ;frase 11a
+        $MOVEI r2, frase11a        ;frase 11a
         $CALL  r6, __write_line
         $MOVEI r1, 0xA6EE          ;fila 11; columna 7
         $MOVEI r2, d_calls  
@@ -285,61 +284,62 @@ binf:
         ; triger excepcions
         $MOVEI r2, d_ticks         ;carga la direccion de memoria donde esta el dato sobre el # de ticks de reloj que han llegado
         ;$MOVEI r6, 0       
-        ldb     r6, 0(r2)           ;carga el numero de ticks
-        movhi   r6, 0
+        ldb     r6, 0(r2)          ;carga el numero de ticks
+        movhi   r6, 0              ;Limpiamos el byte de mas peso
         movi    r2, -4
-        shl     r6, r6, r2
+        shl     r6, r6, r2         ;Desplazamos para quedarnos solo con el segundo valor hexadecimal
 
         add r6, r6, r6
-        $MOVEI r2, triger_vector
-        add r2, r2, r6
+        $MOVEI r2, triger_vector   
+        add r2, r2, r6             ;Utilizamos el segundo valor hexadeximal (visor 1) como indice
         ld r2, (r2)
-        jmp r2  ; saltant a la pos r1 de RSI_vector
+        jmp r2                     ;Saltamos al trigger d'excepciones que corresponda           
 
 ; triger excepcio div zero
 __triger_div_zero:
         $MOVEI r1, 0
         movi r2, 2
-        div r2, r2, r1
+        div r2, r2, r1             ;Provocamos una excepcion de div zero
         $MOVEI r6, __fin_binf
         jmp    r6
 ; triger mem not align 
 __triger_mem_align:
         $MOVEI r1, d_interruptores
         ld r1, 0(r1)
-        ld r2, 0(r1)
+        ld r2, 0(r1)               ;Provocamos una excepcion de aliniamiento impar solo si el valor determinado por los interruptores es impar
         $MOVEI r6, __fin_binf
         jmp    r6
 ; triger illegar ir
 __triger_illegar_ir:
-        $MOVEI r1, d_fake_ir
+        $MOVEI r1, d_fake_ir       ;Cargamos la direccion donde almacenaremos una ir ilegal a r1
         $MOVEI r2, 0x9999
-        st 0(r1), r2
-        jmp r1
+        st 0(r1), r2               ;Escribimos la instruccion ilegal en la direccion apuntada por r1
+        jmp r1                     ;Provocamos la excepcion saltando a la direccion
 __triger_calls:
         $MOVEI r1, d_pulsadores
-        ld r1, 0(r1)
-        calls r1
+        ld r1, 0(r1)               ;Preparamos el parametro de la llamada a calls con el valor de los pulsadores
+        calls r1                   ;Debera mostrar por pantalla el valor de los pulsadores 
         $MOVEI r6, __fin_binf
         jmp    r6
 __triger_mem_protect_j:
         $MOVEI r1, 0xc000
-        jmp r1
+        jmp r1                     ;Provocamos excepcion saltando a memoria de sistema
         $MOVEI r6, __fin_binf
         jmp    r6
 __triger_mem_protect_m:
         $MOVEI r6, __halt
         $MOVEI r1, 0xc000
-        st 0(r1), r6
+        st 0(r1), r6               ;Provocamos excepcion escribiendo a memoria de sistema
         $MOVEI r6, __fin_binf
         jmp    r6
 __triger_ir_protect:
         $MOVEI r1, __halt
-        wrs s5, r1
+        wrs s5, r1                 ;Provocamos excepcion ejecutando una instruccion protegida, si no se gestiona bien el programa se detendra en la proxima entrada a sistema
         $MOVEI r6, __fin_binf
         jmp    r6
 __halt:
     halt
+
 ; triger nothing
 __triger_nothing:
 
