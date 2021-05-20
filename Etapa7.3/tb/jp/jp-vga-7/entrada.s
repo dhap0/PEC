@@ -49,7 +49,6 @@
 ; Inicialitzacio
 ; ---------------
 
-  di ; inicialitzacio amb les interrupcions desactivades
   $MOVEI r1, RSG
   wrs    s5, r1      ;inicializamos en S5 la direccion de la rutina de antencion a la interrupcion
   $MOVEI r7, PILA_USUARI    ;inicializamos R7 como puntero a la pila
@@ -222,6 +221,8 @@ RSE_mem_align:
         $MOVEI r4, d_mem_align_addr 
         rds r3, s3
         st     0(r4), r3          
+        $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
+        wrs s1, r6
         $MOVEI r6, end_int         ;direccion del fin del servicio de interrupcion
         jmp    r6
 
@@ -233,10 +234,14 @@ RSE_div_zero:
         ld     r3 ,0(r4)       
         addi   r3, r3, 1
         st     0(r4), r3      
+        $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
+        wrs s1, r6
         $MOVEI r6, end_int     ;direccion del fin del servicio de interrupcion
         jmp    r6
 
 RSE_default_resume:
+    $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
+    wrs s1, r6
     $MOVEI r6, end_int
     jmp r6
 
@@ -246,6 +251,8 @@ RSE_mem_protegida: ; posem el flag per comprovar
     ld     r3 ,0(r4)       
     addi   r3, r3, 1
     st     0(r4), r3      
+    $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
+    wrs s1, r6
     $MOVEI r6, end_int
     jmp r6
 
@@ -254,6 +261,8 @@ RSE_inst_protegida:
     ld     r3 ,0(r4)       
     addi   r3, r3, 1
     st     0(r4), r3      
+    $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
+    wrs s1, r6
     $MOVEI r6, end_int
     jmp r6
  
