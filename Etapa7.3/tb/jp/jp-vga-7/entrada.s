@@ -72,8 +72,8 @@
   wrs s1, r6
 
  ; Posem paraula d'estat futura (amb mode usuari)
- movi r6, 0x01 ; mode usuari, interrupcions activades, overflow fp ens es igual
- ;movi r6, 0x02 ; mode usuari, interrupcions activades, overflow fp ens es igual
+ ;movi r6, 0x01 ; mode usuari, interrupcions activades, overflow fp ens es igual
+ movi r6, 0x02 ; mode usuari, interrupcions activades, overflow fp ens es igual
  wrs s0, r6
  
  reti ; Simulem una crida a sistema i retornem a codi d'usuari
@@ -218,7 +218,7 @@ __excepcions:
 				
 end_int:
         $POP r6, r5, r4, r3, r2, r1, r0  ;restauramos el estado desde la pila (ojo orden inverso)
-        rds r7, s7
+        rds r7, s6
         reti
 
 

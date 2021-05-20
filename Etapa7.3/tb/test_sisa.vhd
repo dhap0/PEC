@@ -70,11 +70,11 @@ architecture comportament of test_sisa is
 
   signal b_LEDG      : STD_LOGIC_VECTOR(7 DOWNTO 0) := x"00"; 
 	signal b_LEDR      : STD_LOGIC_VECTOR(7 DOWNTO 0) := x"00";
-	signal b_HEX0 : STD_LOGIC_VECTOR(6 DOWNTO 0) := '0000000';
-	signal b_HEX1 : STD_LOGIC_VECTOR(6 DOWNTO 0) := '0000000';
-	signal b_HEX2 : STD_LOGIC_VECTOR(6 DOWNTO 0) := '0000000';
-	signal b_HEX3 : STD_LOGIC_VECTOR(6 DOWNTO 0) := '0000000';
-	signal b_KEY : STD_LOGIC_VECTOR(3 DOWNTO 0) := '0000000';
+	signal b_HEX0 : STD_LOGIC_VECTOR(6 DOWNTO 0) := "0000000";
+	signal b_HEX1 : STD_LOGIC_VECTOR(6 DOWNTO 0) := "0000000";
+	signal b_HEX2 : STD_LOGIC_VECTOR(6 DOWNTO 0) := "0000000";
+	signal b_HEX3 : STD_LOGIC_VECTOR(6 DOWNTO 0) := "0000000";
+	signal b_KEY : STD_LOGIC_VECTOR(3 DOWNTO 0) := x"0";
 	signal b_ps2_clk : std_logic := '0';
 	signal b_ps2_data : std_logic := '0'; 
    
