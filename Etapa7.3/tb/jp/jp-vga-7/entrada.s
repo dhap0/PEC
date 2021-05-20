@@ -275,6 +275,7 @@ RSE_calls:
     rds r4, s3
     add r6, r4,r4
     add r6, r6, r3
+    ld r6, (r6)
     jmp r6
 
 syscall_default:
