@@ -131,7 +131,7 @@ BEGIN
 	               coop = COOP_CMP  or
 	               coop = COOP_ADDI or
 	               coop = COOP_EA   or
-					  (coop = COOP_INT  and  f5 /= F5_HALT)  or
+					   coop = COOP_INT  or
 					  (coop = COOP_IO   and  f1  = F1_IN)      or
 	              (coop = COOP_JMP  and (f3  = F3_JAL
 												or  f5  = F5_CALLS))     else not PE;
@@ -214,13 +214,15 @@ BEGIN
 	d_sys  <= '1'  when (coop = COOP_INT and  (f5 = F5_WRS
 													  or   f5 = F5_RETI
 													  or   f5 = F5_DI
-													  or   f5 = F5_EI))
+													  or   f5 = F5_EI
+													  or   f5 = F5_HALT))
 						  or (coop = COOP_JMP and   f5 = F5_CALLS)   else int;
 	
 	op_sys <= OP_SYS_EXCP   when int  = '1'      and  int_excp = '1' else
 				 OP_SYS_INT    when int  = '1'                          else
 				 OP_SYS_EI     when coop = COOP_INT and  f5 = F5_EI     else
-	          OP_SYS_DI     when coop = COOP_INT and  f5 = F5_DI     else 
+	          OP_SYS_DI     when coop = COOP_INT and (f5 = F5_DI
+																 or  f5 = F5_HALT)  else 
 				 OP_SYS_RETI   when coop = COOP_INT and  f5 = F5_RETI   else
 				 OP_SYS_NORMAL ;
 				 
