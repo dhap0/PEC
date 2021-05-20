@@ -58,23 +58,19 @@
 ; ---------------
 
   $MOVEI r1, RSG
-  wrs    s5, r1      ;inicializamos en S5 la direccion de la rutina de antencion a la interrupcion
+  wrs    s5, r1             ;inicializamos en S5 la direccion de la rutina de antencion a la interrupcion
   $MOVEI r7, PILA_USUARI    ;inicializamos R7 como puntero a la pila
-  $MOVEI r6, inici   ;direccion de la rutina principal
+  $MOVEI r6, inici          ;direccion de la rutina principal
   wrs s1, r6
 
- ; Posem paraula d'estat futura (amb mode usuari)
-  movi r6, 0x02 ; mode usuari, interrupcions activades, overflow fp ens es igual
+  movi r6, 0x02             ;Preparamos modo usuario i interrupcions activades para el usuario
   wrs s0, r6
-  reti ; Simulem una crida a sistema i retornem a codi d'usuari
+  reti                      ;Salimos de sistema 
 
 ; --------
 ; Rutines gestio
 ; --------
-
-
 __exit:
- ; Parem la CPU
  halt
 
 
@@ -82,9 +78,9 @@ RSG:    wrs   s6, r7
         $MOVEI r7, PILA_SISTEMA
         $PUSH r0, r1, r2, r3, r4, r5, r6 ;salvamos el estado en la pila
 				$MOVEI r3, 15
-        rds r1, s2           ; llegim codigo INT/EXCP
+        rds r1, s2                       ; llegim codigo INT/EXCP
         $MOVEI r4, d_codigo
-        st     0(r4), r1     ; guardem codigo INT/EXCP a mem
+        st     0(r4), r1                 ; guardem codigo INT/EXCP a mem
 				cmpeq r3, r3, r1
         bz r3, __excepcions
 __interrupcions:
@@ -93,14 +89,14 @@ __interrupcions:
         $MOVEI r2, interrupts_vector
         add r2, r2, r1
         ld r2, (r2)
-        jmp r2  ; saltant a la pos r1 de RSI_vector
+        jmp r2                           ; saltant a la pos r1 de RSI_vector
 
 __excepcions:
      $movei r2, exceptions_vector
-     add r1, r1, r1 ; utilitzarem el num dexcepcio com a index, per tant multipliquem per2
+     add r1, r1, r1                      ; utilitzarem el num dexcepcio com a index, per tant multipliquem per2
      add r2, r2, r1
      ld r2, (r2)
-     jmp r2 ; saltem a la gestio de la excepcio corresponent
+     jmp r2                              ; saltem a la gestio de la excepcio corresponent
 				
 end_int:
         $POP r6, r5, r4, r3, r2, r1, r0  ;restauramos el estado desde la pila (ojo orden inverso)
@@ -213,9 +209,10 @@ RSE_illegal_ir:
         ld     r3 ,0(r4)       
         addi   r3, r3, 1
         st     0(r4), r3      
-        $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
-        wrs s1, r6
-        $MOVEI r6, end_int         ;direccion del fin del servicio de interrupcion
+__fin_RSE_indet:
+        $MOVEI r6, __fin_binf   ;direccion del fin del bucle infinito del usuario
+        wrs s1, r6              ;sobrescribimos la direccion de retorno a usuario, de otra manera el comportamiento seria indeterminado
+        $MOVEI r6, end_int      ;direccion del fin del servicio de interrupcion
         jmp    r6
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
         ; Rutina excp mem align
@@ -229,9 +226,7 @@ RSE_mem_align:
         $MOVEI r4, d_mem_align_addr 
         rds r3, s3
         st     0(r4), r3          
-        $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
-        wrs s1, r6
-        $MOVEI r6, end_int         ;direccion del fin del servicio de interrupcion
+        $MOVEI r6, __fin_RSE_indet
         jmp    r6
 
         ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
@@ -240,54 +235,61 @@ RSE_mem_align:
 RSE_div_zero:
         $MOVEI r4, d_div_zero
         ld     r3 ,0(r4)       
-        addi   r3, r3, 1
+        addi   r3, r3, 1    ;Incremento del contador de la excecpcion de mem protegida
         st     0(r4), r3      
-        $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
-        wrs s1, r6
-        $MOVEI r6, end_int     ;direccion del fin del servicio de interrupcion
+        $MOVEI r6, __fin_RSE_indet
         jmp    r6
 
+        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+        ; Rutina excp no implementada
+        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 RSE_default_resume:
-    $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
-    wrs s1, r6
-    $MOVEI r6, end_int
-    jmp r6
+    $MOVEI r6, __fin_RSE_indet
+    jmp    r6
 
     
-RSE_mem_protegida: ; posem el flag per comprovar
+        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+        ; Rutina excp acceso a mem. de sistema
+        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+RSE_mem_protegida: 
     $MOVEI r4, d_protected_mem
     ld     r3 ,0(r4)       
-    addi   r3, r3, 1
-    st     0(r4), r3      
-    $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
-    wrs s1, r6
-    $MOVEI r6, end_int
-    jmp r6
+    addi   r3, r3, 1         
+    st     0(r4), r3         ;Incremento del contador de la excecpcion de mem protegida
+    $MOVEI r6, __fin_RSE_indet
+    jmp    r6
 
+        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+        ; Rutina excp instruccion protegida
+        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 RSE_inst_protegida:
     $MOVEI r4, d_protected_ir
     ld     r3 ,0(r4)       
     addi   r3, r3, 1
-    st     0(r4), r3      
-    $MOVEI r6, __fin_binf         ;direccion del fin del servicio de interrupcion
-    wrs s1, r6
-    $MOVEI r6, end_int
-    jmp r6
+    st     0(r4), r3          ;Incremento del contador de la excepcion de instr protegida      
+    $MOVEI r6, __fin_RSE_indet
+    jmp    r6
  
+        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+        ; Rutina excp para la instr calls
+        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 RSE_calls:
     $MOVEI r4, d_calls
     ld     r3 ,0(r4)           
     addi   r3, r3, 1
-    st     0(r4), r3          
+    st     0(r4), r3          ;Incremento del contador de la excepciones por la instr calls  
     $MOVEI r3, call_sys_vector
     rds r4, s3
     add r6, r4,r4
     add r6, r6, r3
     ld r6, (r6)
-    jmp r6
+    jmp r6                    ;Salto a la llamada a sistema que corresponde al contenido de s3
 
+        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
+        ; Rutina syscall por defecto
+        ; *=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*
 syscall_default:
     $MOVEI r1, d_syscall
-    st (r1), r4 ; guardem el codi de la crida
+    st (r1), r4               ;Guardamos el codigo de la syscall (s3)
     $MOVEI r6, end_int
     jmp r6
